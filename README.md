@@ -95,9 +95,22 @@ of the ceiling**. The theorem is honest and very loose, and the experiment can
 now say which half of the looseness comes from unspent budget and which from
 sharing.
 
+[ALIFE-EXP-002](experiments/alife-exp-002/RESULT.md) went one level down and its
+preregistered hypotheses failed too. What it found instead:
+
+> **In Book I, sharing buys nothing** — the same hash evaluated twice by two
+> agents costs the same both times. And once a memo makes sharing payable, it
+> still does nothing for a population of distinct roots: one hit across 64 agents
+> holding three quarters of their nodes in common. A memo is keyed by what an
+> agent *asks for*, not by what it contains. Supply a demand path — composites
+> that force each other's roots, or children that inherit their parents' — and
+> the same memo cuts population ATP by 8–17%. **Sharing pays only where something
+> demands it by address, and lineage is the demand path that exists for free.**
+
 That is what the separate repository is for. `sigma-glyph` is a specification
 under threshold-warrant governance; this is a place where a founding hypothesis
-can be wrong in public on the first measurement.
+can be wrong in public on the first measurement, and its replacement wrong on the
+second.
 
 ## Layout
 
@@ -114,6 +127,8 @@ anything in the other.
 | `experiments/alife-exp-nnn/` | corpus, `measure.py`, `results.json`, `RESULT.md` |
 | `proposals/ALIFE-000-substrate-proposal.md` | the founding proposal, filed verbatim, wrong parts included |
 | `proposals/ALIFE-ADR-001-*.md` | what was decided differently, and why |
+| `needs/` | demand on another repository, as a packet with a reproducer |
+| `DECISIONS.md` | the log of every judgment call, corrections included |
 | `tools/test-all.sh` | the complete matrix, one command |
 
 Identifiers carry an `ALIFE-` prefix: sigma-glyph has its own `ADR-nnn` and
@@ -140,9 +155,13 @@ the pin.
   API did not exist, its Theorem 1 was missing a hypothesis, and its Theorem 3
   was not the theorem that mattered. All three are recorded rather than quietly
   patched.
-- ALIFE-EXP-002 — the rebate economy, switched off in EXP-001 on purpose: if
-  reduction spends sharing down, the open question is what pressure makes a
-  population keep it. Not written yet.
+- `DECISIONS.md` — every judgment call in this repository, with what was rejected
+  and what would overturn it, including the corrections. The rebate economy this
+  README used to announce as EXP-002 is in there, with the reason it was dropped.
+- `needs/DA-SIGMA-0002-memo-pricing/` — the one question this work sends back to
+  Book I: may a conforming implementation reuse a result it has already paid for,
+  and at what price? Filed as a `decision-archaeology.need@v0` packet with a
+  reproducer, not as a proposal. Prepared, not yet filed upstream.
 
 ---
 

@@ -65,6 +65,19 @@ else
   skip "experiment replay was not diffed against the committed receipt (no git)"
 fi
 
+say "The need packet reproduces what it claims"
+# sigma-glyph's own lesson: papers stated numbers about the repository and
+# nothing enforced them. A need packet is a document that states numbers about
+# somebody else's repository, which is worse. It runs here on every push.
+python3 needs/DA-SIGMA-0002-memo-pricing/fixtures/reproduce.py \
+  | tee /dev/stderr | grep -q "DA-SIGMA-0002: REPRODUCED"
+if [[ -n "${DECISION_ARCHAEOLOGY:-}" && -f "$DECISION_ARCHAEOLOGY/tools/validate_need.py" ]]; then
+  python3 "$DECISION_ARCHAEOLOGY/tools/validate_need.py" needs/DA-SIGMA-0002-memo-pricing \
+    | tee /dev/stderr | grep -q "^PASS"
+else
+  skip "need packet not validated against decision-archaeology.need@v0 — set DECISION_ARCHAEOLOGY to a checkout"
+fi
+
 say "ALIFE-EXP-002 replay: the committed receipt must be what it derives"
 python3 experiments/alife-exp-002/measure.py --record | tail -4
 if command -v git >/dev/null 2>&1 && git rev-parse --git-dir >/dev/null 2>&1; then

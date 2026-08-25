@@ -57,8 +57,20 @@ jobs:
         # Getting that out of the way here keeps the installer's output from
         # landing inside a run whose job is to report what lean said.
         run: lean --version
+      - name: Fetch the need-packet validator
+        # A need packet states numbers about somebody ELSE's repository, so the
+        # schema it claims to satisfy is checked here rather than asserted. The
+        # pin means the same thing as SIGMA_GLYPH_PIN: a verified compatible
+        # baseline, not "their latest".
+        env:
+          DECISION_ARCHAEOLOGY_PIN: 7e9a3a9f94af28d19bfb224348162ee9cf202e61
+        run: |
+          set -euo pipefail
+          git clone -q https://github.com/s0fractal/decision-archaeology /tmp/decision-archaeology
+          git -C /tmp/decision-archaeology checkout -q "$DECISION_ARCHAEOLOGY_PIN"
       - name: The complete validation matrix
         env:
           SIGMA_GLYPH: /tmp/sigma-glyph/impl
           SIGMA_GLYPH_PROOFS: /tmp/sigma-glyph/proofs
+          DECISION_ARCHAEOLOGY: /tmp/decision-archaeology
         run: tools/test-all.sh

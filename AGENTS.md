@@ -69,6 +69,14 @@ for anything in the section above.
    `MAP.md` that resolves them; two repositories minting into one namespace
    break exactly the thing that map is for.
 
-10. **The oracle is bytes, not a version string.** Every receipt records the
+10. **Demand on another repository goes as a packet, not as a patch.** When work
+    here is blocked by a contract sigma-glyph owns, it is filed under `needs/` as
+    a `decision-archaeology.need@v0` packet: an exact source revision, artifact
+    digests, a literal minimal reproducer, a tested workaround and the gap it
+    leaves, and a counterexample that can close the request. This repository does
+    not propose specification text and has no standing to. See
+    `needs/DA-SIGMA-0002-memo-pricing/`.
+
+11. **The oracle is bytes, not a version string.** Every receipt records the
     SHA-256 of the `sigma_glyph.py` that produced it. "sigma-glyph 0.6.7" names a
     release; the digest names what ran.
