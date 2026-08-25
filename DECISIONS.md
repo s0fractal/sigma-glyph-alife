@@ -333,3 +333,40 @@ gets its whole reservoir in one slice — verified. EXP-003 is not about
 resumption, so this is a limitation rather than a defect, and it is now in that
 result's limitations. What it does mean: no experiment here has yet exercised the
 one capability the substrate proved.
+
+---
+
+## 2026-08-25 — ALIFE-EXP-005, written by two models
+
+**D41. The role separation was executed, and it worked as advertised.** D39 said
+the fix for this repository's weakest provenance claim needed s0fractal to route a
+preregistration to a different model. Done: the EXP-005 preregistration is mine,
+the harness is Codex's, written from the committed document and the engine API
+without contact. Its yield was **seven underdefinitions found before any number
+existed** — including the two that decide verdicts, since "wide margin" and
+"materially fewer" were left numeric-free and the harness author had to fix `2×`
+and seven-fewer-settlers himself. A preregistration whose thresholds are invented
+by its implementer is not preregistering those thresholds. *Practice adopted:*
+every hypothesis gets a number, in the document, before it is filed.
+
+**D42. I preregistered a hypothesis my own frame made unfalsifiable.**
+*Correction, and the sharpest of the session.* `ATP_PER_AGENT = 3000` was chosen
+"as EXP-001: enough that everyone settles", and H2 then asked whether fewer would
+settle. Enforced copy pricing costs 0.08% more per agent at that budget. H2's
+verdict is UNDERPOWERED, not FAILS. This repository added control C7 to two
+experiments precisely to stop this, after wasting two frames on it in EXP-002, and
+then walked into it in a document it wrote three days later. *Practice adopted:*
+the power condition is not a control inside a harness — it belongs in the
+preregistration, next to the hypothesis it protects.
+
+**D43. The delivered result was not rewritten.** Codex's `RESULT.md` keeps its
+text and its scorecard; the correction is a marked review note beside the row it
+corrects, plus an addendum below, both attributed. Rewriting another author's
+verdict in place would destroy the only evidence that the separation happened.
+
+**D44. The addendum reuses the harness rather than reimplementing it.**
+`addendum_scarcity.py` calls `measure.run_arm` at other budgets. Reimplementing
+the arms would have put a second thing between the question and the answer, and
+the addendum questions the preregistration, not the implementation. Its numbers
+were verified first: an independently written R-S detector reproduces the
+harness's counts exactly, family by family.

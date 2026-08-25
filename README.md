@@ -196,12 +196,13 @@ the pin.
 No schedule and no venue — `ALIFE-ADR-001 §9`, and standing direction since
 2026-08-25. These are questions, not promises.
 
-- **What does Book I already pay for address-sharing?** `R-S` charges
-  `1 + size(z)` where `z` is the *current materialization*, so duplicating an
-  unforced argument costs 2 rather than the size of the tree behind it. Laziness
-  plus addressing is a sharing discount that already exists and has never been
-  measured — the same corpus priced hash-leaf against a counterfactual
-  copy-pricing gives the number.
+- ~~What does Book I already pay for address-sharing?~~ **Answered by
+  [ALIFE-EXP-005](experiments/alife-exp-005/RESULT.md): 5.4% on this corpus, and
+  it decides outcomes only inside a band.** The first experiment here whose
+  preregistration and harness were written by *different models* — the separation
+  found seven underdefinitions in the document before any number existed, and the
+  document turned out to have preregistered a budget at which its own H2 could not
+  be true.
 - **Can a library be made to break even?** The bound gives a price *floor*, not a
   price, so a librarian may charge above it. Cost-recovery pricing, fill-on-k-th
   miss, eviction, ranking by expected demand — ALIFE-EXP-003 used the crudest
