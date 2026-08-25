@@ -1,0 +1,26 @@
+{
+  "_README": [
+    "Pins for proofs/premise_guard.py. `statements` is the SHA-256 of",
+    "each guarded theorem's normalized source signature; `premise` is",
+    "the SHA-256 of the sigma-glyph blocks the model was copied from.",
+    "A pin changing is not a defect \u2014 it is a claim changing, and it",
+    "must be reviewed as one."
+  ],
+  "premise": {
+    "inductive Step : Acc \u2192 Acc \u2192 Prop where": "965a9ec5c29daa75834f11544fd9997b801c36e714b26ac99bd2b25127585b53",
+    "structure Acc where": "5e5f1d1a2790edea04db67f63dcf6e75d17363e5bd9ae3f4b810ce83f35ff0fc"
+  },
+  "statements": {
+    "ReachFrom.trans": "6eb80ab4679a2fb5fcb744c001c55fb14a1f9f9e520bfc1a9b25635fc5677ed9",
+    "bound_from": "5f8ae6ecb6e369deffbf711c272f66ff71594f81544814447626663bc4f28ebf",
+    "memory_bound_from_thunk": "dc7def01dfb9c38bc4f745cc0f7a3c5d971fc1a17a15af3b704a1f7b915038ce",
+    "population_peak_size": "b0b98c56a387dde6b7f0f88e1e08a20198f6776444e590cf08505a4e94ea31ed",
+    "population_peak_size_thunks": "1f85293c3e4778e0a440c0418ee0066f30618c264277a93a6803705cacf7ff7e",
+    "resumption_bound": "357cff265dcd7f93475bcd270aa26a345f4a1f79652694545cee3a2d0ffc6249",
+    "spent_mono": "e448340ef56358f879f460fcde43370f8137d398070f3dfa796f4114ec4f0503",
+    "step_delta": "d101ba7f978056d4ae42800eda952f8ab47bbf67db612d8a5c303d860402fd9b",
+    "step_spent": "c7198d3b4b4959f6179d57a4c65c38268ed43f37b0da10054abf183fcb7ab696",
+    "totalBirth_ones": "f23ab32bc0b3e617115c0b8e9c78d636bc6548aa92fda05ad8499958d57cec85",
+    "transfer_preserves_bound": "62e30a9ed8933cada597ff006565ffe5d19576444c4487a1b5157b26242eabc3"
+  }
+}
