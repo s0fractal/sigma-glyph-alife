@@ -441,3 +441,39 @@ scorecard. What survives is narrower and worth more: a closure statistic and an
 L1-core over a bounded high-turnover soup are met by chance, and anyone measuring
 organization that way — including this repository an hour earlier — needs the
 shuffled-graph null beside the number.
+
+---
+
+## 2026-08-26 — ALIFE-EXP-008, and the rule D50 was missing
+
+**D54. One permutation is not a null.** *Correction, and it reversed a result.*
+EXP-008 drew a single shuffle per window. It came back empty everywhere, H1 held,
+and a positive result was written and nearly shipped. Twenty draws and a
+worst-case statistic reversed it. The expensive part of these experiments is the
+soup — ten minutes; a permutation and a peel are milliseconds. *Practice adopted,
+extending D50:* **a chance model must be sampled, not consulted once**, and the
+number of draws goes in the receipt beside the statistic.
+
+**D55. A stronger null is a different claim, and the weak one is nearly free to
+beat.** A complete shuffle destroys every structure at once, so anything at all
+clears it. EXP-008's preregistered null was that, and H1 holds against it. A null
+that preserves temporal locality — same recent products, only *who made what*
+destroyed — matches or beats the observed set at 6 of 7 windows. The honest report
+carries both, and says which was preregistered. *Open, and named:* neither is
+obviously the right chance model, and a degree-preserving rewiring would be a
+third answer.
+
+**D56. The harness chose a window on the data, against the document that
+forbade it.** *Correction.* It took the window maximising the observed set —
+listed in the preregistration under "what would make this experiment worthless" —
+and picked one where the null already scored 16. Replaced first by a null-driven
+rule, which collapsed under a sampled null, and finally by no selection at all:
+the whole curve is scored against both models, as the document said from the
+start. Writing the rule down did not stop me implementing its opposite; only
+re-reading the document against the code did.
+
+**D57. Two positive results died in two experiments, both to nulls, both post
+hoc.** EXP-007 met three criteria and lost all three; EXP-008 met its first and
+lost it to a stronger chance model. Neither null was preregistered. That is now
+the single most reliable way this repository finds its own errors, and the least
+preregistered part of its method.

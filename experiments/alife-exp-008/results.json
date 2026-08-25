@@ -1,0 +1,1122 @@
+{
+  "controls": {
+    "C1 a dead member kills the set": true,
+    "C1 a production outside the window does not count": true,
+    "C1 a self-maintaining pair inside the window is found": true,
+    "C3 conservation: 24541 left of 40001; the bound held at every action": true,
+    "C4 no DISSONANCE entered the soup (0)": true,
+    "C5 founders fingerprint is 53cc6da80f66d220": true
+  },
+  "corpus_fingerprint": "53cc6da80f66d220",
+  "experiment": "ALIFE-EXP-008",
+  "frame": {
+    "budget_sweep": [
+      50,
+      200,
+      3000
+    ],
+    "capacity": 64,
+    "cost_margin": 0.3,
+    "discrimination_factor": 5.0,
+    "min_set_size": 3,
+    "reactions": 1000,
+    "seeds": [
+      20260825,
+      20260826,
+      20260827
+    ],
+    "windows": [
+      25,
+      50,
+      100,
+      200,
+      400,
+      600,
+      1000
+    ]
+  },
+  "inherited_from": "ALIFE-EXP-007",
+  "provenance": {
+    "oracle_sha256": "413d1f9805cdbdf42f13d967a17be26eb959c692eeb067e7146203ed9cebe64d",
+    "platform": "CPython",
+    "python": "3.14",
+    "sigma_alife_version": "0.1.0",
+    "sigma_glyph_requirement": ">=0.6.7,<0.7.0"
+  },
+  "result": {
+    "cells": {
+      "200/20260825": {
+        "alive": 46,
+        "best_size": 0,
+        "best_window": 100,
+        "curve": {
+          "100": {
+            "members": [],
+            "null": 0,
+            "null_draws": 20,
+            "null_local": 2,
+            "null_local_mean": 0.15,
+            "null_mean": 0,
+            "observed": 0
+          },
+          "1000": {
+            "members": [
+              "24a0e3a21fce",
+              "2f33694d0981",
+              "35f9b930665f",
+              "3f74510a306f",
+              "4c3e0e112bc4",
+              "5d63a488e4b7",
+              "63a3ba449b5c",
+              "65cd957fee7e",
+              "810ee70540ef",
+              "89bf5669baa4",
+              "8fe797029ce1",
+              "993cd0ec099a",
+              "996e5b64b2da",
+              "9e77bbf887cc",
+              "a281e60f1bec",
+              "ad131a732436",
+              "bc0c2fe26e44",
+              "c59a60a31cb9",
+              "c723bac53a28",
+              "f34ae30cedfd",
+              "f9cd8993b8a1",
+              "fd9bd10c446b"
+            ],
+            "null": 17,
+            "null_draws": 20,
+            "null_local": 19,
+            "null_local_mean": 5.35,
+            "null_mean": 5.65,
+            "observed": 22
+          },
+          "200": {
+            "members": [
+              "24a0e3a21fce",
+              "810ee70540ef",
+              "89bf5669baa4",
+              "9e77bbf887cc",
+              "a281e60f1bec",
+              "ad131a732436",
+              "bc0c2fe26e44",
+              "c59a60a31cb9",
+              "c723bac53a28",
+              "f9cd8993b8a1"
+            ],
+            "null": 6,
+            "null_draws": 20,
+            "null_local": 23,
+            "null_local_mean": 11.45,
+            "null_mean": 0.8,
+            "observed": 10
+          },
+          "25": {
+            "members": [],
+            "null": 0,
+            "null_draws": 20,
+            "null_local": 0,
+            "null_local_mean": 0,
+            "null_mean": 0,
+            "observed": 0
+          },
+          "400": {
+            "members": [
+              "24a0e3a21fce",
+              "3f74510a306f",
+              "5d63a488e4b7",
+              "63a3ba449b5c",
+              "810ee70540ef",
+              "89bf5669baa4",
+              "996e5b64b2da",
+              "9e77bbf887cc",
+              "a281e60f1bec",
+              "ad131a732436",
+              "bc0c2fe26e44",
+              "c59a60a31cb9",
+              "c723bac53a28",
+              "f9cd8993b8a1"
+            ],
+            "null": 6,
+            "null_draws": 20,
+            "null_local": 23,
+            "null_local_mean": 11.15,
+            "null_mean": 1.05,
+            "observed": 14
+          },
+          "50": {
+            "members": [],
+            "null": 0,
+            "null_draws": 20,
+            "null_local": 0,
+            "null_local_mean": 0,
+            "null_mean": 0,
+            "observed": 0
+          },
+          "600": {
+            "members": [
+              "24a0e3a21fce",
+              "35f9b930665f",
+              "3f74510a306f",
+              "4c3e0e112bc4",
+              "5d63a488e4b7",
+              "63a3ba449b5c",
+              "810ee70540ef",
+              "89bf5669baa4",
+              "993cd0ec099a",
+              "996e5b64b2da",
+              "9e77bbf887cc",
+              "a281e60f1bec",
+              "ad131a732436",
+              "bc0c2fe26e44",
+              "c59a60a31cb9",
+              "c723bac53a28",
+              "f9cd8993b8a1",
+              "fd9bd10c446b"
+            ],
+            "null": 16,
+            "null_draws": 20,
+            "null_local": 26,
+            "null_local_mean": 17.55,
+            "null_mean": 5.35,
+            "observed": 18
+          }
+        },
+        "fail": 371,
+        "history_core": 146,
+        "mean_cost_all": 92.68044515103338,
+        "mean_cost_matched": 0.0,
+        "mean_cost_sustaining": 0.0,
+        "null_local_at_best": 2,
+        "ok": 629,
+        "sustaining_reactions": 0
+      },
+      "200/20260826": {
+        "alive": 42,
+        "best_size": 0,
+        "best_window": 50,
+        "curve": {
+          "100": {
+            "members": [],
+            "null": 1,
+            "null_draws": 20,
+            "null_local": 0,
+            "null_local_mean": 0,
+            "null_mean": 0.05,
+            "observed": 0
+          },
+          "1000": {
+            "members": [
+              "061fda8f45ac",
+              "09799e255672",
+              "2097e8dc1dcf",
+              "2f33694d0981",
+              "5509b42e7769",
+              "679e932ebbd6",
+              "6e1e00c7b49f",
+              "6f2c22fd7d63",
+              "7235da93db37",
+              "820c6caab558",
+              "88347261e20e",
+              "8883a566f725",
+              "8f55765e9496",
+              "91a0bd08de60",
+              "a36a67538e76",
+              "a69fa98b758d",
+              "ae23ac3307a3",
+              "b3a686164ae7",
+              "ba6f4263fa5f",
+              "bc0c2fe26e44",
+              "c7af065f5a70",
+              "db14e9e71b85",
+              "de44f6d9aae2",
+              "e3cbed25ac1e",
+              "f1ab53161986",
+              "f8d8d5037e07",
+              "f9d6ea1f13b8",
+              "ff4fb485a678"
+            ],
+            "null": 13,
+            "null_draws": 20,
+            "null_local": 13,
+            "null_local_mean": 3.55,
+            "null_mean": 3.4,
+            "observed": 28
+          },
+          "200": {
+            "members": [],
+            "null": 1,
+            "null_draws": 20,
+            "null_local": 3,
+            "null_local_mean": 0.95,
+            "null_mean": 0.05,
+            "observed": 0
+          },
+          "25": {
+            "members": [],
+            "null": 0,
+            "null_draws": 20,
+            "null_local": 0,
+            "null_local_mean": 0,
+            "null_mean": 0,
+            "observed": 0
+          },
+          "400": {
+            "members": [],
+            "null": 1,
+            "null_draws": 20,
+            "null_local": 16,
+            "null_local_mean": 3.3,
+            "null_mean": 0.05,
+            "observed": 0
+          },
+          "50": {
+            "members": [],
+            "null": 0,
+            "null_draws": 20,
+            "null_local": 0,
+            "null_local_mean": 0,
+            "null_mean": 0,
+            "observed": 0
+          },
+          "600": {
+            "members": [
+              "061fda8f45ac",
+              "09799e255672",
+              "2097e8dc1dcf",
+              "2f33694d0981",
+              "5509b42e7769",
+              "679e932ebbd6",
+              "6e1e00c7b49f",
+              "6f2c22fd7d63",
+              "7235da93db37",
+              "820c6caab558",
+              "8883a566f725",
+              "8f55765e9496",
+              "91a0bd08de60",
+              "a36a67538e76",
+              "a69fa98b758d",
+              "ae23ac3307a3",
+              "b3a686164ae7",
+              "ba6f4263fa5f",
+              "db14e9e71b85",
+              "de44f6d9aae2",
+              "e3cbed25ac1e"
+            ],
+            "null": 6,
+            "null_draws": 20,
+            "null_local": 27,
+            "null_local_mean": 8.9,
+            "null_mean": 0.75,
+            "observed": 21
+          }
+        },
+        "fail": 507,
+        "history_core": 156,
+        "mean_cost_all": 97.16632860040568,
+        "mean_cost_matched": 0.0,
+        "mean_cost_sustaining": 0.0,
+        "null_local_at_best": 0,
+        "ok": 493,
+        "sustaining_reactions": 0
+      },
+      "200/20260827": {
+        "alive": 38,
+        "best_size": 0,
+        "best_window": 50,
+        "curve": {
+          "100": {
+            "members": [
+              "031895fd0a3b",
+              "0447c8613ea4",
+              "24a66e3aa0dc",
+              "2f33694d0981",
+              "3922d9f63e3f",
+              "6650066c9af8",
+              "792f9e45c99a",
+              "87186ee61d8c",
+              "997cbd48f098",
+              "99eb53d68722",
+              "a8b5522bb8a7",
+              "eb5fe54b9031"
+            ],
+            "null": 1,
+            "null_draws": 20,
+            "null_local": 14,
+            "null_local_mean": 5.7,
+            "null_mean": 0.05,
+            "observed": 12
+          },
+          "1000": {
+            "members": [
+              "031895fd0a3b",
+              "0447c8613ea4",
+              "24a66e3aa0dc",
+              "2f33694d0981",
+              "33e8f3c319bf",
+              "3922d9f63e3f",
+              "48f12f6d77d0",
+              "4dd2ecf4b440",
+              "5aeb0b6a5641",
+              "65cd957fee7e",
+              "6650066c9af8",
+              "6c4748ebef9a",
+              "792f9e45c99a",
+              "87186ee61d8c",
+              "94131a077469",
+              "997cbd48f098",
+              "99eb53d68722",
+              "9c4fcfacd8ab",
+              "a8b5522bb8a7",
+              "bcbacea67213",
+              "bdd560689630",
+              "df10da0a64a5",
+              "e0496fe81c8a",
+              "e0c7a255b5ab",
+              "eb5fe54b9031"
+            ],
+            "null": 5,
+            "null_draws": 20,
+            "null_local": 5,
+            "null_local_mean": 0.7,
+            "null_mean": 0.4,
+            "observed": 25
+          },
+          "200": {
+            "members": [
+              "031895fd0a3b",
+              "0447c8613ea4",
+              "24a66e3aa0dc",
+              "2f33694d0981",
+              "33e8f3c319bf",
+              "3922d9f63e3f",
+              "4dd2ecf4b440",
+              "5aeb0b6a5641",
+              "65cd957fee7e",
+              "6650066c9af8",
+              "792f9e45c99a",
+              "87186ee61d8c",
+              "94131a077469",
+              "997cbd48f098",
+              "99eb53d68722",
+              "9c4fcfacd8ab",
+              "a8b5522bb8a7",
+              "bdd560689630",
+              "e0496fe81c8a",
+              "e0c7a255b5ab",
+              "eb5fe54b9031"
+            ],
+            "null": 2,
+            "null_draws": 20,
+            "null_local": 22,
+            "null_local_mean": 12.3,
+            "null_mean": 0.15,
+            "observed": 21
+          },
+          "25": {
+            "members": [],
+            "null": 0,
+            "null_draws": 20,
+            "null_local": 0,
+            "null_local_mean": 0,
+            "null_mean": 0,
+            "observed": 0
+          },
+          "400": {
+            "members": [
+              "031895fd0a3b",
+              "0447c8613ea4",
+              "24a66e3aa0dc",
+              "2f33694d0981",
+              "33e8f3c319bf",
+              "3922d9f63e3f",
+              "48f12f6d77d0",
+              "4dd2ecf4b440",
+              "5aeb0b6a5641",
+              "65cd957fee7e",
+              "6650066c9af8",
+              "6c4748ebef9a",
+              "792f9e45c99a",
+              "87186ee61d8c",
+              "94131a077469",
+              "997cbd48f098",
+              "99eb53d68722",
+              "9c4fcfacd8ab",
+              "a8b5522bb8a7",
+              "bcbacea67213",
+              "bdd560689630",
+              "df10da0a64a5",
+              "e0496fe81c8a",
+              "e0c7a255b5ab",
+              "eb5fe54b9031"
+            ],
+            "null": 2,
+            "null_draws": 20,
+            "null_local": 21,
+            "null_local_mean": 11,
+            "null_mean": 0.15,
+            "observed": 25
+          },
+          "50": {
+            "members": [],
+            "null": 0,
+            "null_draws": 20,
+            "null_local": 7,
+            "null_local_mean": 2.3,
+            "null_mean": 0,
+            "observed": 0
+          },
+          "600": {
+            "members": [
+              "031895fd0a3b",
+              "0447c8613ea4",
+              "24a66e3aa0dc",
+              "2f33694d0981",
+              "33e8f3c319bf",
+              "3922d9f63e3f",
+              "48f12f6d77d0",
+              "4dd2ecf4b440",
+              "5aeb0b6a5641",
+              "65cd957fee7e",
+              "6650066c9af8",
+              "6c4748ebef9a",
+              "792f9e45c99a",
+              "87186ee61d8c",
+              "94131a077469",
+              "997cbd48f098",
+              "99eb53d68722",
+              "9c4fcfacd8ab",
+              "a8b5522bb8a7",
+              "bcbacea67213",
+              "bdd560689630",
+              "df10da0a64a5",
+              "e0496fe81c8a",
+              "e0c7a255b5ab",
+              "eb5fe54b9031"
+            ],
+            "null": 5,
+            "null_draws": 20,
+            "null_local": 18,
+            "null_local_mean": 8.35,
+            "null_mean": 0.4,
+            "observed": 25
+          }
+        },
+        "fail": 570,
+        "history_core": 42,
+        "mean_cost_all": 109.23953488372094,
+        "mean_cost_matched": 0.0,
+        "mean_cost_sustaining": 0.0,
+        "null_local_at_best": 7,
+        "ok": 430,
+        "sustaining_reactions": 0
+      },
+      "3000/20260825": {
+        "alive": 52,
+        "best_size": 0,
+        "best_window": 200,
+        "curve": {
+          "100": {
+            "members": [],
+            "null": 0,
+            "null_draws": 20,
+            "null_local": 0,
+            "null_local_mean": 0,
+            "null_mean": 0,
+            "observed": 0
+          },
+          "1000": {
+            "members": [],
+            "null": 8,
+            "null_draws": 20,
+            "null_local": 4,
+            "null_local_mean": 0.7,
+            "null_mean": 1.15,
+            "observed": 0
+          },
+          "200": {
+            "members": [],
+            "null": 0,
+            "null_draws": 20,
+            "null_local": 0,
+            "null_local_mean": 0,
+            "null_mean": 0,
+            "observed": 0
+          },
+          "25": {
+            "members": [],
+            "null": 0,
+            "null_draws": 20,
+            "null_local": 1,
+            "null_local_mean": 0.05,
+            "null_mean": 0,
+            "observed": 0
+          },
+          "400": {
+            "members": [],
+            "null": 7,
+            "null_draws": 20,
+            "null_local": 14,
+            "null_local_mean": 1.35,
+            "null_mean": 0.8,
+            "observed": 0
+          },
+          "50": {
+            "members": [],
+            "null": 0,
+            "null_draws": 20,
+            "null_local": 1,
+            "null_local_mean": 0.05,
+            "null_mean": 0,
+            "observed": 0
+          },
+          "600": {
+            "members": [],
+            "null": 7,
+            "null_draws": 20,
+            "null_local": 8,
+            "null_local_mean": 1.4,
+            "null_mean": 0.9,
+            "observed": 0
+          }
+        },
+        "fail": 293,
+        "history_core": 133,
+        "mean_cost_all": 1003.046676096181,
+        "mean_cost_matched": 0.0,
+        "mean_cost_sustaining": 0.0,
+        "null_local_at_best": 0,
+        "ok": 707,
+        "sustaining_reactions": 0
+      },
+      "3000/20260826": {
+        "alive": 62,
+        "best_size": 0,
+        "best_window": 1000,
+        "curve": {
+          "100": {
+            "members": [],
+            "null": 0,
+            "null_draws": 20,
+            "null_local": 0,
+            "null_local_mean": 0,
+            "null_mean": 0,
+            "observed": 0
+          },
+          "1000": {
+            "members": [],
+            "null": 0,
+            "null_draws": 20,
+            "null_local": 0,
+            "null_local_mean": 0,
+            "null_mean": 0,
+            "observed": 0
+          },
+          "200": {
+            "members": [],
+            "null": 0,
+            "null_draws": 20,
+            "null_local": 0,
+            "null_local_mean": 0,
+            "null_mean": 0,
+            "observed": 0
+          },
+          "25": {
+            "members": [],
+            "null": 0,
+            "null_draws": 20,
+            "null_local": 0,
+            "null_local_mean": 0,
+            "null_mean": 0,
+            "observed": 0
+          },
+          "400": {
+            "members": [],
+            "null": 0,
+            "null_draws": 20,
+            "null_local": 0,
+            "null_local_mean": 0,
+            "null_mean": 0,
+            "observed": 0
+          },
+          "50": {
+            "members": [],
+            "null": 0,
+            "null_draws": 20,
+            "null_local": 0,
+            "null_local_mean": 0,
+            "null_mean": 0,
+            "observed": 0
+          },
+          "600": {
+            "members": [],
+            "null": 0,
+            "null_draws": 20,
+            "null_local": 0,
+            "null_local_mean": 0,
+            "null_mean": 0,
+            "observed": 0
+          }
+        },
+        "fail": 512,
+        "history_core": 21,
+        "mean_cost_all": 991.3217213114754,
+        "mean_cost_matched": 0.0,
+        "mean_cost_sustaining": 0.0,
+        "null_local_at_best": 0,
+        "ok": 488,
+        "sustaining_reactions": 0
+      },
+      "3000/20260827": {
+        "alive": 62,
+        "best_size": 0,
+        "best_window": 1000,
+        "curve": {
+          "100": {
+            "members": [],
+            "null": 0,
+            "null_draws": 20,
+            "null_local": 0,
+            "null_local_mean": 0,
+            "null_mean": 0,
+            "observed": 0
+          },
+          "1000": {
+            "members": [],
+            "null": 0,
+            "null_draws": 20,
+            "null_local": 0,
+            "null_local_mean": 0,
+            "null_mean": 0,
+            "observed": 0
+          },
+          "200": {
+            "members": [],
+            "null": 0,
+            "null_draws": 20,
+            "null_local": 0,
+            "null_local_mean": 0,
+            "null_mean": 0,
+            "observed": 0
+          },
+          "25": {
+            "members": [],
+            "null": 0,
+            "null_draws": 20,
+            "null_local": 0,
+            "null_local_mean": 0,
+            "null_mean": 0,
+            "observed": 0
+          },
+          "400": {
+            "members": [],
+            "null": 0,
+            "null_draws": 20,
+            "null_local": 0,
+            "null_local_mean": 0,
+            "null_mean": 0,
+            "observed": 0
+          },
+          "50": {
+            "members": [],
+            "null": 0,
+            "null_draws": 20,
+            "null_local": 0,
+            "null_local_mean": 0,
+            "null_mean": 0,
+            "observed": 0
+          },
+          "600": {
+            "members": [],
+            "null": 0,
+            "null_draws": 20,
+            "null_local": 0,
+            "null_local_mean": 0,
+            "null_mean": 0,
+            "observed": 0
+          }
+        },
+        "fail": 528,
+        "history_core": 4,
+        "mean_cost_all": 1072.5042372881355,
+        "mean_cost_matched": 0.0,
+        "mean_cost_sustaining": 0.0,
+        "null_local_at_best": 0,
+        "ok": 472,
+        "sustaining_reactions": 0
+      },
+      "50/20260825": {
+        "alive": 42,
+        "best_size": 0,
+        "best_window": 0,
+        "curve": {
+          "100": {
+            "members": [],
+            "null": 7,
+            "null_draws": 20,
+            "null_local": 16,
+            "null_local_mean": 4.95,
+            "null_mean": 1.75,
+            "observed": 0
+          },
+          "1000": {
+            "members": [
+              "35444183f4ab",
+              "7f61d3cfe433",
+              "89bf5669baa4",
+              "9706defe874a",
+              "afcfe1845f56",
+              "b43b0cbeda4f",
+              "bc0c2fe26e44",
+              "d23f0dc653b4",
+              "edd9eae838b5"
+            ],
+            "null": 21,
+            "null_draws": 20,
+            "null_local": 21,
+            "null_local_mean": 14.05,
+            "null_mean": 13.6,
+            "observed": 9
+          },
+          "200": {
+            "members": [
+              "89bf5669baa4",
+              "9706defe874a",
+              "b43b0cbeda4f",
+              "bc0c2fe26e44",
+              "d23f0dc653b4",
+              "edd9eae838b5"
+            ],
+            "null": 9,
+            "null_draws": 20,
+            "null_local": 24,
+            "null_local_mean": 15.3,
+            "null_mean": 3.55,
+            "observed": 6
+          },
+          "25": {
+            "members": [],
+            "null": 1,
+            "null_draws": 20,
+            "null_local": 1,
+            "null_local_mean": 0.1,
+            "null_mean": 0.2,
+            "observed": 0
+          },
+          "400": {
+            "members": [
+              "89bf5669baa4",
+              "9706defe874a",
+              "b43b0cbeda4f",
+              "bc0c2fe26e44",
+              "d23f0dc653b4",
+              "edd9eae838b5"
+            ],
+            "null": 18,
+            "null_draws": 20,
+            "null_local": 24,
+            "null_local_mean": 14.4,
+            "null_mean": 6.45,
+            "observed": 6
+          },
+          "50": {
+            "members": [],
+            "null": 4,
+            "null_draws": 20,
+            "null_local": 5,
+            "null_local_mean": 2.4,
+            "null_mean": 0.6,
+            "observed": 0
+          },
+          "600": {
+            "members": [
+              "35444183f4ab",
+              "7f61d3cfe433",
+              "89bf5669baa4",
+              "9706defe874a",
+              "afcfe1845f56",
+              "b43b0cbeda4f",
+              "bc0c2fe26e44",
+              "d23f0dc653b4",
+              "edd9eae838b5"
+            ],
+            "null": 20,
+            "null_draws": 20,
+            "null_local": 21,
+            "null_local_mean": 13.7,
+            "null_mean": 8.65,
+            "observed": 9
+          }
+        },
+        "fail": 461,
+        "history_core": 128,
+        "mean_cost_all": 25.54359925788497,
+        "mean_cost_matched": 0.0,
+        "mean_cost_sustaining": 0.0,
+        "null_local_at_best": 0,
+        "ok": 539,
+        "sustaining_reactions": 0
+      },
+      "50/20260826": {
+        "alive": 26,
+        "best_size": 0,
+        "best_window": 25,
+        "curve": {
+          "100": {
+            "members": [],
+            "null": 6,
+            "null_draws": 20,
+            "null_local": 6,
+            "null_local_mean": 4,
+            "null_mean": 3,
+            "observed": 0
+          },
+          "1000": {
+            "members": [],
+            "null": 15,
+            "null_draws": 20,
+            "null_local": 15,
+            "null_local_mean": 10.7,
+            "null_mean": 10.85,
+            "observed": 0
+          },
+          "200": {
+            "members": [],
+            "null": 10,
+            "null_draws": 20,
+            "null_local": 8,
+            "null_local_mean": 5.9,
+            "null_mean": 5.5,
+            "observed": 0
+          },
+          "25": {
+            "members": [],
+            "null": 0,
+            "null_draws": 20,
+            "null_local": 0,
+            "null_local_mean": 0,
+            "null_mean": 0,
+            "observed": 0
+          },
+          "400": {
+            "members": [],
+            "null": 11,
+            "null_draws": 20,
+            "null_local": 14,
+            "null_local_mean": 10.95,
+            "null_mean": 8.25,
+            "observed": 0
+          },
+          "50": {
+            "members": [],
+            "null": 3,
+            "null_draws": 20,
+            "null_local": 0,
+            "null_local_mean": 0,
+            "null_mean": 0.35,
+            "observed": 0
+          },
+          "600": {
+            "members": [],
+            "null": 12,
+            "null_draws": 20,
+            "null_local": 14,
+            "null_local_mean": 10.35,
+            "null_mean": 9.45,
+            "observed": 0
+          }
+        },
+        "fail": 582,
+        "history_core": 58,
+        "mean_cost_all": 28.258373205741627,
+        "mean_cost_matched": 0.0,
+        "mean_cost_sustaining": 0.0,
+        "null_local_at_best": 0,
+        "ok": 418,
+        "sustaining_reactions": 0
+      },
+      "50/20260827": {
+        "alive": 21,
+        "best_size": 0,
+        "best_window": 0,
+        "curve": {
+          "100": {
+            "members": [
+              "00a08598748e",
+              "120388acea0f",
+              "1635ea04593f",
+              "168a2275c945",
+              "5d4bcf9eb4f0",
+              "60a650e0924a",
+              "62f74b139c78",
+              "7f3be74b4045",
+              "7fe75e0fbfdb",
+              "9ef9c623f7fd",
+              "aee42feb14b8",
+              "b83ede74b8e8",
+              "d7c32237a08f"
+            ],
+            "null": 15,
+            "null_draws": 20,
+            "null_local": 15,
+            "null_local_mean": 14.75,
+            "null_mean": 8.75,
+            "observed": 13
+          },
+          "1000": {
+            "members": [
+              "00a08598748e",
+              "0da8c8fea2be",
+              "120388acea0f",
+              "1543b188ab67",
+              "1635ea04593f",
+              "168a2275c945",
+              "1e8e6f238541",
+              "5d4bcf9eb4f0",
+              "60a650e0924a",
+              "62f74b139c78",
+              "7f3be74b4045",
+              "7fe75e0fbfdb",
+              "9ef9c623f7fd",
+              "aee42feb14b8",
+              "b83ede74b8e8",
+              "c9c8df3e123d",
+              "d7c32237a08f",
+              "ec67030ec3e2"
+            ],
+            "null": 20,
+            "null_draws": 20,
+            "null_local": 19,
+            "null_local_mean": 17,
+            "null_mean": 17.6,
+            "observed": 18
+          },
+          "200": {
+            "members": [
+              "00a08598748e",
+              "120388acea0f",
+              "1543b188ab67",
+              "1635ea04593f",
+              "168a2275c945",
+              "5d4bcf9eb4f0",
+              "60a650e0924a",
+              "62f74b139c78",
+              "7f3be74b4045",
+              "7fe75e0fbfdb",
+              "9ef9c623f7fd",
+              "aee42feb14b8",
+              "b83ede74b8e8",
+              "c9c8df3e123d",
+              "d7c32237a08f",
+              "ec67030ec3e2"
+            ],
+            "null": 15,
+            "null_draws": 20,
+            "null_local": 17,
+            "null_local_mean": 16.75,
+            "null_mean": 12.1,
+            "observed": 16
+          },
+          "25": {
+            "members": [
+              "1635ea04593f",
+              "62f74b139c78",
+              "7f3be74b4045",
+              "d7c32237a08f"
+            ],
+            "null": 4,
+            "null_draws": 20,
+            "null_local": 8,
+            "null_local_mean": 4.45,
+            "null_mean": 0.6,
+            "observed": 4
+          },
+          "400": {
+            "members": [
+              "00a08598748e",
+              "0da8c8fea2be",
+              "120388acea0f",
+              "1543b188ab67",
+              "1635ea04593f",
+              "168a2275c945",
+              "1e8e6f238541",
+              "5d4bcf9eb4f0",
+              "60a650e0924a",
+              "62f74b139c78",
+              "7f3be74b4045",
+              "7fe75e0fbfdb",
+              "9ef9c623f7fd",
+              "aee42feb14b8",
+              "b83ede74b8e8",
+              "c9c8df3e123d",
+              "d7c32237a08f",
+              "ec67030ec3e2"
+            ],
+            "null": 18,
+            "null_draws": 20,
+            "null_local": 19,
+            "null_local_mean": 18.6,
+            "null_mean": 15.05,
+            "observed": 18
+          },
+          "50": {
+            "members": [
+              "00a08598748e",
+              "120388acea0f",
+              "1635ea04593f",
+              "168a2275c945",
+              "60a650e0924a",
+              "62f74b139c78",
+              "7f3be74b4045",
+              "7fe75e0fbfdb",
+              "b83ede74b8e8",
+              "d7c32237a08f"
+            ],
+            "null": 10,
+            "null_draws": 20,
+            "null_local": 12,
+            "null_local_mean": 10.75,
+            "null_mean": 4.4,
+            "observed": 10
+          },
+          "600": {
+            "members": [
+              "00a08598748e",
+              "0da8c8fea2be",
+              "120388acea0f",
+              "1543b188ab67",
+              "1635ea04593f",
+              "168a2275c945",
+              "1e8e6f238541",
+              "5d4bcf9eb4f0",
+              "60a650e0924a",
+              "62f74b139c78",
+              "7f3be74b4045",
+              "7fe75e0fbfdb",
+              "9ef9c623f7fd",
+              "aee42feb14b8",
+              "b83ede74b8e8",
+              "c9c8df3e123d",
+              "d7c32237a08f",
+              "ec67030ec3e2"
+            ],
+            "null": 19,
+            "null_draws": 20,
+            "null_local": 21,
+            "null_local_mean": 19.55,
+            "null_mean": 16.55,
+            "observed": 18
+          }
+        },
+        "fail": 557,
+        "history_core": 66,
+        "mean_cost_all": 33.09480812641083,
+        "mean_cost_matched": 0.0,
+        "mean_cost_sustaining": 0.0,
+        "null_local_at_best": 0,
+        "ok": 443,
+        "sustaining_reactions": 0
+      }
+    }
+  }
+}

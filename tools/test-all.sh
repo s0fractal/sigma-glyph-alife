@@ -89,6 +89,23 @@ else
   skip "ALIFE-EXP-003 replay was not diffed against the committed receipt (no git)"
 fi
 
+say "ALIFE-EXP-008: controls only (the replay is a ten-minute job)"
+# C1 is three hand cases rather than one: the self-maintenance condition is the
+# only thing that separates this from EXP-007's history-core, and a peeling bug
+# in it would produce organizations from anything.
+python3 experiments/alife-exp-008/measure.py --controls \
+  | tee /dev/stderr | grep -q "EXP-008-CONTROLS: ALL PASS"
+if [[ "${EXP007_ELSEWHERE:-0}" != "1" && "${RUN_SLOW:-0}" != "1" ]]; then
+  skip "ALIFE-EXP-008 full replay (ten minutes) — set RUN_SLOW=1, or let its own workflow run it"
+elif [[ "${RUN_SLOW:-0}" = "1" ]]; then
+  python3 experiments/alife-exp-008/measure.py --record | tail -6
+  if command -v git >/dev/null 2>&1 && git rev-parse --git-dir >/dev/null 2>&1; then
+    git diff --exit-code experiments/alife-exp-008/results.json
+  fi
+else
+  printf '\n(ALIFE-EXP-008 full replay runs in its own workflow on this commit)\n'
+fi
+
 say "ALIFE-EXP-007: controls only (the replay is a ten-minute job)"
 # Every control runs here, including C5 — the one that proves the core algorithm
 # returns nothing on an open chain, without which a peeling bug produces cores

@@ -159,6 +159,18 @@ back green. Then the nulls ran:
 > an L1-core over a bounded, high-turnover soup are met by chance**, and anyone
 > measuring organization that way needs a shuffled-graph null beside the number.
 
+[ALIFE-EXP-008](experiments/alife-exp-008/RESULT.md) took EXP-007's own stated
+limitation — organizations counted from the dead — and demanded sets that are
+**alive and being re-made out of themselves**. They beat a complete shuffle by a
+wide margin. Then a stronger null:
+
+> Permute products only *within* the window, so the recent molecules stay recent
+> and only *who made what* is destroyed, and the null **matches or beats** the
+> observed set at 6 of 7 windows. Most of what looked like a self-maintaining
+> organization is **temporal locality**. And the reason the first version of this
+> experiment reported the opposite is that it drew **one** permutation: twenty
+> draws and a worst-case statistic reversed the result.
+
 That is what the separate repository is for. `sigma-glyph` is a specification
 under threshold-warrant governance; this is a place where a founding hypothesis
 can be wrong in public on the first measurement, and its replacement wrong on the

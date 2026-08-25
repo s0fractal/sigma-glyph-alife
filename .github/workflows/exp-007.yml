@@ -1,4 +1,4 @@
-name: exp-007
+name: exp-soups
 
 # The soup replay is a ten-minute job, so it runs only when the experiment
 # changes. The cheap half — every control, including the one that proves the core
@@ -13,9 +13,11 @@ on:
   push:
     branches: [master]
     paths: ['experiments/alife-exp-007/**', '!experiments/alife-exp-007/**.md',
+            'experiments/alife-exp-008/**', '!experiments/alife-exp-008/**.md',
             '.github/workflows/exp-007.yml']
   pull_request:
     paths: ['experiments/alife-exp-007/**', '!experiments/alife-exp-007/**.md',
+            'experiments/alife-exp-008/**', '!experiments/alife-exp-008/**.md',
             '.github/workflows/exp-007.yml']
 
 env:
@@ -37,9 +39,15 @@ jobs:
           git clone -q https://github.com/s0fractal/sigma-glyph /tmp/sigma-glyph
           git -C /tmp/sigma-glyph checkout -q "$SIGMA_GLYPH_PIN"
           sha256sum /tmp/sigma-glyph/impl/sigma_glyph.py
-      - name: Replay the soup; the committed receipt must be what it derives
+      - name: Replay EXP-007's soup; the committed receipt must be what it derives
         env:
           SIGMA_GLYPH: /tmp/sigma-glyph/impl
         run: |
           python3 experiments/alife-exp-007/measure.py --record | tail -20
           git diff --exit-code experiments/alife-exp-007/results.json
+      - name: Replay EXP-008's self-maintaining sets, on the same chemistry
+        env:
+          SIGMA_GLYPH: /tmp/sigma-glyph/impl
+        run: |
+          python3 experiments/alife-exp-008/measure.py --record | tail -20
+          git diff --exit-code experiments/alife-exp-008/results.json
