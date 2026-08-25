@@ -26,9 +26,15 @@ env:
 permissions: {}
 
 jobs:
-  replay:
+  # Two jobs, not one, and a timeout sized to the measurement rather than the
+  # other way round. A single job ran both replays and was CANCELLED at 30
+  # minutes: the reactions priced at 3000 ATP cost 101 seconds per soup, three
+  # seeds each, in both experiments. That is what the measurement costs. Splitting
+  # them runs the two in parallel and says which one failed if one does; cutting
+  # the corpus to fit a runner would have been changing a result to fit CI.
+  exp-007:
     runs-on: ubuntu-latest
-    timeout-minutes: 30
+    timeout-minutes: 45
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
       - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
@@ -45,9 +51,23 @@ jobs:
         run: |
           python3 experiments/alife-exp-007/measure.py --record | tail -20
           git diff --exit-code experiments/alife-exp-007/results.json
+
+  exp-008:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
+        with: { python-version: '3.14' }
+      - name: Fetch the pinned Book I oracle
+        run: |
+          set -euo pipefail
+          git clone -q https://github.com/s0fractal/sigma-glyph /tmp/sigma-glyph
+          git -C /tmp/sigma-glyph checkout -q "$SIGMA_GLYPH_PIN"
+          sha256sum /tmp/sigma-glyph/impl/sigma_glyph.py
       - name: Replay EXP-008's self-maintaining sets, on the same chemistry
         env:
           SIGMA_GLYPH: /tmp/sigma-glyph/impl
         run: |
-          python3 experiments/alife-exp-008/measure.py --record | tail -20
+          python3 experiments/alife-exp-008/measure.py --record | tail -24
           git diff --exit-code experiments/alife-exp-008/results.json

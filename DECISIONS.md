@@ -514,3 +514,11 @@ receipt that declares draws per cell — which is where the number belongs — w
 reported as an offender. Loosening a guard to fit a receipt is how guards die; the
 rule is now "findable from the thing it describes", which is what it should have
 said.
+
+**D61. CI was sized to the measurement, not the measurement to CI.** The soup
+replay job was cancelled at its 30-minute limit. The cost is not the nulls —
+twenty draws over the whole grid are under a second — it is the reactions priced
+at 3000 ATP, at 101 seconds per soup, three seeds in each of two experiments. The
+two replays are separate jobs now, running in parallel, with a 45-minute limit
+each. Trimming the corpus or the budget sweep would have been changing a result to
+fit a runner.
