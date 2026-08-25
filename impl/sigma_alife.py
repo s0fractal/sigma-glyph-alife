@@ -544,12 +544,24 @@ def conservative_transfer(donor, recipient, amount):
 
 
 # ---------- Reproduction (policy; Phase 3 surface) ----------
-def crossover(parent_a, parent_b, store, rng):
-    """Splice a subterm of B into A at a randomly chosen node of A.
+def crossover(parent_a, parent_b, store, rng, graft="term"):
+    """Splice a piece of B into A at a randomly chosen node of A.
 
     Content addressing does the work: the graft is a *hash*, so the child shares
     the donated structure with its parent rather than copying it. Returns the
     child's root hash, or None when A has no graftable node (a leaf).
+
+    `graft` decides WHICH hash of B is inherited, and it is not a detail:
+
+      "term"  — B's current term. The child inherits the phenotype: whatever B
+                has already reduced to, in the state B is in now.
+      "root"  — B's ORIGINAL root hash. The child inherits the genome: an
+                unevaluated reference that it must pay to reduce, exactly as B
+                once did — unless a `Memo` already holds that hash's normal form,
+                in which case the colony's earlier work is what the child
+                inherits. This is the only graft under which memoization can
+                reach a child at all, which is why ALIFE-EXP-002 Part B uses it
+                and says so.
 
     Mutation and selection are NOT modelled here; this is the operator, not an
     evolutionary algorithm, and nothing below claims the operator is a good one.
@@ -566,8 +578,9 @@ def crossover(parent_a, parent_b, store, rng):
     if not positions:
         return None
     path = positions[rng.randrange(len(positions))]
-    graft = ("thunk", sg.term_hash(parent_b.term))
     put_term(parent_b.term, store)
+    donor = parent_b.root if graft == "root" else sg.term_hash(parent_b.term)
+    graft = ("thunk", donor)
 
     def rebuild(t, path):
         if not path:

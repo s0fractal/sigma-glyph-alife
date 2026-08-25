@@ -1,0 +1,183 @@
+# Decisions
+
+Every judgment call made in this repository, with what was rejected and what
+would overturn it. It exists because the work is done by an agent at speed, and
+speed hides reasoning: a reader who disagrees with an outcome should be able to
+find the sentence where the outcome was chosen rather than reverse-engineer it
+from the code.
+
+**Split with `proposals/`:** an `ALIFE-ADR-nnn` is a full document for a decision
+that shapes the repository. This file is the *log* — every call, including the
+small ones and the wrong ones, one entry each, with a pointer where a document
+exists. Entries are appended, never edited away; a decision that turns out badly
+gets a new entry saying so, above the old one.
+
+Author of every entry below: Claude (Opus 5), working under s0fractal's
+direction. Nothing here was reviewed by a second party.
+
+---
+
+## 2026-08-25 — founding
+
+**D1. A new repository, not an extension of `sigma-glyph`.** Accepted from the
+founding proposal §6 as written. Added reason it did not give: this repository
+must be free to be *wrong in public* — its first experiment refutes its own
+founding hypothesis, which is a normal week in research and an incident in a
+specification. → `ALIFE-ADR-001 §1`. *Overturned by:* the substrate stabilizing
+enough that Book I would want it normatively; then it moves, it does not merge.
+
+**D2. Identifiers carry an `ALIFE-` prefix.** The proposal numbered its
+experiments `exp-005…` continuing sigma-glyph's sequence from a different
+repository. sigma-glyph's `MAP.md` exists to resolve one cited identifier to one
+document; two repositories minting into one namespace break exactly that.
+Directory *shapes* still mirror sigma-glyph exactly. → `ALIFE-ADR-001 §2`.
+
+**D3. `impl/sigma_alife.py`, one module, not `src/population.py` + friends.**
+Follows sigma-glyph's flat layout for its stated reason: the file you read is the
+file that runs. The "morphogenesis module" the proposal wanted is four functions
+and lives beside the population it measures. → `ALIFE-ADR-001 §3`.
+
+**D4. The population loop drives `step5`, not `eval_hash`.** Book I's exhaustion
+outcome discards the partial term, which makes a resumable agent unbuildable.
+Rejected alternative: accept `eval_hash` and drop RQ3 (sporulation) as
+unimplementable — that would have thrown away the one capability this substrate
+has that no other ALife platform does. The deviation is fenced by a differential
+and by `resumption_bound`. → `ALIFE-ADR-001 §5`. *Overturned by:* Book I growing
+a resumable outcome, at which point the driver should be deleted, not kept.
+
+**D5. A slice that buys nothing is doubled, not fatal.** A slice smaller than the
+next action's cost makes no progress, and a fixed slice livelocks a population in
+silence. Rejected: a new `STALLED` status — it added a state to every caller for
+a condition `spent == 0` already expresses.
+
+**D6. `STARVED` means "the next action is unaffordable", not "the reservoir is
+empty".** An agent can hold change too small to buy anything. Its dust returns to
+the commons on culling rather than vanishing with the body, because a ledger that
+loses ATP quietly is the failure mode the ledger exists to catch.
+
+**D7. A materialized REF counts 2 in the census, not 1.** *This entry is a
+correction.* The first version counted the node and not its target, so the census
+sat one address below `size` on every REF while a docstring claimed the two
+agreed "by construction". Caught by property P5, not by a suite. The size model
+prices a REF at 2 — node plus target thunk — and the target is a real CAS address
+other agents can share.
+
+**D8. Rebates move ATP out of a commons pool; nothing is minted.** The proposal's
+§4.3 would have created ATP from a sharing measurement. Every bound stated
+against a total dies quietly the moment that happens, so the ledger is asserted
+every tick and a negative control watches minted ATP get caught.
+
+**D9. Lean proves `ReachFrom a b` (arbitrary start), not `Reach` (fixed start).**
+Book I's form is recovered as the special case. Proving the general form first is
+what makes D4 legitimate: an interrupted run must be bounded like an
+uninterrupted one, or the sliced driver is not entitled to Book I's guarantee.
+
+**D10. The proposal's "Conservative Transfer Safety" theorem was not proved; a
+weaker hypothesis was.** The population bound mentions no per-agent reservoir, so
+*any* conserving transfer preserves it, including one that strips a donor to
+zero. The donor reserve survives as a heuristic for per-agent predictability and
+is labelled as one. → `ALIFE-ADR-001 §7`.
+
+**D11. `premise_guard.py` is weaker than sigma-glyph's `proof_guard.py`, and says
+so.** It pins source text; the real one pins elaborated types against the kernel
+environment. Rejected: porting the real guard now — it needs a `lake` build and a
+second proof front to justify it. The scope limit is written in the file, in
+`proofs/README.md`, and in the README.
+
+**D12. Published public on GitHub.** s0fractal authorized "залий на гітхаб".
+Public chosen without asking because `sigma-glyph` is public and this
+repository's own `pyproject.toml` and README already declared the public URL.
+*Overturned by:* one word.
+
+**D13. CI pins sigma-glyph at `d3f1b51` (its `master`), not at the local
+checkout's branch head.** The two are byte-identical on both consumed surfaces —
+`impl/sigma_glyph.py` and `proofs/SizeBound.lean` — and `master` is the ref in
+force. What would justify moving the pin is written above the pin.
+
+**D14. The Lean guard fails on lean *diagnostics*, not on any output.** *This
+entry is a correction, found by CI on the first push.* The first version failed
+on any bytes at all, which is green on a machine whose toolchain is installed and
+red on a fresh runner where `elan` downloads Lean inside that very subprocess. A
+guard that calls the installer an unsoundness gets silenced rather than read.
+Fixing it exposed dead code: the `sorry` test compared against straight quotes
+where Lean 4.31 writes backticks, so that string had never matched anything.
+
+**D15. Commit hygiene slip, corrected before pushing.** *This entry is a
+correction.* `git add -A` swept the EXP-002 corpus and preregistration into the
+engine commit, and in this repository commit order is the evidence that a corpus
+was fixed before its hypotheses. Reset and re-committed in order. Nothing had
+been pushed.
+
+---
+
+## 2026-08-25 — choosing ALIFE-EXP-002
+
+**D16. The announced rebate economy was dropped in favour of memoization.**
+→ `ALIFE-ADR-002`. Two reasons, in order of weight:
+
+1. A rebate is a pressure hand-designed to reward the quantity being measured.
+   Its result is knowable in advance and says more about the designer than the
+   substrate.
+2. A probe answered the question underneath it: **in Book I, sharing buys
+   nothing.** The same hash evaluated twice by two agents costs `10/10`,
+   `106/106`, `3981/3981` ATP. Sharing is a memory phenomenon there and never an
+   energy one, so no population living on it has a gradient toward sharing to
+   begin with, and a rebate is a coat of paint over that.
+
+*Rejected alternatives, with reasons:* **drought/sporulation (RQ3)** — already
+proved (`resumption_bound`) and differentially checked, so running it would dress
+a theorem as a result; **evolutionary pressure on structure (RQ4)** — has no
+mechanism until sharing costs something, so it belongs after this one, not
+before.
+
+**D17. The memo hook uses a mirror of `step5`'s dispatch.** A hit must land where
+the machine actually demanded a hash. *Rejected:* (a) reimplementing the
+evaluator inside this repository — it would make the differential a comparison
+with our own copy; (b) installing normal forms eagerly wherever they appear — it
+buys structure the run never asked for and the ATP figures stop meaning what they
+say. The mirror is held to the machine by control M1 in one direction only, and
+the unchecked direction is stated in the code, in the test output and in the
+preregistration: a mirror that missed a force would make the memo timid, never
+greedy.
+
+**D18. The memo learns whole-agent normal forms only.** Sub-term memoization —
+the version in which anastomosis would not need lineage — is not implemented,
+because the machine never announces that a subterm reached a normal form, and
+learning one needs either speculative evaluation nobody has priced or a
+reimplementation of the evaluator (see D17). This is the single largest
+limitation of EXP-002 and it is where a successor should start.
+
+**D19. In Part B a child inherits the parent's ROOT, not its current term.** The
+preregistration did not fix this and it decides whether the experiment can show
+anything: a phenotype graft inherits a hash no memo has an entry for. Both arms
+use the root, so it biases neither — but it was chosen by the author after the
+fact and is named in the result.
+
+**D20. The generational frame was corrected twice, both times *before* looking at
+what H3 would say.** *This entry is a correction.* The committed frame
+(tax 400) extinguishes the population in generation 0; the first repair
+(tax 200) runs but lets the memo save 0.15% of the ATP flow, so both arms end
+with the identical population and H3 cannot differ. The frame was re-chosen while
+looking only at turnover, saving fraction and survivor-set overlap — deliberately
+never at the sharing comparison. The condition is now machine-checked: **control
+C7** refuses to adjudicate H3 on any run where the two arms end with the same
+survivors.
+
+**D21. The `composite` arm is post hoc and labelled everywhere it appears.**
+Written after Part A measured essentially nothing, to separate "memoization does
+not work" from "nothing in this population demands another agent's address". It
+is in the table with an asterisk, in the receipt, in `measure.py`'s docstring and
+in the result.
+
+**D22. H1 and H3 are reported as FAILING against their preregistered criteria**,
+even though H3 is in the predicted direction on two seeds of three and H1's
+mechanism demonstrably works once a demand path exists. Rejected: restating the
+criteria to fit. The interesting finding — sharing pays only where lineage
+creates demand — is reported as what it is, a post-hoc explanation supported by
+two unregistered arms, and not as a hypothesis that was confirmed.
+
+**D23. The need packet for sigma-glyph is prepared here and NOT filed upstream.**
+Pushing a branch and opening a PR against a governed repository is a distinct
+outward-facing action from publishing this one, and s0fractal authorized the
+second, not the first. The packet is complete and validated against
+`decision-archaeology.need@v0`; filing it takes one word.
