@@ -235,12 +235,28 @@ def main():
     if shutil.which("lean"):
         r = subprocess.run(["lean", str(POPULATION)], capture_output=True, text=True)
         out = r.stdout + r.stderr
+        # A LEAN DIAGNOSTIC is a line in lean's `file:line:col: severity` form.
+        # Everything else on those streams belongs to the launcher, not to the
+        # proof: `elan` downloads and installs a toolchain on first use and says
+        # so, in the middle of this very subprocess. The first version of this
+        # check failed on *any* output, which was green on a machine whose
+        # toolchain was already installed and red in CI on the first run — a
+        # guard that reports the installer as an unsound proof is a guard that
+        # will be silenced rather than read.
+        diagnostics = [ln for ln in out.splitlines()
+                       if re.search(r"\.lean:\d+:\d+: (error|warning)", ln)]
         if r.returncode != 0:
             failures.append(f"lean rejected Population.lean:\n{out}")
-        elif "declaration uses 'sorry'" in out:
+        elif "sorry" in out:
             failures.append(f"lean accepted it, with sorries:\n{out}")
+        elif diagnostics:
+            failures.append("lean emitted diagnostics where none were expected:\n"
+                            + "\n".join(diagnostics))
         elif out.strip():
-            failures.append(f"lean emitted output where none was expected:\n{out}")
+            # Not a failure, but never silent: an operator reading a green
+            # verdict should still see what else spoke during it.
+            print("note: non-diagnostic output while checking the proofs "
+                  f"(launcher, not lean):\n{out.strip()}")
     else:
         skips.append("`lean` is not on PATH — the proofs were NOT checked, only "
                      "their text. Install elan to include them.")

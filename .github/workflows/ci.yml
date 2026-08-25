@@ -52,6 +52,11 @@ jobs:
           sh elan-init.sh -y --default-toolchain "$(cat proofs/lean-toolchain)"
           rm -f elan-init.sh
           echo "$HOME/.elan/bin" >> "$GITHUB_PATH"
+      - name: Warm the toolchain
+        # elan installs the toolchain on first use, and prints while it does.
+        # Getting that out of the way here keeps the installer's output from
+        # landing inside a run whose job is to report what lean said.
+        run: lean --version
       - name: The complete validation matrix
         env:
           SIGMA_GLYPH: /tmp/sigma-glyph/impl
