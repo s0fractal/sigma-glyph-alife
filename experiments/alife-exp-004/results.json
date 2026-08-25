@@ -1,0 +1,1212 @@
+{
+  "controls": {
+    "C1 convergence scores 3.0 on sharing_factor and 0.0 on structural sharing, with 3 empty pairs": true,
+    "C1 real shared structure scores 2.40 structural and 0.50 Jaccard over 3 pairs": true,
+    "C2 the generator at g=0.7 is EXP-001's leaf distribution (anchor fingerprint f667e818267c573d)": true,
+    "C3 conservation and the bound: asserted in every cell": true
+  },
+  "experiment": "ALIFE-EXP-004",
+  "frame": {
+    "atp_per_agent": 3000,
+    "genesis_fractions": [
+      0.3,
+      0.5,
+      0.7,
+      0.9
+    ],
+    "per_family": 16,
+    "seeds": [
+      20260825,
+      20260826,
+      20260827,
+      20260828,
+      20260829,
+      20260830,
+      20260831,
+      20260832,
+      20260833,
+      20260834
+    ],
+    "slice_atp": 32,
+    "ticks": 24
+  },
+  "provenance": {
+    "oracle_sha256": "413d1f9805cdbdf42f13d967a17be26eb959c692eeb067e7146203ed9cebe64d",
+    "platform": "CPython",
+    "python": "3.14",
+    "sigma_alife_version": "0.1.0",
+    "sigma_glyph_requirement": ">=0.6.7,<0.7.0"
+  },
+  "result": {
+    "cells": {
+      "0.3": {
+        "20260825": {
+          "fingerprint": "cfc0a7a6bfd76ba8",
+          "settled": {
+            "atp_spent": 3217,
+            "compound_total": 212,
+            "compound_unique": 148,
+            "jaccard": 0.006574411806969944,
+            "jaccard_empty_pairs": 210,
+            "jaccard_pairs": 1806,
+            "mean_size": 7.625,
+            "nodes_total": 488,
+            "nodes_unique": 244,
+            "settled": 64,
+            "sharing_factor": 2.0,
+            "structural_sharing": 1.4324324324324325
+          },
+          "unreduced": {
+            "compound_total": 733,
+            "compound_unique": 320,
+            "jaccard": 0.04561943494970369,
+            "jaccard_empty_pairs": 15,
+            "jaccard_pairs": 2001,
+            "mean_size": 25.1875,
+            "nodes_total": 1612,
+            "nodes_unique": 473,
+            "sharing_factor": 3.4080338266384778,
+            "structural_sharing": 2.290625
+          }
+        },
+        "20260826": {
+          "fingerprint": "380f900362551222",
+          "settled": {
+            "atp_spent": 3421,
+            "compound_total": 250,
+            "compound_unique": 207,
+            "jaccard": 0.0028724230851890427,
+            "jaccard_empty_pairs": 136,
+            "jaccard_pairs": 1880,
+            "mean_size": 8.8125,
+            "nodes_total": 564,
+            "nodes_unique": 356,
+            "settled": 64,
+            "sharing_factor": 1.5842696629213484,
+            "structural_sharing": 1.2077294685990339
+          },
+          "unreduced": {
+            "compound_total": 771,
+            "compound_unique": 374,
+            "jaccard": 0.042403219224954526,
+            "jaccard_empty_pairs": 1,
+            "jaccard_pairs": 2015,
+            "mean_size": 26.484375,
+            "nodes_total": 1695,
+            "nodes_unique": 560,
+            "sharing_factor": 3.0267857142857144,
+            "structural_sharing": 2.0614973262032086
+          }
+        },
+        "20260827": {
+          "fingerprint": "b93fe6d5c41fd610",
+          "settled": {
+            "atp_spent": 3034,
+            "compound_total": 241,
+            "compound_unique": 193,
+            "jaccard": 0.00305898103804706,
+            "jaccard_empty_pairs": 153,
+            "jaccard_pairs": 1863,
+            "mean_size": 8.53125,
+            "nodes_total": 546,
+            "nodes_unique": 322,
+            "settled": 64,
+            "sharing_factor": 1.6956521739130435,
+            "structural_sharing": 1.2487046632124352
+          },
+          "unreduced": {
+            "compound_total": 690,
+            "compound_unique": 357,
+            "jaccard": 0.0409629261018756,
+            "jaccard_empty_pairs": 10,
+            "jaccard_pairs": 2006,
+            "mean_size": 23.75,
+            "nodes_total": 1520,
+            "nodes_unique": 526,
+            "sharing_factor": 2.8897338403041823,
+            "structural_sharing": 1.9327731092436975
+          }
+        },
+        "20260828": {
+          "fingerprint": "b3cd072e0f15240c",
+          "settled": {
+            "atp_spent": 3168,
+            "compound_total": 240,
+            "compound_unique": 168,
+            "jaccard": 0.005820349921258575,
+            "jaccard_empty_pairs": 171,
+            "jaccard_pairs": 1845,
+            "mean_size": 8.5,
+            "nodes_total": 544,
+            "nodes_unique": 283,
+            "settled": 64,
+            "sharing_factor": 1.9222614840989398,
+            "structural_sharing": 1.4285714285714286
+          },
+          "unreduced": {
+            "compound_total": 698,
+            "compound_unique": 347,
+            "jaccard": 0.042330152266916804,
+            "jaccard_empty_pairs": 36,
+            "jaccard_pairs": 1980,
+            "mean_size": 24.203125,
+            "nodes_total": 1549,
+            "nodes_unique": 504,
+            "sharing_factor": 3.0734126984126986,
+            "structural_sharing": 2.011527377521614
+          }
+        },
+        "20260829": {
+          "fingerprint": "441264d47615b7df",
+          "settled": {
+            "atp_spent": 2676,
+            "compound_total": 218,
+            "compound_unique": 177,
+            "jaccard": 0.002749760061243164,
+            "jaccard_empty_pairs": 136,
+            "jaccard_pairs": 1880,
+            "mean_size": 7.8125,
+            "nodes_total": 500,
+            "nodes_unique": 293,
+            "settled": 64,
+            "sharing_factor": 1.7064846416382253,
+            "structural_sharing": 1.231638418079096
+          },
+          "unreduced": {
+            "compound_total": 623,
+            "compound_unique": 354,
+            "jaccard": 0.043986414691036084,
+            "jaccard_empty_pairs": 6,
+            "jaccard_pairs": 2010,
+            "mean_size": 21.734375,
+            "nodes_total": 1391,
+            "nodes_unique": 509,
+            "sharing_factor": 2.732809430255403,
+            "structural_sharing": 1.7598870056497176
+          }
+        },
+        "20260830": {
+          "fingerprint": "c0d4ffd0bc3e125e",
+          "settled": {
+            "atp_spent": 3251,
+            "compound_total": 263,
+            "compound_unique": 202,
+            "jaccard": 0.0014384318782392357,
+            "jaccard_empty_pairs": 190,
+            "jaccard_pairs": 1826,
+            "mean_size": 9.21875,
+            "nodes_total": 590,
+            "nodes_unique": 344,
+            "settled": 64,
+            "sharing_factor": 1.7151162790697674,
+            "structural_sharing": 1.301980198019802
+          },
+          "unreduced": {
+            "compound_total": 722,
+            "compound_unique": 376,
+            "jaccard": 0.04206930663830848,
+            "jaccard_empty_pairs": 10,
+            "jaccard_pairs": 2006,
+            "mean_size": 24.8125,
+            "nodes_total": 1588,
+            "nodes_unique": 561,
+            "sharing_factor": 2.8306595365418894,
+            "structural_sharing": 1.9202127659574468
+          }
+        },
+        "20260831": {
+          "fingerprint": "e981a5309781f256",
+          "settled": {
+            "atp_spent": 3211,
+            "compound_total": 183,
+            "compound_unique": 133,
+            "jaccard": 0.0053305766751144896,
+            "jaccard_empty_pairs": 231,
+            "jaccard_pairs": 1785,
+            "mean_size": 6.71875,
+            "nodes_total": 430,
+            "nodes_unique": 226,
+            "settled": 64,
+            "sharing_factor": 1.9026548672566372,
+            "structural_sharing": 1.3759398496240602
+          },
+          "unreduced": {
+            "compound_total": 732,
+            "compound_unique": 300,
+            "jaccard": 0.045568682752765106,
+            "jaccard_empty_pairs": 21,
+            "jaccard_pairs": 1995,
+            "mean_size": 25.078125,
+            "nodes_total": 1605,
+            "nodes_unique": 437,
+            "sharing_factor": 3.6727688787185353,
+            "structural_sharing": 2.44
+          }
+        },
+        "20260832": {
+          "fingerprint": "9bfa5070ec888154",
+          "settled": {
+            "atp_spent": 2511,
+            "compound_total": 219,
+            "compound_unique": 176,
+            "jaccard": 0.0043875696721225165,
+            "jaccard_empty_pairs": 171,
+            "jaccard_pairs": 1845,
+            "mean_size": 7.84375,
+            "nodes_total": 502,
+            "nodes_unique": 312,
+            "settled": 64,
+            "sharing_factor": 1.608974358974359,
+            "structural_sharing": 1.2443181818181819
+          },
+          "unreduced": {
+            "compound_total": 602,
+            "compound_unique": 347,
+            "jaccard": 0.043287613770962026,
+            "jaccard_empty_pairs": 10,
+            "jaccard_pairs": 2006,
+            "mean_size": 20.9375,
+            "nodes_total": 1340,
+            "nodes_unique": 525,
+            "sharing_factor": 2.552380952380952,
+            "structural_sharing": 1.7348703170028819
+          }
+        },
+        "20260833": {
+          "fingerprint": "864c99bdfc274841",
+          "settled": {
+            "atp_spent": 2649,
+            "compound_total": 233,
+            "compound_unique": 171,
+            "jaccard": 0.013043401187835157,
+            "jaccard_empty_pairs": 153,
+            "jaccard_pairs": 1863,
+            "mean_size": 8.28125,
+            "nodes_total": 530,
+            "nodes_unique": 282,
+            "settled": 64,
+            "sharing_factor": 1.8794326241134751,
+            "structural_sharing": 1.3625730994152048
+          },
+          "unreduced": {
+            "compound_total": 606,
+            "compound_unique": 315,
+            "jaccard": 0.045405497947038305,
+            "jaccard_empty_pairs": 28,
+            "jaccard_pairs": 1988,
+            "mean_size": 21.375,
+            "nodes_total": 1368,
+            "nodes_unique": 465,
+            "sharing_factor": 2.9419354838709677,
+            "structural_sharing": 1.9238095238095239
+          }
+        },
+        "20260834": {
+          "fingerprint": "5aa8e2ce626e26dd",
+          "settled": {
+            "atp_spent": 3426,
+            "compound_total": 283,
+            "compound_unique": 184,
+            "jaccard": 0.007173145423749307,
+            "jaccard_empty_pairs": 105,
+            "jaccard_pairs": 1911,
+            "mean_size": 9.84375,
+            "nodes_total": 630,
+            "nodes_unique": 294,
+            "settled": 64,
+            "sharing_factor": 2.142857142857143,
+            "structural_sharing": 1.5380434782608696
+          },
+          "unreduced": {
+            "compound_total": 735,
+            "compound_unique": 339,
+            "jaccard": 0.04195442429399241,
+            "jaccard_empty_pairs": 15,
+            "jaccard_pairs": 2001,
+            "mean_size": 25.25,
+            "nodes_total": 1616,
+            "nodes_unique": 484,
+            "sharing_factor": 3.3388429752066116,
+            "structural_sharing": 2.168141592920354
+          }
+        }
+      },
+      "0.5": {
+        "20260825": {
+          "fingerprint": "70adb982cc075af0",
+          "settled": {
+            "atp_spent": 3110,
+            "compound_total": 210,
+            "compound_unique": 141,
+            "jaccard": 0.005294207217284138,
+            "jaccard_empty_pairs": 300,
+            "jaccard_pairs": 1716,
+            "mean_size": 7.5625,
+            "nodes_total": 484,
+            "nodes_unique": 218,
+            "settled": 64,
+            "sharing_factor": 2.220183486238532,
+            "structural_sharing": 1.4893617021276595
+          },
+          "unreduced": {
+            "compound_total": 716,
+            "compound_unique": 326,
+            "jaccard": 0.047866059717849865,
+            "jaccard_empty_pairs": 21,
+            "jaccard_pairs": 1995,
+            "mean_size": 24.265625,
+            "nodes_total": 1553,
+            "nodes_unique": 450,
+            "sharing_factor": 3.451111111111111,
+            "structural_sharing": 2.196319018404908
+          }
+        },
+        "20260826": {
+          "fingerprint": "2e2455a8e86bede9",
+          "settled": {
+            "atp_spent": 2952,
+            "compound_total": 178,
+            "compound_unique": 128,
+            "jaccard": 0.015786441893527233,
+            "jaccard_empty_pairs": 153,
+            "jaccard_pairs": 1863,
+            "mean_size": 6.5625,
+            "nodes_total": 420,
+            "nodes_unique": 201,
+            "settled": 64,
+            "sharing_factor": 2.08955223880597,
+            "structural_sharing": 1.390625
+          },
+          "unreduced": {
+            "compound_total": 709,
+            "compound_unique": 303,
+            "jaccard": 0.048763939172691805,
+            "jaccard_empty_pairs": 15,
+            "jaccard_pairs": 2001,
+            "mean_size": 24.1875,
+            "nodes_total": 1548,
+            "nodes_unique": 416,
+            "sharing_factor": 3.7211538461538463,
+            "structural_sharing": 2.33993399339934
+          }
+        },
+        "20260827": {
+          "fingerprint": "074933d4d220cf26",
+          "settled": {
+            "atp_spent": 3023,
+            "compound_total": 249,
+            "compound_unique": 177,
+            "jaccard": 0.009895974055039579,
+            "jaccard_empty_pairs": 120,
+            "jaccard_pairs": 1896,
+            "mean_size": 8.78125,
+            "nodes_total": 562,
+            "nodes_unique": 272,
+            "settled": 64,
+            "sharing_factor": 2.0661764705882355,
+            "structural_sharing": 1.4067796610169492
+          },
+          "unreduced": {
+            "compound_total": 687,
+            "compound_unique": 345,
+            "jaccard": 0.049422750213613066,
+            "jaccard_empty_pairs": 6,
+            "jaccard_pairs": 2010,
+            "mean_size": 23.671875,
+            "nodes_total": 1515,
+            "nodes_unique": 467,
+            "sharing_factor": 3.2441113490364026,
+            "structural_sharing": 1.991304347826087
+          }
+        },
+        "20260828": {
+          "fingerprint": "75a0914aaba0668b",
+          "settled": {
+            "atp_spent": 3107,
+            "compound_total": 197,
+            "compound_unique": 132,
+            "jaccard": 0.01078717127497616,
+            "jaccard_empty_pairs": 171,
+            "jaccard_pairs": 1845,
+            "mean_size": 7.15625,
+            "nodes_total": 458,
+            "nodes_unique": 207,
+            "settled": 64,
+            "sharing_factor": 2.21256038647343,
+            "structural_sharing": 1.4924242424242424
+          },
+          "unreduced": {
+            "compound_total": 741,
+            "compound_unique": 336,
+            "jaccard": 0.04737726206922414,
+            "jaccard_empty_pairs": 6,
+            "jaccard_pairs": 2010,
+            "mean_size": 25.125,
+            "nodes_total": 1608,
+            "nodes_unique": 460,
+            "sharing_factor": 3.4956521739130433,
+            "structural_sharing": 2.205357142857143
+          }
+        },
+        "20260829": {
+          "fingerprint": "65c77a58bdbc939d",
+          "settled": {
+            "atp_spent": 2983,
+            "compound_total": 170,
+            "compound_unique": 117,
+            "jaccard": 0.00760525734301958,
+            "jaccard_empty_pairs": 300,
+            "jaccard_pairs": 1716,
+            "mean_size": 6.3125,
+            "nodes_total": 404,
+            "nodes_unique": 180,
+            "settled": 64,
+            "sharing_factor": 2.2444444444444445,
+            "structural_sharing": 1.452991452991453
+          },
+          "unreduced": {
+            "compound_total": 707,
+            "compound_unique": 280,
+            "jaccard": 0.05399679614239781,
+            "jaccard_empty_pairs": 28,
+            "jaccard_pairs": 1988,
+            "mean_size": 23.921875,
+            "nodes_total": 1531,
+            "nodes_unique": 375,
+            "sharing_factor": 4.082666666666666,
+            "structural_sharing": 2.525
+          }
+        },
+        "20260830": {
+          "fingerprint": "e97afd62df282438",
+          "settled": {
+            "atp_spent": 3893,
+            "compound_total": 416,
+            "compound_unique": 209,
+            "jaccard": 0.011099591683495372,
+            "jaccard_empty_pairs": 136,
+            "jaccard_pairs": 1880,
+            "mean_size": 14.0,
+            "nodes_total": 896,
+            "nodes_unique": 318,
+            "settled": 64,
+            "sharing_factor": 2.8176100628930816,
+            "structural_sharing": 1.9904306220095693
+          },
+          "unreduced": {
+            "compound_total": 735,
+            "compound_unique": 349,
+            "jaccard": 0.04366107863469248,
+            "jaccard_empty_pairs": 15,
+            "jaccard_pairs": 2001,
+            "mean_size": 24.921875,
+            "nodes_total": 1595,
+            "nodes_unique": 483,
+            "sharing_factor": 3.3022774327122155,
+            "structural_sharing": 2.1060171919770774
+          }
+        },
+        "20260831": {
+          "fingerprint": "0737d08436ab4ecd",
+          "settled": {
+            "atp_spent": 2864,
+            "compound_total": 238,
+            "compound_unique": 155,
+            "jaccard": 0.009098641264502773,
+            "jaccard_empty_pairs": 153,
+            "jaccard_pairs": 1863,
+            "mean_size": 8.4375,
+            "nodes_total": 540,
+            "nodes_unique": 246,
+            "settled": 64,
+            "sharing_factor": 2.1951219512195124,
+            "structural_sharing": 1.5354838709677419
+          },
+          "unreduced": {
+            "compound_total": 663,
+            "compound_unique": 332,
+            "jaccard": 0.04906419486207034,
+            "jaccard_empty_pairs": 6,
+            "jaccard_pairs": 2010,
+            "mean_size": 22.640625,
+            "nodes_total": 1449,
+            "nodes_unique": 457,
+            "sharing_factor": 3.1706783369803064,
+            "structural_sharing": 1.9969879518072289
+          }
+        },
+        "20260832": {
+          "fingerprint": "3ade5da9896868e3",
+          "settled": {
+            "atp_spent": 2959,
+            "compound_total": 237,
+            "compound_unique": 161,
+            "jaccard": 0.009416900298919579,
+            "jaccard_empty_pairs": 253,
+            "jaccard_pairs": 1763,
+            "mean_size": 8.40625,
+            "nodes_total": 538,
+            "nodes_unique": 258,
+            "settled": 64,
+            "sharing_factor": 2.0852713178294575,
+            "structural_sharing": 1.4720496894409938
+          },
+          "unreduced": {
+            "compound_total": 658,
+            "compound_unique": 329,
+            "jaccard": 0.046680534899720356,
+            "jaccard_empty_pairs": 6,
+            "jaccard_pairs": 2010,
+            "mean_size": 22.703125,
+            "nodes_total": 1453,
+            "nodes_unique": 456,
+            "sharing_factor": 3.18640350877193,
+            "structural_sharing": 2.0
+          }
+        },
+        "20260833": {
+          "fingerprint": "e8e144bdbefbddb8",
+          "settled": {
+            "atp_spent": 2953,
+            "compound_total": 222,
+            "compound_unique": 152,
+            "jaccard": 0.008295304364261355,
+            "jaccard_empty_pairs": 231,
+            "jaccard_pairs": 1785,
+            "mean_size": 7.9375,
+            "nodes_total": 508,
+            "nodes_unique": 236,
+            "settled": 64,
+            "sharing_factor": 2.152542372881356,
+            "structural_sharing": 1.4605263157894737
+          },
+          "unreduced": {
+            "compound_total": 701,
+            "compound_unique": 319,
+            "jaccard": 0.051521274091547234,
+            "jaccard_empty_pairs": 6,
+            "jaccard_pairs": 2010,
+            "mean_size": 23.875,
+            "nodes_total": 1528,
+            "nodes_unique": 438,
+            "sharing_factor": 3.4885844748858448,
+            "structural_sharing": 2.197492163009404
+          }
+        },
+        "20260834": {
+          "fingerprint": "af514efaf8ae66ff",
+          "settled": {
+            "atp_spent": 2766,
+            "compound_total": 192,
+            "compound_unique": 147,
+            "jaccard": 0.005158696724961784,
+            "jaccard_empty_pairs": 190,
+            "jaccard_pairs": 1826,
+            "mean_size": 7.0,
+            "nodes_total": 448,
+            "nodes_unique": 243,
+            "settled": 64,
+            "sharing_factor": 1.8436213991769548,
+            "structural_sharing": 1.3061224489795917
+          },
+          "unreduced": {
+            "compound_total": 654,
+            "compound_unique": 324,
+            "jaccard": 0.04630673305639169,
+            "jaccard_empty_pairs": 1,
+            "jaccard_pairs": 2015,
+            "mean_size": 22.40625,
+            "nodes_total": 1434,
+            "nodes_unique": 452,
+            "sharing_factor": 3.172566371681416,
+            "structural_sharing": 2.0185185185185186
+          }
+        }
+      },
+      "0.7": {
+        "20260825": {
+          "fingerprint": "f667e818267c573d",
+          "settled": {
+            "atp_spent": 2884,
+            "compound_total": 133,
+            "compound_unique": 97,
+            "jaccard": 0.008653034857353793,
+            "jaccard_empty_pairs": 210,
+            "jaccard_pairs": 1806,
+            "mean_size": 5.15625,
+            "nodes_total": 330,
+            "nodes_unique": 140,
+            "settled": 64,
+            "sharing_factor": 2.357142857142857,
+            "structural_sharing": 1.3711340206185567
+          },
+          "unreduced": {
+            "compound_total": 722,
+            "compound_unique": 285,
+            "jaccard": 0.054465338195204126,
+            "jaccard_empty_pairs": 10,
+            "jaccard_pairs": 2006,
+            "mean_size": 24.171875,
+            "nodes_total": 1547,
+            "nodes_unique": 355,
+            "sharing_factor": 4.357746478873239,
+            "structural_sharing": 2.533333333333333
+          }
+        },
+        "20260826": {
+          "fingerprint": "6a275941dd4e169c",
+          "settled": {
+            "atp_spent": 2893,
+            "compound_total": 180,
+            "compound_unique": 116,
+            "jaccard": 0.01487007440080529,
+            "jaccard_empty_pairs": 210,
+            "jaccard_pairs": 1806,
+            "mean_size": 6.625,
+            "nodes_total": 424,
+            "nodes_unique": 164,
+            "settled": 64,
+            "sharing_factor": 2.5853658536585367,
+            "structural_sharing": 1.5517241379310345
+          },
+          "unreduced": {
+            "compound_total": 736,
+            "compound_unique": 321,
+            "jaccard": 0.06183884514920924,
+            "jaccard_empty_pairs": 3,
+            "jaccard_pairs": 2013,
+            "mean_size": 24.515625,
+            "nodes_total": 1569,
+            "nodes_unique": 396,
+            "sharing_factor": 3.962121212121212,
+            "structural_sharing": 2.292834890965732
+          }
+        },
+        "20260827": {
+          "fingerprint": "829f837732eeef83",
+          "settled": {
+            "atp_spent": 2528,
+            "compound_total": 160,
+            "compound_unique": 107,
+            "jaccard": 0.015791379488858472,
+            "jaccard_empty_pairs": 231,
+            "jaccard_pairs": 1785,
+            "mean_size": 6.0,
+            "nodes_total": 384,
+            "nodes_unique": 156,
+            "settled": 64,
+            "sharing_factor": 2.4615384615384617,
+            "structural_sharing": 1.4953271028037383
+          },
+          "unreduced": {
+            "compound_total": 671,
+            "compound_unique": 315,
+            "jaccard": 0.06578813713745524,
+            "jaccard_empty_pairs": 1,
+            "jaccard_pairs": 2015,
+            "mean_size": 22.484375,
+            "nodes_total": 1439,
+            "nodes_unique": 388,
+            "sharing_factor": 3.7087628865979383,
+            "structural_sharing": 2.13015873015873
+          }
+        },
+        "20260828": {
+          "fingerprint": "53adb699e5279653",
+          "settled": {
+            "atp_spent": 2768,
+            "compound_total": 179,
+            "compound_unique": 109,
+            "jaccard": 0.012170375673049464,
+            "jaccard_empty_pairs": 300,
+            "jaccard_pairs": 1716,
+            "mean_size": 6.59375,
+            "nodes_total": 422,
+            "nodes_unique": 153,
+            "settled": 64,
+            "sharing_factor": 2.758169934640523,
+            "structural_sharing": 1.6422018348623852
+          },
+          "unreduced": {
+            "compound_total": 684,
+            "compound_unique": 287,
+            "jaccard": 0.05705289699121165,
+            "jaccard_empty_pairs": 6,
+            "jaccard_pairs": 2010,
+            "mean_size": 22.984375,
+            "nodes_total": 1471,
+            "nodes_unique": 359,
+            "sharing_factor": 4.0974930362116995,
+            "structural_sharing": 2.3832752613240418
+          }
+        },
+        "20260829": {
+          "fingerprint": "cbf36e8e3c15eef2",
+          "settled": {
+            "atp_spent": 3122,
+            "compound_total": 190,
+            "compound_unique": 116,
+            "jaccard": 0.01569013429228303,
+            "jaccard_empty_pairs": 253,
+            "jaccard_pairs": 1763,
+            "mean_size": 6.9375,
+            "nodes_total": 444,
+            "nodes_unique": 170,
+            "settled": 64,
+            "sharing_factor": 2.611764705882353,
+            "structural_sharing": 1.6379310344827587
+          },
+          "unreduced": {
+            "compound_total": 743,
+            "compound_unique": 299,
+            "jaccard": 0.055594452832189264,
+            "jaccard_empty_pairs": 21,
+            "jaccard_pairs": 1995,
+            "mean_size": 24.84375,
+            "nodes_total": 1590,
+            "nodes_unique": 389,
+            "sharing_factor": 4.087403598971722,
+            "structural_sharing": 2.4849498327759196
+          }
+        },
+        "20260830": {
+          "fingerprint": "7f9967c0bc1521a1",
+          "settled": {
+            "atp_spent": 3191,
+            "compound_total": 187,
+            "compound_unique": 106,
+            "jaccard": 0.016604095994339898,
+            "jaccard_empty_pairs": 171,
+            "jaccard_pairs": 1845,
+            "mean_size": 6.84375,
+            "nodes_total": 438,
+            "nodes_unique": 155,
+            "settled": 64,
+            "sharing_factor": 2.825806451612903,
+            "structural_sharing": 1.7641509433962264
+          },
+          "unreduced": {
+            "compound_total": 752,
+            "compound_unique": 253,
+            "jaccard": 0.05835943312685319,
+            "jaccard_empty_pairs": 6,
+            "jaccard_pairs": 2010,
+            "mean_size": 24.90625,
+            "nodes_total": 1594,
+            "nodes_unique": 321,
+            "sharing_factor": 4.965732087227415,
+            "structural_sharing": 2.972332015810277
+          }
+        },
+        "20260831": {
+          "fingerprint": "8074412d304f1fd6",
+          "settled": {
+            "atp_spent": 2761,
+            "compound_total": 175,
+            "compound_unique": 119,
+            "jaccard": 0.016777240932826034,
+            "jaccard_empty_pairs": 136,
+            "jaccard_pairs": 1880,
+            "mean_size": 6.46875,
+            "nodes_total": 414,
+            "nodes_unique": 177,
+            "settled": 64,
+            "sharing_factor": 2.3389830508474576,
+            "structural_sharing": 1.4705882352941178
+          },
+          "unreduced": {
+            "compound_total": 702,
+            "compound_unique": 309,
+            "jaccard": 0.06452913020024141,
+            "jaccard_empty_pairs": 0,
+            "jaccard_pairs": 2016,
+            "mean_size": 23.40625,
+            "nodes_total": 1498,
+            "nodes_unique": 393,
+            "sharing_factor": 3.811704834605598,
+            "structural_sharing": 2.2718446601941746
+          }
+        },
+        "20260832": {
+          "fingerprint": "ab2ff764aedc3fc9",
+          "settled": {
+            "atp_spent": 2555,
+            "compound_total": 190,
+            "compound_unique": 119,
+            "jaccard": 0.016271540865036797,
+            "jaccard_empty_pairs": 171,
+            "jaccard_pairs": 1845,
+            "mean_size": 6.9375,
+            "nodes_total": 444,
+            "nodes_unique": 168,
+            "settled": 64,
+            "sharing_factor": 2.642857142857143,
+            "structural_sharing": 1.596638655462185
+          },
+          "unreduced": {
+            "compound_total": 620,
+            "compound_unique": 272,
+            "jaccard": 0.058706624407784895,
+            "jaccard_empty_pairs": 15,
+            "jaccard_pairs": 2001,
+            "mean_size": 20.953125,
+            "nodes_total": 1341,
+            "nodes_unique": 343,
+            "sharing_factor": 3.9096209912536444,
+            "structural_sharing": 2.2794117647058822
+          }
+        },
+        "20260833": {
+          "fingerprint": "215dcd14811a418a",
+          "settled": {
+            "atp_spent": 2758,
+            "compound_total": 156,
+            "compound_unique": 89,
+            "jaccard": 0.021723315931968756,
+            "jaccard_empty_pairs": 190,
+            "jaccard_pairs": 1826,
+            "mean_size": 5.875,
+            "nodes_total": 376,
+            "nodes_unique": 123,
+            "settled": 64,
+            "sharing_factor": 3.0569105691056913,
+            "structural_sharing": 1.752808988764045
+          },
+          "unreduced": {
+            "compound_total": 711,
+            "compound_unique": 298,
+            "jaccard": 0.06240043037679364,
+            "jaccard_empty_pairs": 10,
+            "jaccard_pairs": 2006,
+            "mean_size": 23.859375,
+            "nodes_total": 1527,
+            "nodes_unique": 363,
+            "sharing_factor": 4.206611570247934,
+            "structural_sharing": 2.3859060402684564
+          }
+        },
+        "20260834": {
+          "fingerprint": "780efdf09287e12f",
+          "settled": {
+            "atp_spent": 3104,
+            "compound_total": 158,
+            "compound_unique": 105,
+            "jaccard": 0.013545832931646073,
+            "jaccard_empty_pairs": 231,
+            "jaccard_pairs": 1785,
+            "mean_size": 5.9375,
+            "nodes_total": 380,
+            "nodes_unique": 155,
+            "settled": 64,
+            "sharing_factor": 2.4516129032258065,
+            "structural_sharing": 1.5047619047619047
+          },
+          "unreduced": {
+            "compound_total": 750,
+            "compound_unique": 287,
+            "jaccard": 0.06269578630717156,
+            "jaccard_empty_pairs": 6,
+            "jaccard_pairs": 2010,
+            "mean_size": 24.953125,
+            "nodes_total": 1597,
+            "nodes_unique": 361,
+            "sharing_factor": 4.423822714681441,
+            "structural_sharing": 2.6132404181184667
+          }
+        }
+      },
+      "0.9": {
+        "20260825": {
+          "fingerprint": "8e800907ae07c7e2",
+          "settled": {
+            "atp_spent": 2687,
+            "compound_total": 113,
+            "compound_unique": 63,
+            "jaccard": 0.02321230817908561,
+            "jaccard_empty_pairs": 210,
+            "jaccard_pairs": 1806,
+            "mean_size": 4.53125,
+            "nodes_total": 290,
+            "nodes_unique": 80,
+            "settled": 64,
+            "sharing_factor": 3.625,
+            "structural_sharing": 1.7936507936507937
+          },
+          "unreduced": {
+            "compound_total": 695,
+            "compound_unique": 247,
+            "jaccard": 0.07056304065795632,
+            "jaccard_empty_pairs": 6,
+            "jaccard_pairs": 2010,
+            "mean_size": 22.984375,
+            "nodes_total": 1471,
+            "nodes_unique": 275,
+            "sharing_factor": 5.349090909090909,
+            "structural_sharing": 2.8137651821862346
+          }
+        },
+        "20260826": {
+          "fingerprint": "bbbfb1a4dd12d932",
+          "settled": {
+            "atp_spent": 3022,
+            "compound_total": 128,
+            "compound_unique": 72,
+            "jaccard": 0.017020157206492602,
+            "jaccard_empty_pairs": 406,
+            "jaccard_pairs": 1610,
+            "mean_size": 5.0,
+            "nodes_total": 320,
+            "nodes_unique": 89,
+            "settled": 64,
+            "sharing_factor": 3.595505617977528,
+            "structural_sharing": 1.7777777777777777
+          },
+          "unreduced": {
+            "compound_total": 760,
+            "compound_unique": 251,
+            "jaccard": 0.07591148587883163,
+            "jaccard_empty_pairs": 10,
+            "jaccard_pairs": 2006,
+            "mean_size": 24.953125,
+            "nodes_total": 1597,
+            "nodes_unique": 282,
+            "sharing_factor": 5.663120567375887,
+            "structural_sharing": 3.0278884462151394
+          }
+        },
+        "20260827": {
+          "fingerprint": "94a53fc0e52cf6c5",
+          "settled": {
+            "atp_spent": 2692,
+            "compound_total": 101,
+            "compound_unique": 51,
+            "jaccard": 0.0253107018482536,
+            "jaccard_empty_pairs": 325,
+            "jaccard_pairs": 1691,
+            "mean_size": 4.15625,
+            "nodes_total": 266,
+            "nodes_unique": 64,
+            "settled": 64,
+            "sharing_factor": 4.15625,
+            "structural_sharing": 1.9803921568627452
+          },
+          "unreduced": {
+            "compound_total": 703,
+            "compound_unique": 235,
+            "jaccard": 0.06956884436771078,
+            "jaccard_empty_pairs": 21,
+            "jaccard_pairs": 1995,
+            "mean_size": 23.234375,
+            "nodes_total": 1487,
+            "nodes_unique": 266,
+            "sharing_factor": 5.590225563909774,
+            "structural_sharing": 2.991489361702128
+          }
+        },
+        "20260828": {
+          "fingerprint": "14bd158a0111d7fa",
+          "settled": {
+            "atp_spent": 2700,
+            "compound_total": 131,
+            "compound_unique": 67,
+            "jaccard": 0.03208737212802258,
+            "jaccard_empty_pairs": 171,
+            "jaccard_pairs": 1845,
+            "mean_size": 5.09375,
+            "nodes_total": 326,
+            "nodes_unique": 82,
+            "settled": 64,
+            "sharing_factor": 3.975609756097561,
+            "structural_sharing": 1.955223880597015
+          },
+          "unreduced": {
+            "compound_total": 703,
+            "compound_unique": 252,
+            "jaccard": 0.07394415900079225,
+            "jaccard_empty_pairs": 6,
+            "jaccard_pairs": 2010,
+            "mean_size": 23.265625,
+            "nodes_total": 1489,
+            "nodes_unique": 277,
+            "sharing_factor": 5.375451263537906,
+            "structural_sharing": 2.7896825396825395
+          }
+        },
+        "20260829": {
+          "fingerprint": "38e06831bb31ee46",
+          "settled": {
+            "atp_spent": 2795,
+            "compound_total": 141,
+            "compound_unique": 78,
+            "jaccard": 0.026462007020605086,
+            "jaccard_empty_pairs": 190,
+            "jaccard_pairs": 1826,
+            "mean_size": 5.40625,
+            "nodes_total": 346,
+            "nodes_unique": 97,
+            "settled": 64,
+            "sharing_factor": 3.5670103092783507,
+            "structural_sharing": 1.8076923076923077
+          },
+          "unreduced": {
+            "compound_total": 715,
+            "compound_unique": 243,
+            "jaccard": 0.07331448353438368,
+            "jaccard_empty_pairs": 10,
+            "jaccard_pairs": 2006,
+            "mean_size": 23.484375,
+            "nodes_total": 1503,
+            "nodes_unique": 275,
+            "sharing_factor": 5.465454545454546,
+            "structural_sharing": 2.94238683127572
+          }
+        },
+        "20260830": {
+          "fingerprint": "fd7c1d1339519374",
+          "settled": {
+            "atp_spent": 3570,
+            "compound_total": 603,
+            "compound_unique": 118,
+            "jaccard": 0.022286750378529282,
+            "jaccard_empty_pairs": 190,
+            "jaccard_pairs": 1826,
+            "mean_size": 13.34375,
+            "nodes_total": 854,
+            "nodes_unique": 143,
+            "settled": 63,
+            "sharing_factor": 5.972027972027972,
+            "structural_sharing": 5.110169491525424
+          },
+          "unreduced": {
+            "compound_total": 737,
+            "compound_unique": 269,
+            "jaccard": 0.07719448820376427,
+            "jaccard_empty_pairs": 10,
+            "jaccard_pairs": 2006,
+            "mean_size": 24.28125,
+            "nodes_total": 1554,
+            "nodes_unique": 305,
+            "sharing_factor": 5.0950819672131145,
+            "structural_sharing": 2.7397769516728623
+          }
+        },
+        "20260831": {
+          "fingerprint": "d55b7fa93d59af94",
+          "settled": {
+            "atp_spent": 2367,
+            "compound_total": 114,
+            "compound_unique": 68,
+            "jaccard": 0.019676179199988715,
+            "jaccard_empty_pairs": 378,
+            "jaccard_pairs": 1638,
+            "mean_size": 4.5625,
+            "nodes_total": 292,
+            "nodes_unique": 84,
+            "settled": 64,
+            "sharing_factor": 3.4761904761904763,
+            "structural_sharing": 1.6764705882352942
+          },
+          "unreduced": {
+            "compound_total": 628,
+            "compound_unique": 231,
+            "jaccard": 0.07160899064543186,
+            "jaccard_empty_pairs": 21,
+            "jaccard_pairs": 1995,
+            "mean_size": 20.8125,
+            "nodes_total": 1332,
+            "nodes_unique": 254,
+            "sharing_factor": 5.244094488188976,
+            "structural_sharing": 2.7186147186147185
+          }
+        },
+        "20260832": {
+          "fingerprint": "1bbb83bfcf0e4061",
+          "settled": {
+            "atp_spent": 3657,
+            "compound_total": 366,
+            "compound_unique": 139,
+            "jaccard": 0.018424049337049442,
+            "jaccard_empty_pairs": 171,
+            "jaccard_pairs": 1845,
+            "mean_size": 10.96875,
+            "nodes_total": 702,
+            "nodes_unique": 164,
+            "settled": 63,
+            "sharing_factor": 4.280487804878049,
+            "structural_sharing": 2.633093525179856
+          },
+          "unreduced": {
+            "compound_total": 737,
+            "compound_unique": 254,
+            "jaccard": 0.07783234170586463,
+            "jaccard_empty_pairs": 6,
+            "jaccard_pairs": 2010,
+            "mean_size": 24.21875,
+            "nodes_total": 1550,
+            "nodes_unique": 290,
+            "sharing_factor": 5.344827586206897,
+            "structural_sharing": 2.9015748031496065
+          }
+        },
+        "20260833": {
+          "fingerprint": "f027f573681de31e",
+          "settled": {
+            "atp_spent": 2613,
+            "compound_total": 134,
+            "compound_unique": 68,
+            "jaccard": 0.01785468499754213,
+            "jaccard_empty_pairs": 406,
+            "jaccard_pairs": 1610,
+            "mean_size": 5.1875,
+            "nodes_total": 332,
+            "nodes_unique": 82,
+            "settled": 64,
+            "sharing_factor": 4.048780487804878,
+            "structural_sharing": 1.9705882352941178
+          },
+          "unreduced": {
+            "compound_total": 662,
+            "compound_unique": 231,
+            "jaccard": 0.07737006942867591,
+            "jaccard_empty_pairs": 6,
+            "jaccard_pairs": 2010,
+            "mean_size": 21.96875,
+            "nodes_total": 1406,
+            "nodes_unique": 250,
+            "sharing_factor": 5.624,
+            "structural_sharing": 2.865800865800866
+          }
+        },
+        "20260834": {
+          "fingerprint": "15d524a6962c11ac",
+          "settled": {
+            "atp_spent": 2666,
+            "compound_total": 117,
+            "compound_unique": 62,
+            "jaccard": 0.022030932765476196,
+            "jaccard_empty_pairs": 253,
+            "jaccard_pairs": 1763,
+            "mean_size": 4.65625,
+            "nodes_total": 298,
+            "nodes_unique": 80,
+            "settled": 64,
+            "sharing_factor": 3.725,
+            "structural_sharing": 1.8870967741935485
+          },
+          "unreduced": {
+            "compound_total": 695,
+            "compound_unique": 234,
+            "jaccard": 0.0751927069923409,
+            "jaccard_empty_pairs": 10,
+            "jaccard_pairs": 2006,
+            "mean_size": 22.90625,
+            "nodes_total": 1466,
+            "nodes_unique": 264,
+            "sharing_factor": 5.553030303030303,
+            "structural_sharing": 2.97008547008547
+          }
+        }
+      }
+    }
+  }
+}

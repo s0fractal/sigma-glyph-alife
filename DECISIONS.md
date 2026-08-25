@@ -255,3 +255,81 @@ experiments and they are not attached to anything. `ALIFE-ADR-001 §9` already
 declined the founding proposal's 16-week plan and venue table as "a promise
 nothing can check"; this makes it a standing direction rather than a one-time
 rejection. Publish when there is something worth publishing, or do not.
+
+---
+
+## 2026-08-25 — after an external review (Claude Fable 5)
+
+The review read the repository and returned eight criticisms. Six are acted on
+below; the two that are not are named with reasons, because a review answered
+selectively and silently is a review not answered.
+
+**D33. The pricing claim was wrong by one, and it was published everywhere.**
+*This entry is a correction, and the largest so far.* "Any price below `size(nf)`
+breaks the memory bound" appeared in an ADR, two preregistrations, the README, the
+engine, the test suite and a need packet about to be filed upstream. It is false
+at `size(nf) − 1`: measured at the boundary, `k − 1` gives 0 violations of 60 and
+`k − 2` gives 26. The claim had been generalized from a single measurement at a
+flat price of 1 without ever checking where the boundary was.
+
+The implemented number does not change and the reason does. Book I keeps two
+things that differ by one: the **theorem** needs `Δsize ≤ Δcost` (floor `k − 1`),
+and every **row** of §3.4 satisfies the stronger `Δsize ≤ cost − 1`, which a memo
+install keeps exactly when the price is at least `k`, tightly at `k`. Both are
+machine-checked now (`memo_discipline`, `memo_below_floor_breaks`) rather than
+argued in prose. Preregistrations carry a correction note and their text stands;
+ADR-002 carries an amendment. *Overturned by:* nothing — it is arithmetic, now
+pinned.
+
+**D34. A memo install is a constructor of the model now.** The review's sharpest
+point: until this, the library arm of EXP-003 ran on a machine `Population.lean`
+did not describe, with a runtime probe as the only thing behind its numbers.
+`StepM` extends `Step` with the memo action; the population layer is stated over
+the extended machine; `reachFrom_reachM` keeps Book I's own results as the
+special case so nothing about Book I silently widened.
+
+**D35. The guard pinned signatures and was blind to what they meant.**
+*Correction.* Generalizing `Agent.run` from `ReachFrom` to `ReachM` changed what
+`population_peak_size` asserts while leaving every pinned string identical. It
+now pins all 26 declarations whole — structures, inductives, defs and proof
+bodies — and a control confirms the narrowing is caught.
+
+**D36. `sharing_factor` counts the alphabet, and the finding survived being told
+so.** The review argued that EXP-001's headline could not be distinguished from
+"reduction consumes the alphabet". Correct, and demonstrable: three agents that
+all reduced to the leaf `I` score a perfect 3.0. ALIFE-EXP-004 was written to
+kill the claim — H2 states that the drop *vanishes* under a metric that counts
+only `APPLY` nodes and excludes genesis — and it did not: the drop survives in
+10/10 seeds at every alphabet fraction, pairwise structural overlap falls with
+it, and the dose-response the alphabet story predicts is absent. The objection
+was right about the metric and wrong about the result, and both halves are in the
+result document.
+
+**D37. "Sharing buys nothing in Book I" was too broad.** The review pointed out
+that `R-S` charges `1 + size(z)` on the *current materialization*, so duplicating
+an unforced argument costs 2 rather than the size of the tree behind it —
+verified: 2 against 14 for a 13-node argument. Laziness plus addressing is a
+sharing discount that already exists in Book I. The claim should have been
+"*reusing another agent's completed work* buys nothing", and measuring the
+discount that does exist is now the first open question in the README.
+
+**D38. Positioning exists now.** `RELATED.md`, naming AlChemy (Fontana & Buss)
+and Combinatory Chemistry (Kruszewski & Mikolov) as the nearest ancestors, what
+is different here (content addressing, a proved rather than bookkept resource
+law, spec-fixed prices), and what they have that this does not (emergence — and
+their answer to the degenerate attractor this repository walked into is better
+than shaping a fitness function). Written from abstracts, and says so.
+
+**D39. Not acted on: multi-model role separation.** The review's best
+methodological suggestion — one model writes the preregistration, a *different*
+one writes the harness seeing only that document — is right, and it is the only
+available fix for this repository's weakest provenance claim. It is not done
+because this session cannot spawn other agents. It needs s0fractal to route the
+next preregistration to a different model. Recorded so it is not quietly dropped.
+
+**D40. Not acted on: the EXP-003 arms never exercise resumption.** The review is
+correct that reservoirs of 23–31 ATP against a slice floor of 32 mean every agent
+gets its whole reservoir in one slice — verified. EXP-003 is not about
+resumption, so this is a limitation rather than a defect, and it is now in that
+result's limitations. What it does mean: no experiment here has yet exercised the
+one capability the substrate proved.

@@ -89,6 +89,16 @@ trivially when terms shrink toward an alphabet of three genesis atoms.
 > than it creates it. Content addressing gives a population its sharing at birth;
 > evaluation spends it down.
 
+That sentence was then attacked on purpose. Its metric counts the genesis atoms
+`I`, `K`, `S` like any other address, so three agents that all reduced to the
+single leaf `I` score a *perfect* 3.0 — and "reduction consumes structure" could
+not be told apart from "reduction consumes the alphabet".
+[ALIFE-EXP-004](experiments/alife-exp-004/RESULT.md) measured both, over ten
+seeds and four alphabet fractions, with the hypothesis written so the repository
+would lose. **It survived:** counting only `APPLY` nodes and excluding genesis
+entirely, structural sharing still falls in 10 of 10 seeds at every alphabet
+fraction, and pairwise structural overlap falls with it.
+
 And the bound got a number: the proved ceiling for that run is 2840 nodes, the
 population actually materialized 472, occupying **182 distinct addresses — 6.41%
 of the ceiling**. The theorem is honest and very loose, and the experiment can
@@ -175,8 +185,41 @@ the pin.
   README used to announce as EXP-002 is in there, with the reason it was dropped.
 - `needs/DA-SIGMA-0002-memo-pricing/` — the one question this work sends back to
   Book I: may a conforming implementation reuse a result it has already paid for,
-  and at what price? Filed as a `decision-archaeology.need@v0` packet with a
-  reproducer, not as a proposal. Prepared, not yet filed upstream.
+  and at which of two prices? Filed as a `decision-archaeology.need@v0` packet
+  with a reproducer, not as a proposal. Prepared, not yet filed upstream.
+- `RELATED.md` — the two nearest ancestors (Fontana & Buss's AlChemy; Kruszewski
+  & Mikolov's Combinatory Chemistry) and what is actually new here, which is the
+  machine and not the metaphor.
+
+## Open questions, in the order they became interesting
+
+No schedule and no venue — `ALIFE-ADR-001 §9`, and standing direction since
+2026-08-25. These are questions, not promises.
+
+- **What does Book I already pay for address-sharing?** `R-S` charges
+  `1 + size(z)` where `z` is the *current materialization*, so duplicating an
+  unforced argument costs 2 rather than the size of the tree behind it. Laziness
+  plus addressing is a sharing discount that already exists and has never been
+  measured — the same corpus priced hash-leaf against a counterfactual
+  copy-pricing gives the number.
+- **Can a library be made to break even?** The bound gives a price *floor*, not a
+  price, so a librarian may charge above it. Cost-recovery pricing, fill-on-k-th
+  miss, eviction, ranking by expected demand — ALIFE-EXP-003 used the crudest
+  policy on every axis and still found a band where it pays.
+- **What survives a conservation law instead of a fitness function?** The one
+  evolutionary arm here bred for cheapness and got the empty program, which is the
+  known failure. Combinatory Chemistry's answer — conserve, and let structure be
+  what survives — is the better direction, and this substrate conserves ATP by
+  construction.
+- **Do organizations form under address-level interaction?** The only interactions
+  here are ATP and the memo. Applying one agent to another *by root hash* is the
+  substrate's native interaction, and it is exactly the demand path EXP-002 found
+  and EXP-003 had to fund. Whether closed sets form under it — AlChemy's L1 — is
+  open.
+- **Does the loose ceiling decompose?** EXP-001's 6.41% is two factors: budget
+  utilisation (472/2840) times deduplication (182/472). They are the metabolic and
+  the morphological halves of the same slack, and only the product has ever been
+  tracked.
 
 ---
 
