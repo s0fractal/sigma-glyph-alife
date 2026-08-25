@@ -561,6 +561,122 @@ def population_census(agents):
 
 
 # ---------- Metrics ----------
+# ALPHABET OR STRUCTURE. `sharing_factor` counts every node occurrence against
+# every distinct address, and in an SKI population the three genesis atoms are by
+# far the most repeated objects there are. A number that rises because agents hold
+# more I, K and S in common says nothing about anastomosis, and ALIFE-EXP-001's
+# central sentence — "reduction consumes shared structure faster than it creates
+# it" — cannot be told apart from "reduction consumes the alphabet" by that metric
+# alone. The two below are the separation, added after an external review
+# (Claude Fable 5) named the confound.
+
+
+def _is_compound(h, t, store):
+    """Is the node at this address an APPLY? A materialized node answers for
+    itself; a thunk is resolved through the store, and counts as a leaf when the
+    store cannot answer — conservative, since the question is whether to COUNT it
+    as structure."""
+    if t is not None:
+        return t[0] == "app"
+    b = sg.GENESIS.get(h) or (store.get(h) if store else None)
+    if b is None:
+        return False
+    n = sg.deser(b)
+    return bool(n) and n["op"] == sg.APPLY
+
+
+def address_set(t, store=None, compounds_only=False, drop_genesis=False):
+    """The distinct CAS addresses one agent's term occupies, with two filters:
+    `compounds_only` keeps only APPLY nodes — structure an agent BUILT, rather
+    than alphabet it inherited — and `drop_genesis` removes I, K and S."""
+    out = set()
+
+    def walk(x):
+        if x[0] == "thunk":
+            h = x[1]
+            if drop_genesis and h in sg.GENESIS:
+                return h
+            if compounds_only and not _is_compound(h, None, store):
+                return h
+            out.add(h)
+            return h
+        if x[0] == "app":
+            lh, rh = walk(x[1]), walk(x[2])
+            h = sg.node_hash(sg.ser(sg.APPLY, sg.F_LEFT | sg.F_RIGHT, left=lh, right=rh))
+            out.add(h)
+            return h
+        h = sg.node_hash(sg.term_bytes(x))
+        if x[0] == "ref":
+            tgt = x[1]
+            if not (compounds_only and not _is_compound(tgt, None, store)) \
+                    and not (drop_genesis and tgt in sg.GENESIS):
+                out.add(tgt)
+        if not compounds_only and not (drop_genesis and h in sg.GENESIS):
+            out.add(h)
+        return h
+
+    walk(t)
+    return out
+
+
+def pairwise_jaccard(agents, store=None, compounds_only=True, drop_genesis=True):
+    """Mean |A ∩ B| / |A ∪ B| over agent pairs, on filtered address sets.
+
+    This is the metric that separates two things `sharing_factor` cannot: a
+    population that CONVERGED (every agent reduced to the same small normal form)
+    and a population that SHARES (agents hold large subterms in common while
+    remaining different). Converged agents have nearly empty compound sets, so
+    their structural Jaccard is undefined, not high. Pairs where both sets are
+    empty are excluded and counted, because averaging them in as 0 or as 1 would
+    both be lies."""
+    sets = [address_set(a.term, store, compounds_only, drop_genesis) for a in agents]
+    total = pairs = empty = 0
+    for i in range(len(sets)):
+        for j in range(i + 1, len(sets)):
+            union = sets[i] | sets[j]
+            if not union:
+                empty += 1
+                continue
+            total += len(sets[i] & sets[j]) / len(union)
+            pairs += 1
+    return (total / pairs if pairs else 0.0), pairs, empty
+
+
+def structural_sharing(agents, store=None, drop_genesis=True):
+    """`sharing_factor` restricted to APPLY nodes: occurrences over distinct
+    addresses, counting only structure. Returns (factor, occurrences, distinct)."""
+    counter = Counter()
+    for a in agents:
+        for h in _compound_occurrences(a.term, store, drop_genesis):
+            counter[h] += 1
+    unique = len(counter)
+    total = sum(counter.values())
+    return ((total / unique) if unique else 0.0), total, unique
+
+
+def _compound_occurrences(t, store, drop_genesis):
+    """Every APPLY-node occurrence (with multiplicity), by address."""
+    out = []
+
+    def walk(x):
+        if x[0] == "thunk":
+            h = x[1]
+            if _is_compound(h, None, store) and not (drop_genesis and h in sg.GENESIS):
+                out.append(h)
+            return h
+        if x[0] == "app":
+            lh, rh = walk(x[1]), walk(x[2])
+            h = sg.node_hash(sg.ser(sg.APPLY, sg.F_LEFT | sg.F_RIGHT, left=lh, right=rh))
+            out.append(h)
+            return h
+        if x[0] == "ref" and _is_compound(x[1], None, store):
+            out.append(x[1])
+        return sg.node_hash(sg.term_bytes(x))
+
+    walk(t)
+    return out
+
+
 def sharing_factor(agents):
     """Σ node occurrences / distinct CAS addresses. 1.0 means nothing is shared;
     N means the population is N copies of one structure. This is a property of
