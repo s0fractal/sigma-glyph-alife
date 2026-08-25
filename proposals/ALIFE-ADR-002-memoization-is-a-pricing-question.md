@@ -34,14 +34,16 @@ content addressing already says how: one hash has exactly one normal form, so a
 normal form written back into the store is a *function*, not a cache heuristic.
 Book I's determinism is what makes the memo sound; nothing new has to be assumed.
 
-**The price is derived, not chosen.** Book I §3.4 rests on one per-action premise:
-an action grows the term by at most `cost − 1`. Installing a normal form of size
-`k` where a thunk of size 1 stood grows the term by `k − 1`, so:
+**The price is derived, not chosen — but it is two numbers, not one.** *(Amended
+2026-08-25; see below.)* Installing a normal form of size `k` where a thunk of
+size 1 stood grows the term by `k − 1`, so:
 
-- any price below `k` breaks the premise, and with it `size ≤ spent + 1`
-  (measured: 50 of 64 corpus terms violate the bound at a flat price of 1);
-- a price of exactly `k` makes the inequality **tight**, which no other action of
-  this machine does.
+- the **memory bound** `size ≤ spent + 1` needs only `Δsize ≤ Δcost`, which puts
+  the floor at **`k − 1`** (measured: sound at `k − 1`, and 26 of 60 terms
+  violate at `k − 2`);
+- every **row** of Book I §3.4 satisfies the stronger discipline
+  `Δsize ≤ cost − 1`, and a memo install keeps that exactly when the price is at
+  least **`k`**, with equality at `k` — the same tightness every other row has.
 
 > In a size-priced machine, memoization can refund time and never space.
 
@@ -83,3 +85,37 @@ as a control that must fail, and neither is a policy anybody gets to tune.
   failure sigma-glyph's own EXP-004 preregistration warns against.
 - **Evolutionary pressure on structure (RQ4).** Has no mechanism until sharing
   costs something. It belongs after this decision, not before it.
+
+
+---
+
+## Amendment, 2026-08-25 — the original justification was off by one
+
+As first written this ADR said "any price below `k` breaks the premise, and with
+it `size ≤ spent + 1`". That is false at `k − 1`, and the error was not a slip of
+phrasing: the claim was generalized from a measurement at a flat price of 1
+(50/64 terms broken) without checking the boundary. A price of `k − 1` breaks
+nothing — measured, 0 violations of 60 — and `k − 2` does.
+
+What survives unchanged: **the number this repository implements is still `k`**,
+and the sentence it was written for is still true. What changes is why. `k` is
+not the point below which the theorem fails; it is the point at or above which a
+memo install obeys the same per-row discipline as every other action of Book I's
+machine, tightly. The theorem's own floor is one lower.
+
+Three consequences, all acted on:
+
+1. **The need packet was corrected before filing.** `needs/DA-SIGMA-0002` asked
+   Book I's owners a question with a wrong number in its argument. It now presents
+   the fork — theorem-floor `k − 1` against discipline-price `k` — which is a
+   better question than the one it replaced, and the reproducer measures both
+   boundaries instead of one.
+2. **Both statements are machine-checked now**, rather than argued in prose:
+   `memo_discipline` and `memo_below_floor_breaks` in `proofs/Population.lean`.
+3. **A memo install is now a constructor of the model.** Until this amendment the
+   library arm of ALIFE-EXP-003 ran on a machine `Population.lean` did not
+   describe, and the runtime probe was the only thing behind its numbers.
+   `StepM` extends `Step` with the memo action, the population layer is stated
+   over the extended machine, and `reachFrom_reachM` keeps the Book I results as
+   the special case. Caught by an external review (Claude Fable 5), not by this
+   repository's own gates.

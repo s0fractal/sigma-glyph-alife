@@ -28,6 +28,16 @@ The question worth asking is therefore not "what pressure can we invent" but
 already says how: one hash has exactly one normal form, so a normal form written
 back into the store is a **function**, not a cache heuristic.
 
+> **Correction, 2026-08-25.** The paragraph below states that any price under
+> `size(nf)` breaks the memory bound. That is off by one and was measured rather
+> than derived. The bound needs only `Δsize ≤ Δcost`, so the true floor is
+> `size(nf) − 1`; `size(nf)` is what preserves the stronger per-row discipline
+> every Book I action satisfies (`Δsize ≤ cost − 1`), tightly. Both are now
+> machine-checked — `memo_discipline` and `memo_below_floor_breaks` in
+> `proofs/Population.lean` — and the correction is recorded in `DECISIONS.md` D33
+> and in the amendment to `ALIFE-ADR-002`. This preregistration is left as it was
+> filed; a preregistration that gets edited is not one.
+
 ## What is already decided, and will not be claimed as a finding
 
 **The price of a memo hit is forced, not chosen.** Book I §3.4 rests on one

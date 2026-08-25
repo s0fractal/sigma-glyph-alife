@@ -344,14 +344,24 @@ def _replace_at(t, path, node):
 class Memo:
     """NodeHash -> its normal form, with the price of installing one.
 
-    THE PRICE IS FORCED, not chosen. Book I's §3.4 invariant rests on one
-    per-action premise: an action grows the term by at most `cost - 1`. Installing
-    a normal form of size k in place of a thunk of size 1 grows the term by k - 1,
-    so any price below k breaks the premise and with it `size <= spent + 1` — and
-    a price of exactly k makes the inequality TIGHT, which no other action in the
-    machine does. `Memo(price=lambda nf: 1)` is therefore not a cheaper policy, it
-    is an unsound one, and ALIFE-EXP-002 runs it as a control to watch the bound
-    break rather than asserting that it would.
+    THE PRICE IS BOUNDED BELOW BY TWO DIFFERENT NUMBERS, and they differ by one.
+    Installing a normal form of size k where a thunk of size 1 stood grows the
+    term by k - 1, so:
+
+      * the memory bound `size <= spent + 1` needs only `Δsize <= Δcost`, which
+        makes the floor **k - 1**;
+      * every ROW of Book I §3.4 satisfies the stronger discipline
+        `Δsize <= cost - 1` — an action costs more than it adds — and a memo
+        install keeps that exactly when the price is at least **k**, tightly at k.
+
+    `derived_price` implements k: the price at which a memo hit behaves like every
+    other action of the machine rather than merely failing to break the theorem.
+    Which of the two an implementation owes is the fork in needs/DA-SIGMA-0002.
+
+    This docstring said "any price below k breaks the premise" for three days,
+    which is false at k - 1 and was asserted from a measurement at a flat price
+    of 1. Both statements are now machine-checked in proofs/Population.lean
+    (`memo_discipline`, `memo_below_floor_breaks`) and pinned.
 
     What memoization buys is the WORK, not the space: an agent skips every action
     inside the reduction and still prepays the size of what it receives. In a

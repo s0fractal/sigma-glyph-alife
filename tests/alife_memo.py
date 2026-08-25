@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Memoization: the answer must not move, and the price is not a free choice.
+"""Memoization: the answer must not move, and the price has two floors.
 
   M1  the mirror is a mirror. `_next_action` predicts what `step5` will do; every
       predicted force must BE a force, at the predicted position, at the price the
@@ -8,8 +8,12 @@
       The other direction is left unchecked and said out loud.)
   M2  a memoized run reaches the ORACLE'S normal form, spends no more than the
       oracle, and satisfies the memory bound at every action.
-  M3  the derived price is load-bearing: at a flat price of 1 the bound BREAKS on
-      this corpus. A control that must fail, or the pricing law has no teeth.
+  M3  the price boundaries, both of them, measured rather than asserted: the
+      memory bound survives at `size(nf) - 1` and breaks at `size(nf) - 2`, and
+      `size(nf)` is what additionally preserves Book I's per-row discipline. The
+      first version of this suite checked only a flat price of 1 and the repository
+      generalized from it to "any price below size(nf) breaks the bound", which is
+      false at size(nf) - 1. Boundaries get checked at the boundary.
   M4  the memo never learns something false: a term first evaluated with a warm
       memo and the same term evaluated from a cold store agree.
   M5  a hit the budget cannot afford is skipped, not fatal — the plain force costs
@@ -140,10 +144,34 @@ def main():
     chk(f"M3 a flat price of 1 BREAKS the bound ({broke}/{len(roots)} terms, "
         f"worst excess +{worst})", broke > 0)
 
-    # ---- M3b: and the derived price is the smallest that does not
+    # M3a/M3b — the boundary itself, both sides of it.
+    def violations(price):
+        m = al.Memo(price=price)
+        for root in roots:
+            a = al.Agent("w", root, 4000)
+            al.reduce_slice(a, store, 4000, memo=m)
+            if a.status == al.NORMAL:
+                m.learn(root, a.term, a.spent)
+        bad = 0
+        for root in roots:
+            a = al.Agent("c", root, 4000)
+            al.reduce_slice(a, store, 4000, memo=m)
+            bad += a.size > a.s0 + a.spent
+        return bad
+
+    at_floor = violations(lambda nf: max(0, sg.size(nf) - 1))
+    below = violations(lambda nf: max(0, sg.size(nf) - 2))
+    chk(f"M3a size(nf) - 1 is SOUND for the bound ({at_floor} violations) — the "
+        f"floor is one below the price this repository implements", at_floor == 0)
+    chk(f"M3b size(nf) - 2 breaks it ({below}/{len(roots)}) — the floor is real",
+        below > 0)
+
+    # ---- M3c: what the implemented price actually is, and what it buys
     nf = ("app", ("lit", sg.sha(b"a")), ("lit", sg.sha(b"b")))
-    chk("M3b the derived price is exactly the size it installs",
+    chk("M3c the implemented price is the size it installs",
         al.Memo.derived_price(nf) == sg.size(nf) == 3)
+    chk("M3c and that price keeps Book I's per-row discipline (dsize <= cost - 1)",
+        (sg.size(nf) - 1) <= al.Memo.derived_price(nf) - 1)
 
     # ---- M5: an unaffordable hit is skipped, not fatal
     big = max(memo.nf.items(), key=lambda kv: sg.size(kv[1][0]))

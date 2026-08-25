@@ -1,7 +1,7 @@
 {
   "_README": [
     "Pins for proofs/premise_guard.py. `statements` is the SHA-256 of",
-    "each guarded theorem's normalized source signature; `premise` is",
+    "EVERY declaration in Population.lean, whole; `premise` is",
     "the SHA-256 of the sigma-glyph blocks the model was copied from.",
     "A pin changing is not a defect \u2014 it is a claim changing, and it",
     "must be reviewed as one."
@@ -11,16 +11,31 @@
     "structure Acc where": "5e5f1d1a2790edea04db67f63dcf6e75d17363e5bd9ae3f4b810ce83f35ff0fc"
   },
   "statements": {
-    "ReachFrom.trans": "6eb80ab4679a2fb5fcb744c001c55fb14a1f9f9e520bfc1a9b25635fc5677ed9",
-    "bound_from": "5f8ae6ecb6e369deffbf711c272f66ff71594f81544814447626663bc4f28ebf",
-    "memory_bound_from_thunk": "dc7def01dfb9c38bc4f745cc0f7a3c5d971fc1a17a15af3b704a1f7b915038ce",
-    "population_peak_size": "b0b98c56a387dde6b7f0f88e1e08a20198f6776444e590cf08505a4e94ea31ed",
-    "population_peak_size_thunks": "1f85293c3e4778e0a440c0418ee0066f30618c264277a93a6803705cacf7ff7e",
-    "resumption_bound": "357cff265dcd7f93475bcd270aa26a345f4a1f79652694545cee3a2d0ffc6249",
-    "spent_mono": "e448340ef56358f879f460fcde43370f8137d398070f3dfa796f4114ec4f0503",
-    "step_delta": "d101ba7f978056d4ae42800eda952f8ab47bbf67db612d8a5c303d860402fd9b",
-    "step_spent": "c7198d3b4b4959f6179d57a4c65c38268ed43f37b0da10054abf183fcb7ab696",
-    "totalBirth_ones": "f23ab32bc0b3e617115c0b8e9c78d636bc6548aa92fda05ad8499958d57cec85",
-    "transfer_preserves_bound": "62e30a9ed8933cada597ff006565ffe5d19576444c4487a1b5157b26242eabc3"
+    "def totalBirth": "5c46298410c6c310ed5c0e3abda7dff79d10c598c7ae9a7c9bc45a668b428f06",
+    "def totalSize": "d4c445c35fd931ba51d57789929d53cde6e83fbd8297b37fe78e3fd468765667",
+    "def totalSpent": "e73f427997e5c2ee2762418051473bf9cb726cbddb2b1ef001b8e0a516773cca",
+    "inductive ReachFrom": "3c81b327aa316e7dc4508e5be4f08a7843f9b2058897abaeed45b623ebb0331c",
+    "inductive ReachM": "d25b8155f579e25dc15dddad2c6f0ac5346f2fe7c13baa0cce0832c984669131",
+    "inductive Step": "965a9ec5c29daa75834f11544fd9997b801c36e714b26ac99bd2b25127585b53",
+    "inductive StepM": "515da316521563bc8daec1ec10623c694e1dc90811bee286f1028925c8dc47c6",
+    "structure Acc": "5e5f1d1a2790edea04db67f63dcf6e75d17363e5bd9ae3f4b810ce83f35ff0fc",
+    "structure Agent": "956aec5555e21dff5a0cc76e29d2c880c42db60e853c1fc4ecf328ffce320c34",
+    "theorem ReachFrom.trans": "019e46302cdd2b2a1fbb461219ac6531e988cbacaf86af324a881bc1d263b69b",
+    "theorem boundM_from": "e0ef709b15d6e48223842238c1bb27708a9e1f69e79125ad4ae58b9f01ebce5d",
+    "theorem bound_from": "3b74c851e2ad3bd46a85c0c32cfe124769ba997ecbf3b178f060220dd6e4dddd",
+    "theorem memo_below_floor_breaks": "e20035ab9b4f650f717f9f717950a07c91e7d709c40aa96a56e5b23447f07dfd",
+    "theorem memo_discipline": "89a4679f2cda57f3c688f78c9aca4afbb655d6bf5afb76a0e42bcee620824df9",
+    "theorem memory_bound_from_thunk": "57baeff0334b1360dd1a2678e8bfdb8eeaa5bd0a9da83983efc88b88c1750582",
+    "theorem population_peak_size": "4f5d7dd31f0ff759afbc878dea21ec7c0d6af94849751dc89865f66de2668dea",
+    "theorem population_peak_size_thunks": "ca67066e390d1c9373c6e2666d0b075b6164576a99a02863fcfb47c9d950300f",
+    "theorem reachFrom_reachM": "75e5e2acfd82a9529f33c878853977d6a41042aa7fcdc41634ac3fc919554cbf",
+    "theorem resumption_bound": "e65ae873ab9a2e3845e7c74cb88150d09f88284444ad60c00ce57bfbf0eb192c",
+    "theorem spent_mono": "3795fd44c0dfb51cfa676789f15d77b3390fa48115684c7159ad4e04b5151cb8",
+    "theorem stepM_delta": "153d2a751fdb7a62aab1f493f41d672bb6443936a783471cc64023353a4a2aa7",
+    "theorem stepM_spent": "54bcfaca00c312e88674a462494784d8b4ef2565df4561e71704062dc4383123",
+    "theorem step_delta": "27ab3540b5e318ff944250cba85052ebf52df920d35371e57ddf6fe14ca7d46e",
+    "theorem step_spent": "cc948c240e0661c1e0628e9ef885b56d50311c6b47bdb569524e4d2cbe23359f",
+    "theorem totalBirth_ones": "1cbdef515bf8e8203ffa9c0c1872c3ab6ac93cab9b4ef3a270c453f452956736",
+    "theorem transfer_preserves_bound": "5965d1a18a7be778a544df405730467f521d55f38b58db3b66c9968877ed1b8d"
   }
 }

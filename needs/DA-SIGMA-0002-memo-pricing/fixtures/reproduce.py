@@ -8,8 +8,11 @@ Four claims, in order:
   R2  A memo of normal forms priced at `size(nf)` reaches the SAME result hash
       for every fixture term, spends materially less, and satisfies §3.4's
       `size <= spent + 1` at every action.
-  R3  The price is forced. Below `size(nf)` the §3.4 bound BREAKS on this
-      fixture — the premise `Δsize <= cost - 1` fails by construction.
+  R3  The price has TWO floors, one below the other, and they answer different
+      questions. `size(nf) - 1` is where the memory bound `size <= spent + 1`
+      itself starts to fail; `size(nf)` is where a memo install stops obeying the
+      per-row discipline every Book I action satisfies (`dsize <= cost - 1`).
+      Both boundaries are measured here.
   R4  The collision. Because the memoized run spends less, a memoizing
       implementation returns a different `atp_spent` for the same
       (term, budget) than the reference oracle, and therefore cannot satisfy
@@ -160,18 +163,30 @@ def main():
           f"ATP {warm} vs oracle {cold} ({100.0 * warm / cold:.1f}%), "
           f"worst size-(spent+1) = {worst:+d}\n")
 
-    # R3 — the same memo priced at 1 breaks §3.4.
-    cheap, broke, worst_cheap = {}, 0, 0
-    for h in roots:
-        t, _, _ = run(h, store, cheap, lambda nf: 1)
-        if t[0] != "dis":
-            cheap[h] = t
-    for h in roots:
-        _, _, w = run(h, store, cheap, lambda nf: 1)
-        broke += w > 0
-        worst_cheap = max(worst_cheap, w)
-    print(f"R3  memo priced at 1: {broke}/{len(roots)} terms violate "
-          f"size <= spent + 1, worst excess +{worst_cheap}\n")
+    # R3 — where each floor actually is.
+    def at_price(price):
+        m, broke, worst_p = {}, 0, 0
+        for h in roots:
+            t, _, _ = run(h, store, m, price)
+            if t[0] != "dis":
+                m[h] = t
+        for h in roots:
+            _, _, w = run(h, store, m, price)
+            broke += w > 0
+            worst_p = max(worst_p, w)
+        return broke, worst_p
+
+    print("R3  the memory bound under four prices for the same memo:")
+    for label, price in (("size(nf)", sg.size),
+                         ("size(nf) - 1", lambda nf: max(0, sg.size(nf) - 1)),
+                         ("size(nf) - 2", lambda nf: max(0, sg.size(nf) - 2)),
+                         ("flat 1", lambda nf: 1)):
+        b, w = at_price(price)
+        print(f"      {label:14s} violations {b}/{len(roots)}   worst excess {w:+d}")
+    broke, _ = at_price(lambda nf: max(0, sg.size(nf) - 2))
+    sound_floor, _ = at_price(lambda nf: max(0, sg.size(nf) - 1))
+    print("    -> the bound's floor is size(nf) - 1. size(nf) is what additionally")
+    print("       keeps the per-row discipline dsize <= cost - 1, tightly.\n")
 
     # R4 — the collision with pinned conformance.
     diverged = []

@@ -50,13 +50,31 @@ If the answer is no, say so in Book I, because at present the answer lives only 
 the vectors and an implementer can reasonably read the specification and conclude
 otherwise.
 
-If the answer is yes, the price is not a free parameter and Book I has already
-fixed it. §3.4 rests on one per-action premise — an action grows the term by at
-most `cost − 1`. Installing a normal form of size `k` where a thunk of size 1
-stood grows the term by `k − 1`, so any price below `k` breaks the premise (R3),
-and `k` exactly makes the inequality tight (R2), which no other action of the
-machine does. Two independent implementations that both memoize agree on
-`atp_spent` if and only if they both charge `size(nf)`.
+If the answer is yes, the price is not free either — but it is a **fork between
+two numbers that differ by one**, and choosing between them is a decision only
+Book I's owners can make.
+
+Installing a normal form of size `k` where a thunk of size 1 stood grows the term
+by `k − 1`. So:
+
+- **`k − 1`** is the floor for the *theorem*. `size ≤ spent + 1` needs only
+  `Δsize ≤ Δcost`, and R3 measures exactly that: sound at `k − 1`, broken at
+  `k − 2`.
+- **`k`** is the floor for the *discipline*. Every row of §3.4 satisfies the
+  stronger `Δsize ≤ cost − 1` — an action costs more than it adds — and a memo
+  install keeps that exactly when the price is at least `k`, with equality at `k`.
+
+Whichever is chosen, two implementations that both memoize agree on `atp_spent`
+only if they charge the same thing, which is why this needs a decision rather
+than an implementation. The source repository implements `k`, on the grounds that
+an action which merely fails to break the theorem is not the same as one that
+behaves like every other action of the machine — but that reasoning belongs to
+whoever owns §3.4.
+
+*(This paragraph replaces one that claimed `k` was forced. It was off by one: the
+claim was generalized from a measurement at a flat price of 1 without checking
+the boundary, and the boundary is at `k − 1`. Correcting it before filing is the
+reason a packet is written down before it is sent.)*
 
 > In a size-priced machine, memoization can refund time and never space.
 

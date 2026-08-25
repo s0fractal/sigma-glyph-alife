@@ -28,6 +28,16 @@ and saved the agents 434. It lost money. Whether it wins under *scarcity* — wh
 an agent that cannot afford to derive a term can still afford `size(nf)` to buy
 one — is exactly what is open.
 
+> **Correction, 2026-08-25.** The paragraph below states that any price under
+> `size(nf)` breaks the memory bound. That is off by one and was measured rather
+> than derived. The bound needs only `Δsize ≤ Δcost`, so the true floor is
+> `size(nf) − 1`; `size(nf)` is what preserves the stronger per-row discipline
+> every Book I action satisfies (`Δsize ≤ cost − 1`), tightly. Both are now
+> machine-checked — `memo_discipline` and `memo_below_floor_breaks` in
+> `proofs/Population.lean` — and the correction is recorded in `DECISIONS.md` D33
+> and in the amendment to `ALIFE-ADR-002`. This preregistration is left as it was
+> filed; a preregistration that gets edited is not one.
+
 ## What is already decided, and will not be claimed as a finding
 
 - **The price of a hit is `size(nf)`**, forced by Book I §3.4 and reproduced as a

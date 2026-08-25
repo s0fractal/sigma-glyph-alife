@@ -132,13 +132,96 @@ theorem memory_bound_from_thunk {b : Acc} (r : ReachFrom ⟨1, 0⟩ b) :
     b.size ≤ b.spent + 1 := by
   have := bound_from r; simp at this; omega
 
+/-- **The machine ALIFE-EXP-003 runs, which Book I does not describe.**
+
+    `Step` is Book I. A memo install is not one of its actions: it replaces a
+    thunk of size 1 with a normal form of size `n` at a price of `c`, and no row
+    of §3.4 does that. Until this constructor existed, every positive result from
+    a library arm was obtained on a machine `Population.lean` did not model, and
+    the runtime probe was the only thing standing behind it.
+
+    The hypothesis `n ≤ c + 1` is the floor, and it is one below what this
+    repository claimed for three days. See `memo_discipline` for the difference
+    between the price the THEOREM needs and the price Book I's own per-row
+    discipline needs. -/
+inductive StepM : Acc → Acc → Prop where
+  | base {a b : Acc} : Step a b → StepM a b
+  | memo {s p n c : Nat} (hn : 1 ≤ n) (hc : n ≤ c + 1) :
+      StepM ⟨s, p⟩ ⟨s + n - 1, p + c⟩
+
+/-- The per-action premise, for the extended machine. -/
+theorem stepM_delta {a b : Acc} (st : StepM a b) :
+    b.size + a.spent ≤ a.size + b.spent := by
+  cases st with
+  | base h => exact step_delta h
+  | memo hn hc => simp; omega
+
+theorem stepM_spent {a b : Acc} (st : StepM a b) : a.spent ≤ b.spent := by
+  cases st with
+  | base h => exact step_spent h
+  | memo hn hc => simp
+
+/-- **The floor is `size(nf) − 1`, and below it the premise fails.** Witness:
+    installing a normal form of size 3 for a price of 1 grows the term by 2 while
+    charging 1. This is the theorem that corrects the claim this repository
+    published — "any price below `size(nf)` breaks the bound" — which was off by
+    exactly one and was measured, not derived. -/
+theorem memo_below_floor_breaks :
+    ¬ ((⟨0 + 3 - 1, 0 + 1⟩ : Acc).size + (⟨0, 0⟩ : Acc).spent
+       ≤ (⟨0, 0⟩ : Acc).size + (⟨0 + 3 - 1, 0 + 1⟩ : Acc).spent) := by
+  simp
+
+/-- **Two prices, two properties, and they differ by one.**
+
+    Every row of Book I §3.4 satisfies the strictly stronger discipline
+    `Δsize ≤ cost − 1` — "an action costs more than it adds". The memory bound
+    itself needs only `Δsize ≤ cost`. A memo install of a normal form of size `n`
+    therefore sits between two answers:
+
+      * `c ≥ n − 1` preserves the THEOREM `size ≤ spent + 1`;
+      * `c ≥ n` preserves Book I's PER-ROW DISCIPLINE, and at `c = n` exactly,
+        with equality — the same tightness every other row has.
+
+    This lemma is the second: the discipline holds for a memo hit precisely when
+    the price is at least the size installed. Which of the two an implementation
+    owes is not this repository's to decide; it is the fork in
+    `needs/DA-SIGMA-0002`. -/
+theorem memo_discipline {s n c : Nat} (hn : 1 ≤ n) :
+    (s + n - 1) + 1 ≤ s + c ↔ n ≤ c := by
+  omega
+
+/-- A run of the extended machine between two arbitrary states. -/
+inductive ReachM : Acc → Acc → Prop where
+  | refl {a : Acc} : ReachM a a
+  | step {a b c : Acc} : ReachM a b → StepM b c → ReachM a c
+
+/-- Book I's machine is the extended machine without memo installs, so every
+    result below covers a run that never used one. -/
+theorem reachFrom_reachM {a b : Acc} (r : ReachFrom a b) : ReachM a b := by
+  induction r with
+  | refl => exact ReachM.refl
+  | step _ st ih => exact ReachM.step ih (StepM.base st)
+
+/-- The bound, for the machine with memo installs in it. -/
+theorem boundM_from {a b : Acc} (r : ReachM a b) :
+    b.size + a.spent ≤ a.size + b.spent := by
+  induction r with
+  | refl => omega
+  | step r' st ih =>
+      have hd := stepM_delta st
+      have hs := stepM_spent st
+      omega
+
 /-- An agent: born at some materialized size with nothing spent, currently at
     `state`, and the run that connects them. The proof field is the point —
-    a list of these is a population whose every member is a real run. -/
+    a list of these is a population whose every member is a real run — of the
+    EXTENDED machine, so the population bound covers a colony using a library as
+    well as one that is not. `reachFrom_reachM` is what makes that a
+    generalization of Book I rather than a different claim. -/
 structure Agent where
   birth : Nat
   state : Acc
-  run   : ReachFrom ⟨birth, 0⟩ state
+  run   : ReachM ⟨birth, 0⟩ state
 
 def totalSize : List Agent → Nat
   | []      => 0
@@ -163,7 +246,7 @@ theorem population_peak_size (as : List Agent) :
   induction as with
   | nil => simp [totalSize, totalBirth, totalSpent]
   | cons a as ih =>
-      have h := bound_from a.run
+      have h := boundM_from a.run
       simp at h
       simp [totalSize, totalBirth, totalSpent]
       omega

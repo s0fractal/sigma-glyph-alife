@@ -46,12 +46,12 @@ HERE = Path(__file__).resolve().parent
 POPULATION = HERE / "Population.lean"
 PINS = HERE / "theorem_pins.json"
 
-GUARDED = [
-    "step_delta", "step_spent", "bound_from", "spent_mono", "ReachFrom.trans",
-    "resumption_bound", "memory_bound_from_thunk", "totalBirth_ones",
-    "population_peak_size", "population_peak_size_thunks",
-    "transfer_preserves_bound",
-]
+# Every declaration in the file is pinned, not just the theorems. The narrower
+# version pinned theorem SIGNATURES, and a signature's text does not change when
+# a structure it mentions does: generalizing `Agent.run` from `ReachFrom` to
+# `ReachM` altered what `population_peak_size` means while leaving every pinned
+# string identical. A guard that cannot see that is not guarding the claim.
+DECL = re.compile(r"^(structure|inductive|def|theorem)\s+([A-Za-z_][\w.']*)", re.M)
 
 # Denied outright. `sorry` has no word boundary after it (`sorryAx`), so the
 # pattern must not rely on one — the mistake sigma-glyph's guard was killed by
@@ -121,20 +121,19 @@ def extract_block(src, header):
     return normalize(header + rest[:stop])
 
 
-def extract_signature(src, name):
-    """A guarded theorem's signature: everything from its name up to `:=` or
-    `by`, whichever ends the statement — the part a vacuous rewrite would have
-    to change."""
-    m = re.search(r"\btheorem\s+" + re.escape(name) + r"\b", src)
-    if not m:
-        raise SystemExit(f"GUARD: guarded theorem `{name}` is not in Population.lean")
-    rest = src[m.start():]
-    end = len(rest)
-    for token in (":=", "\ntheorem ", "\ndef ", "\nend "):
-        j = rest.find(token)
-        if 0 <= j < end:
-            end = j
-    return normalize(rest[:end])
+def extract_declarations(src):
+    """Every declaration in the file, whole, by name: `kind name -> normalized
+    text from its keyword to the start of the next declaration`. Whole bodies
+    rather than signatures, so a proof replaced by something weaker moves the pin
+    too."""
+    out, marks = {}, list(DECL.finditer(src))
+    for i, m in enumerate(marks):
+        stop = marks[i + 1].start() if i + 1 < len(marks) else len(src)
+        end = src.find("\nend ", m.start())
+        if 0 <= end < stop:
+            stop = end
+        out[f"{m.group(1)} {m.group(2)}"] = normalize(src[m.start():stop])
+    return out
 
 
 def sigma_proofs_dir():
@@ -163,19 +162,9 @@ def main():
             line = src[:m.start()].count("\n") + 1
             failures.append(f"denied construct `{label}` at Population.lean:{line}")
 
-    # G2b — every theorem in the file must be guarded. A theorem nobody pinned
-    # is a theorem whose statement can be rewritten in silence, and "it was not
-    # on the list" is how the list stops covering the file it is about.
-    declared = set(re.findall(r"\btheorem\s+([A-Za-z_][\w.']*)", src))
-    for name in sorted(declared - set(GUARDED)):
-        failures.append(f"theorem `{name}` is declared but not in GUARDED — pin it "
-                        f"or delete it")
-    for name in sorted(set(GUARDED) - declared):
-        failures.append(f"guarded theorem `{name}` is not declared in Population.lean")
-
-    # G2c — pinned signatures
-    signatures = {name: extract_signature(src, name) for name in GUARDED}
-    digests = {n: hashlib.sha256(s.encode()).hexdigest() for n, s in signatures.items()}
+    # G2b/c — every declaration is pinned, whole.
+    signatures = extract_declarations(src)
+    digests = {n: hashlib.sha256(t.encode()).hexdigest() for n, t in signatures.items()}
 
     # G1 — the copied premise
     sgp = sigma_proofs_dir()
@@ -200,7 +189,7 @@ def main():
         PINS.write_text(json.dumps({
             "_README": [
                 "Pins for proofs/premise_guard.py. `statements` is the SHA-256 of",
-                "each guarded theorem's normalized source signature; `premise` is",
+                "EVERY declaration in Population.lean, whole; `premise` is",
                 "the SHA-256 of the sigma-glyph blocks the model was copied from.",
                 "A pin changing is not a defect — it is a claim changing, and it",
                 "must be reviewed as one.",
@@ -218,12 +207,14 @@ def main():
         for name, dig in digests.items():
             want = pins.get("statements", {}).get(name)
             if want is None:
-                failures.append(f"theorem `{name}` is guarded but not pinned")
+                failures.append(f"declaration `{name}` is not pinned — run --record "
+                                f"and review the diff")
             elif want != dig:
-                failures.append(f"STATEMENT CHANGED: `{name}`\n  now: {signatures[name]}")
+                failures.append(f"DECLARATION CHANGED: `{name}`\n  now: {signatures[name][:400]}")
         for name in pins.get("statements", {}):
             if name not in digests:
-                failures.append(f"pin for `{name}` has no guarded theorem")
+                failures.append(f"pin for `{name}` has no declaration — it was removed "
+                                f"or renamed")
         for header, dig in premise.items():
             want = pins.get("premise", {}).get(header)
             if want != dig:
@@ -271,7 +262,7 @@ def main():
     if skips:
         print("PREMISE-GUARD: NOT COMPLETE — a skipped surface is not a passed one")
         return 2
-    print(f"PREMISE-GUARD: ALL PASS ({len(GUARDED)} theorems pinned, premise "
+    print(f"PREMISE-GUARD: ALL PASS ({len(digests)} declarations pinned, premise "
           f"identical to sigma-glyph SizeBound.lean, lean green with no sorries)")
     return 0
 
