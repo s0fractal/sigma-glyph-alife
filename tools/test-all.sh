@@ -29,6 +29,11 @@ python3 tests/alife_differential.py --terms 80 \
 say "Population properties + the negative controls that prove they can fail"
 python3 tests/alife_conservation.py | tee /dev/stderr | grep -q "ALIFE-CONSERVATION: ALL PASS"
 
+say "Memoization: the answer does not move, and the price is not a free choice"
+# The memo is the one place this repository prices an action Book I does not
+# have. M3 is a control that must FAIL: at a flat price the memory bound breaks.
+python3 tests/alife_memo.py | tee /dev/stderr | grep -q "ALIFE-MEMO: ALL PASS"
+
 say "Guard regression: every gate puts its verdict in the EXIT STATUS"
 python3 tests/exit_status_guard.py | tee /dev/stderr | grep -q "EXIT-STATUS-GUARD: ALL PASS"
 

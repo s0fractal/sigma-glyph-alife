@@ -155,7 +155,7 @@ class Agent:
 
 
 # ---------- The driver: Book I's priced action, our loop ----------
-def reduce_slice(agent, store, slice_atp, limits=None, probe=False):
+def reduce_slice(agent, store, slice_atp, limits=None, probe=False, memo=None):
     """Spend up to `min(slice_atp, agent.atp)` on this agent and return what was
     spent. Sets `agent.status`; leaves `agent.term` at the stopping point.
 
@@ -173,6 +173,12 @@ def reduce_slice(agent, store, slice_atp, limits=None, probe=False):
     `probe=True` asserts the memory bound after every action, which is this
     repository's live-trace half of the Population.lean argument. It is O(size)
     per action; the experiments turn it on, the population loop does not.
+
+    `memo` is an optional `Memo`. When the machine's next action is a force of a
+    hash whose normal form is known, the normal form is installed instead, priced
+    by `memo.price`. A hit that the remaining budget cannot afford is SKIPPED
+    rather than fatal — the plain force costs at most 4, so an agent is never
+    starved by the existence of a shortcut it could not buy.
     """
     limits = limits or sg.DEFAULT_LIMITS
     if agent.status not in RUNNABLE:
@@ -195,6 +201,28 @@ def reduce_slice(agent, store, slice_atp, limits=None, probe=False):
             steps += 1
             if steps % 256 == 0:
                 sg.resource_check(agent.term, limits)
+            if memo is not None:
+                act = _next_action(agent.term)
+                if act is not None and act[0] == "force":
+                    entry = memo.lookup(act[1])
+                    if entry is None:
+                        memo.misses += 1
+                    else:
+                        nf, first_spent = entry
+                        cost = memo.price(nf)
+                        if cost <= budget - spent:
+                            agent.term = _replace_at(agent.term, act[2], nf)
+                            spent += cost
+                            memo.hits += 1
+                            memo.paid += cost
+                            memo.avoided += max(0, first_spent - cost)
+                            if probe:
+                                assert sg.size(agent.term) <= agent.s0 + agent.spent + spent, (
+                                    f"MEMORY BOUND VIOLATED by a memo hit: agent "
+                                    f"{agent.aid} size {sg.size(agent.term)} > s0 "
+                                    f"{agent.s0} + spent {agent.spent + spent}")
+                                agent.peak = max(agent.peak, sg.size(agent.term))
+                            continue
             try:
                 r = sg.step5(agent.term, budget - spent, store, agent.stats, limits)
             except sg.BudgetExhausted:
@@ -244,6 +272,108 @@ def outcome_hash(agent):
     if agent.status == UNRESOLVED:
         return sg.term_hash(("dis", sg.R_UNRES))
     return agent.hash
+
+
+# ---------- Memoization: what it costs to make sharing pay ----------
+# Book I charges every agent for every materialization, so two agents holding the
+# same subterm pay for it twice: sharing is a MEMORY phenomenon there and never an
+# energy one. That is why ALIFE-EXP-001 found no gradient toward sharing and why
+# the founding proposal had to invent a rebate to manufacture one.
+#
+# A content-addressed store can do better without inventing anything: one hash has
+# exactly one normal form (Book I determinism), so a normal form written back into
+# the store is a FUNCTION, not a cache heuristic. What it may cost is not a free
+# choice either — see `Memo.derived_price`.
+#
+# THIS IS NOT BOOK I. A memoizing evaluator returns a different `atp_spent` for the
+# same (hash, budget) than the reference oracle does, so it would fail Book I
+# conformance, which pins spend exactly. That collision is the subject of the need
+# packet in needs/; nothing here proposes a change to Book I.
+
+
+def _next_action(t, path=()):
+    """Mirror of `step5`'s dispatch: which action the machine will take next.
+
+    Returns `("force", hash, path)` when the next action materializes a thunk,
+    `("rule", None, ())` when it fires I/K/S or unwraps a REF, or None at a normal
+    form. It exists so a memo hit lands exactly where the machine actually
+    DEMANDED the hash — installing a normal form anywhere else would still be
+    sound (confluence), but it would buy structure the run never asked for and the
+    ATP figures would stop meaning what they say.
+
+    Held to `step5` by control M1 in `tests/alife_memo.py`, in the direction that
+    matters: every predicted force is a real force. The other direction is left
+    unchecked and stated — a mirror that missed a force would make the memo too
+    timid, never too greedy.
+    """
+    k = t[0]
+    if k == "thunk":
+        return None if t[1] in sg.GENESIS else ("force", t[1], path)
+    if k == "ref":
+        return ("rule", None, ())
+    if k != "app":
+        return None
+    f, a = t[1], t[2]
+    if sg.glyph_eq(f, sg.I_H):                                   # R-I
+        return ("rule", None, ())
+    if f[0] == "app":
+        if sg.glyph_eq(f[1], sg.K_H):                            # R-K
+            return ("rule", None, ())
+        if f[1][0] == "app" and sg.glyph_eq(f[1][1], sg.S_H):    # R-S
+            return ("rule", None, ())
+    left = _next_action(f, path + (1,))
+    return left if left is not None else _next_action(a, path + (2,))
+
+
+def _replace_at(t, path, node):
+    if not path:
+        return node
+    if path[0] == 1:
+        return ("app", _replace_at(t[1], path[1:], node), t[2])
+    return ("app", t[1], _replace_at(t[2], path[1:], node))
+
+
+class Memo:
+    """NodeHash -> its normal form, with the price of installing one.
+
+    THE PRICE IS FORCED, not chosen. Book I's §3.4 invariant rests on one
+    per-action premise: an action grows the term by at most `cost - 1`. Installing
+    a normal form of size k in place of a thunk of size 1 grows the term by k - 1,
+    so any price below k breaks the premise and with it `size <= spent + 1` — and
+    a price of exactly k makes the inequality TIGHT, which no other action in the
+    machine does. `Memo(price=lambda nf: 1)` is therefore not a cheaper policy, it
+    is an unsound one, and ALIFE-EXP-002 runs it as a control to watch the bound
+    break rather than asserting that it would.
+
+    What memoization buys is the WORK, not the space: an agent skips every action
+    inside the reduction and still prepays the size of what it receives. In a
+    size-priced machine, memoization can refund time and never space.
+    """
+
+    @staticmethod
+    def derived_price(nf):
+        return sg.size(nf)
+
+    def __init__(self, price=None):
+        self.nf = {}
+        self.price = price or Memo.derived_price
+        self.hits = 0
+        self.misses = 0
+        self.paid = 0            # ATP spent on hits
+        self.avoided = 0         # ATP the same work cost the first time round
+
+    def learn(self, root, term, spent):
+        """Record a normal form. Only ever called with a run that REACHED one:
+        a starved or unresolved agent knows nothing about the normal form of its
+        root. A hash whose normal form is itself (a bare genesis thunk) is not
+        recorded — it saves nothing and installing it would spin."""
+        if term == ("thunk", root) or root in self.nf:
+            return
+        self.nf[root] = (term, spent)
+
+    def lookup(self, h):
+        entry = self.nf.get(h)
+        return entry if entry else None
 
 
 # ---------- CAS traffic ----------
@@ -456,7 +586,7 @@ class Population:
     every phase that could depend on iteration order sorts by agent id first."""
 
     def __init__(self, store, agents, economy, rng, slice_atp=64,
-                 rebate_rate=0.0, transfers=False, probe=False):
+                 rebate_rate=0.0, transfers=False, probe=False, memo=None):
         self.store = store
         self.agents = list(agents)
         self.economy = economy
@@ -465,6 +595,7 @@ class Population:
         self.rebate_rate = rebate_rate
         self.transfers = transfers
         self.probe = probe
+        self.memo = memo
         self.tick = 0
         self.history = []
         self.archived = []
@@ -488,11 +619,16 @@ class Population:
                 continue
             budget = self.slice_atp
             while True:
-                got = reduce_slice(a, self.store, budget, probe=self.probe)
+                got = reduce_slice(a, self.store, budget, probe=self.probe,
+                                   memo=self.memo)
                 spent += got
                 if got or a.status != LIVE:
                     break
                 budget = min(a.atp, max(1, budget * 2))
+            if self.memo is not None and a.status == NORMAL:
+                # Only a run that REACHED a normal form knows one. A starved or
+                # unresolved agent has an opinion about its own root and no more.
+                self.memo.learn(a.root, a.term, a.spent)
         for a in self.agents:
             put_term(a.term, self.store)
         return spent

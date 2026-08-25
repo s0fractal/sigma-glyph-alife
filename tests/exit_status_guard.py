@@ -32,6 +32,8 @@ CASES = {
     "tests/alife_conservation.py": (["--runs", "2", "--ticks", "2"],
                                     "ALIFE-CONSERVATION: ALL PASS",
                                     ("    failures = []", "    failures = ['injected']")),
+    "tests/alife_memo.py": (["--terms", "12"], "ALIFE-MEMO: ALL PASS",
+                            ("    passed = all(ok)", "    passed = False")),
     "proofs/premise_guard.py": ([], "PREMISE-GUARD: ALL PASS",
                                 ("    failures, skips = [], []",
                                  "    failures, skips = ['injected'], []")),
