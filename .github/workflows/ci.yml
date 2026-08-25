@@ -1,0 +1,59 @@
+name: substrate
+on: [push, pull_request]
+
+# ONE pin of the dependency, for the whole workflow.
+#
+# WHAT THE PIN MEANS: a VERIFIED COMPATIBLE BASELINE — the sigma-glyph commit
+# whose consumed surfaces this repository has been checked against — not
+# "sigma-glyph's latest". Being behind its HEAD is the normal state and is not a
+# defect. The surfaces consumed are exactly three: impl/sigma_glyph.py (the Book
+# I oracle the driver and every receipt run on), proofs/SizeBound.lean (the
+# accounting model proofs/Population.lean copies), and nothing else.
+#
+# REFRESH ONLY when one of those two files actually changes. A refresh commit
+# must cite the old and new commits, name which of the two moved, and include
+# the re-recorded experiment receipt — the oracle's SHA-256 is IN that receipt,
+# so a new oracle is a new measurement, not a version bump.
+env:
+  SIGMA_GLYPH_PIN: d3f1b512a967b9c50111684efa512a48fce9ef8d
+
+permissions: {}
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
+        with: { python-version: '3.14' }   # the version the receipt was recorded on
+      - name: Fetch the pinned Book I oracle
+        run: |
+          set -euo pipefail
+          git clone -q https://github.com/s0fractal/sigma-glyph /tmp/sigma-glyph
+          git -C /tmp/sigma-glyph checkout -q "$SIGMA_GLYPH_PIN"
+          # The oracle is identified by its bytes everywhere else in this
+          # repository; say so here too, so a log line is enough to tell whether
+          # a receipt mismatch came from the oracle or from the substrate.
+          sha256sum /tmp/sigma-glyph/impl/sigma_glyph.py
+      - name: Install elan (pinned installer, pinned toolchain)
+        # Copied deliberately from sigma-glyph's proofs.yml, including its
+        # reason: this step decides whether the proofs check out, so the code
+        # that sets it up is part of what the proofs rest on. Pinned by commit
+        # AND verified by digest — the pin alone would still trust
+        # raw.githubusercontent to serve that commit honestly.
+        env:
+          ELAN_INIT_COMMIT: 55dc2814ca42ace25f05ba4dd7a43a8c701a0549
+          ELAN_INIT_SHA256: a620ff1641616222c8d37c54845492004bb84d6877cdbc944dd65c1aa685bf53
+        run: |
+          curl -sSf "https://raw.githubusercontent.com/leanprover/elan/${ELAN_INIT_COMMIT}/elan-init.sh" \
+            -o elan-init.sh
+          echo "${ELAN_INIT_SHA256}  elan-init.sh" | sha256sum -c -
+          sh elan-init.sh -y --default-toolchain "$(cat proofs/lean-toolchain)"
+          rm -f elan-init.sh
+          echo "$HOME/.elan/bin" >> "$GITHUB_PATH"
+      - name: The complete validation matrix
+        env:
+          SIGMA_GLYPH: /tmp/sigma-glyph/impl
+          SIGMA_GLYPH_PROOFS: /tmp/sigma-glyph/proofs
+        run: tools/test-all.sh
