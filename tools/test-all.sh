@@ -89,6 +89,30 @@ else
   skip "ALIFE-EXP-003 replay was not diffed against the committed receipt (no git)"
 fi
 
+say "ALIFE-EXP-007: controls only (the replay is a ten-minute job)"
+# Every control runs here, including C5 — the one that proves the core algorithm
+# returns nothing on an open chain, without which a peeling bug produces cores
+# from anything. The full replay lives in .github/workflows/exp-007.yml, path
+# filtered, on the sigma-glyph exp-004 precedent.
+if [[ "${RUN_SLOW:-0}" = "1" ]]; then
+  python3 experiments/alife-exp-007/measure.py --record | tail -6
+  if command -v git >/dev/null 2>&1 && git rev-parse --git-dir >/dev/null 2>&1; then
+    git diff --exit-code experiments/alife-exp-007/results.json
+  fi
+else
+  python3 experiments/alife-exp-007/measure.py --controls \
+    | tee /dev/stderr | grep -q "EXP-007-CONTROLS: ALL PASS"
+  if [[ "${EXP007_ELSEWHERE:-0}" = "1" ]]; then
+    # Not a skip: the surface IS checked, by .github/workflows/exp-007.yml on the
+    # same commit. Blanket ALLOW_SKIPS would have accepted every other gap too —
+    # a missing `lean`, an unreachable validator — so the exemption is named and
+    # scoped to the one surface another job covers.
+    printf '\n(ALIFE-EXP-007 full replay runs in its own workflow on this commit)\n'
+  else
+    skip "ALIFE-EXP-007 full replay (ten minutes) — set RUN_SLOW=1, or let its own workflow run it"
+  fi
+fi
+
 say "ALIFE-EXP-006 replay: what resumption is worth, in agents"
 python3 experiments/alife-exp-006/measure.py --record | tail -4
 if command -v git >/dev/null 2>&1 && git rev-parse --git-dir >/dev/null 2>&1; then

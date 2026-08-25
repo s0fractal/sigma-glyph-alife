@@ -73,4 +73,9 @@ jobs:
           SIGMA_GLYPH: /tmp/sigma-glyph/impl
           SIGMA_GLYPH_PROOFS: /tmp/sigma-glyph/proofs
           DECISION_ARCHAEOLOGY: /tmp/decision-archaeology
+          # The ten-minute soup replay is covered by .github/workflows/exp-007.yml
+          # on this same commit. This names that one surface rather than setting
+          # ALLOW_SKIPS, which would have swallowed a missing `lean` or an
+          # unreachable validator along with it.
+          EXP007_ELSEWHERE: '1'
         run: tools/test-all.sh

@@ -405,3 +405,39 @@ the resuming arm hits the budget ceiling — 47 of 64 is all 2000 ATP can settle
 while the restarting arm degrades monotonically (25, 21, 20, 16, 16). That reading
 was formed after seeing the numbers. The preregistered statement was about the
 gap; the gap does not grow; H3 fails.
+
+---
+
+## 2026-08-25 — ALIFE-EXP-007, where every criterion was met and none survived
+
+**D50. The preregistration required a null for one metric and not for the other
+two.** *Correction, and the pattern is now three for three.* EXP-007 conditioned
+its closure hypothesis on diversity — a null of sorts — and preregistered nothing
+for the L1-core or for the cross-budget overlap. All three criteria came back
+green; post-hoc nulls then refuted the core (a shuffled graph of the same density
+scores higher), showed the overlap statistic to be uninformative (the soups
+overlap even less than the cores), and reproduced 85–97% of the closure by
+shuffling the product order. *Practice adopted:* **every statistic that can be
+met by chance gets its chance model named in the preregistration, beside the
+threshold.** ALIFE-EXP-001 needed a null and had one; EXP-004 needed one and had
+one; this needed three and had none.
+
+**D51. The nulls went into the harness and the receipt, not into a scratch
+script.** They were found with a throwaway probe and would have stayed there. A
+null that is not replayable is an assertion, and this repository has spent five
+experiments learning not to make those.
+
+**D52. The exemption for the slow replay is named, not blanket.** The soup replay
+is a ten-minute job and now runs in its own path-filtered workflow, on the
+sigma-glyph exp-004 precedent. `tools/test-all.sh` would have reported it as a
+skip and exited non-zero, and the lazy fix — `ALLOW_SKIPS=1` in CI — would have
+swallowed a missing `lean` or an unreachable validator with it. `EXP007_ELSEWHERE`
+exempts exactly one surface, because another job covers exactly that one.
+
+**D53. Reported honestly rather than kept.** Three green criteria are the first
+time this repository has had a positive result to lose by looking harder. It
+looked, and the result says "not established, artifact, uninformative" in its own
+scorecard. What survives is narrower and worth more: a closure statistic and an
+L1-core over a bounded high-turnover soup are met by chance, and anyone measuring
+organization that way — including this repository an hour earlier — needs the
+shuffled-graph null beside the number.

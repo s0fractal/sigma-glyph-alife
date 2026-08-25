@@ -146,6 +146,19 @@ because the substrate can resume:
 > costs, and an agent's spend so far tells you almost nothing about what it still
 > owes.
 
+[ALIFE-EXP-007](experiments/alife-exp-007/RESULT.md) let agents interact the only
+way this substrate natively can — one applied to another **by root hash**, which
+is AlChemy's move with a price attached. All three preregistered criteria came
+back green. Then the nulls ran:
+
+> **Every criterion was met and none survived.** A shuffled reaction graph of the
+> same density yields a larger autocatalytic core than the real one. Cores at
+> different budgets barely overlap — and so do the *molecules*, even less. And 85
+> to 97% of the closure is reproduced by replaying the same products in a random
+> order. What is left is worth more than what was lost: **a closure statistic and
+> an L1-core over a bounded, high-turnover soup are met by chance**, and anyone
+> measuring organization that way needs a shuffled-graph null beside the number.
+
 That is what the separate repository is for. `sigma-glyph` is a specification
 under threshold-warrant governance; this is a place where a founding hypothesis
 can be wrong in public on the first measurement, and its replacement wrong on the
