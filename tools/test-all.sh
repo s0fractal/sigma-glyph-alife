@@ -34,6 +34,15 @@ say "Memoization: the answer does not move, and the price is not a free choice"
 # have. M3 is a control that must FAIL: at a flat price the memory bound breaks.
 python3 tests/alife_memo.py | tee /dev/stderr | grep -q "ALIFE-MEMO: ALL PASS"
 
+say "Chance models destroy exactly what they claim, and are sampled"
+# Two experiments in a row produced a positive result that a null destroyed, and
+# in both the null was drawn ONCE. The models live in impl/sigma_nulls.py now,
+# with the invariants each one asserts about itself checked here.
+python3 tests/alife_nulls.py | tee /dev/stderr | grep -q "ALIFE-NULLS: ALL PASS"
+
+say "Receipt guard: every null in every receipt says how many times it was drawn"
+python3 tools/receipt_guard.py | tee /dev/stderr | grep -q "RECEIPT-GUARD: ALL PASS"
+
 say "Guard regression: every gate puts its verdict in the EXIT STATUS"
 python3 tests/exit_status_guard.py | tee /dev/stderr | grep -q "EXIT-STATUS-GUARD: ALL PASS"
 

@@ -61,10 +61,18 @@ soup in a random order and closure barely moves:
 | 200 | 20260825 | 0.263 | 0.203 |
 | 200 | 20260826 | 0.348 | 0.295 |
 
-Between 85% and 97% of the closure is reproduced by shuffling. A residual of
-**+0.012 to +0.065** remains, consistently positive across four cells, which may
-be real — and no criterion was preregistered for it, so it is reported and not
-scored.
+Between 85% and 97% of the closure is reproduced by shuffling. A residual
+remains, and its size moved when the nulls were corrected:
+
+> **Correction, 2026-08-26.** These nulls were **single draws**. ALIFE-EXP-008
+> then had a finished positive result reversed by going from one draw to twenty
+> (`DECISIONS.md` D54), and `tools/receipt_guard.py` found the same defect sitting
+> in this receipt. Sampled twenty times through `impl/sigma_nulls.py`, the two
+> verdicts above do not move — a chance graph still yields a core as large, the
+> soups still overlap no more than the cores — but the closure residual falls from
+> **+0.012 … +0.065** to **−0.008 … +0.044**, i.e. one cell is now *below* its
+> null. The residual was already reported as unscored; it is now also reported as
+> not consistently positive.
 
 ## The scorecard that matters
 

@@ -46,6 +46,17 @@ says why it must not be reported as one: agents are born as root thunks, so a
 population at birth is 64 distinct addresses of size 1 and *cannot* share.
 Anything that materializes structure raises the number from there.
 
+> **Correction, 2026-08-26.** The two nulls below that *draw* — the size-matched
+> and the agent-count-matched — were single draws when this was written.
+> `tools/receipt_guard.py` found that in this published receipt after
+> ALIFE-EXP-008 had a positive result reversed by exactly the same defect
+> (`DECISIONS.md` D54, D58). They are sampled twenty times each now. The verdict
+> got **stronger**, not weaker: the settled population's 2.593 is below the
+> size-matched null's *minimum* over twenty draws (3.192, mean 3.682, max 4.454),
+> so H2's failure does not depend on which draw was reported. The third null is
+> not a chance model at all — it is the same 64 terms materialised — and is
+> renamed `unreduced_same_terms` to stop it claiming to be one.
+
 ## H2 fails, in all three nulls, in the same direction
 
 **A settled population shares LESS than an unreduced one.** 2.593 against 4.454

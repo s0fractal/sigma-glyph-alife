@@ -194,8 +194,12 @@ def measure(entries):
     for n in C.H3_SIZES:
         sub = entries[:n]
         total = C.H3_PER_AGENT * n
+        # Renamed from "null" 2026-08-26: this is a CONTROL ARM — the same
+        # colony spending nothing on a library — and not a chance model at all.
+        # Calling it a null made `tools/receipt_guard.py` demand a draw count for
+        # a deterministic run, and the guard was right to ask what the word meant.
         h3[str(n)] = {
-            "null": run_arm(sub, total, 0.0),
+            "no_library": run_arm(sub, total, 0.0),
             "library": run_arm(sub, total, C.H3_SHARE),
         }
     return {"grid": grid, "h3": h3}
@@ -241,9 +245,9 @@ def summarize(result):
     print(f"    {'N':>4s} {'null settled':>13s} {'library settled':>16s} {'Δ':>4s}")
     deltas = []
     for n, arms in result["h3"].items():
-        d = arms["library"]["settled"] - arms["null"]["settled"]
+        d = arms["library"]["settled"] - arms["no_library"]["settled"]
         deltas.append((int(n), d))
-        print(f"    {n:>4s} {arms['null']['settled']:>10d}/{n:<3s} "
+        print(f"    {n:>4s} {arms['no_library']['settled']:>10d}/{n:<3s} "
               f"{arms['library']['settled']:>13d}/{n:<3s} {d:>+4d}")
     print()
 

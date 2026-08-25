@@ -88,6 +88,12 @@ library its citizens are too poor to visit.
 > derive on demand. Filing what agents happen to finish is free and, on this
 > corpus, worth nothing.
 
+> **Naming correction, 2026-08-26.** The `s = 0` arm was called `null` in the
+> receipt. It is a **control arm** — the same colony spending nothing on a library
+> — and not a chance model, and calling it a null made `tools/receipt_guard.py`
+> demand a draw count for a deterministic run. The guard was right to ask what the
+> word meant. The receipt now calls it `no_library`; no number changed.
+
 ## H3 fails, and the reason is visible
 
 Δ over the null is +2 at N=16, +7 at N=32, +4 at N=64 — up then down. Two things

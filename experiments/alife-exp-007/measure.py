@@ -19,6 +19,7 @@ sys.path.insert(0, str(HERE.parents[1] / "impl"))
 
 import corpus as C  # noqa: E402
 import sigma_alife as al  # noqa: E402
+import sigma_nulls as N  # noqa: E402
 
 sg = al.sg
 DIS_HASHES = None
@@ -158,6 +159,7 @@ def controls(entries):
     return all(ok for _, ok in out), out
 
 
+NULL_DRAWS = 20             # one permutation is not a null: D54
 NULL_REACTIONS = 400        # the nulls run shorter than the measurement; they are
                             # about whether a STATISTIC is informative, not about
                             # the run, and a 7-minute null per cell buys nothing
@@ -172,6 +174,20 @@ def shuffled_core(edges, seed):
     products = [c for _, _, c in edges]
     rng.shuffle(products)
     return l1_core([(a, b, p) for (a, b, _), p in zip(edges, products)])
+
+
+def replay_closure(products, seed, capacity=C.CAPACITY):
+    """Closure of a product sequence replayed into a bounded soup, used as the
+    statistic the chance models are sampled against."""
+    soup, closed = [], 0
+    drop = random.Random(seed + 104729)
+    for p in products:
+        if p in soup:
+            closed += 1
+        soup.append(p)
+        if len(soup) > capacity:
+            soup.pop(drop.randrange(len(soup)))
+    return closed / max(1, len(products))
 
 
 def shuffled_closure(edges, seed, capacity=C.CAPACITY):
@@ -200,21 +216,35 @@ def jaccard(x, y):
 def nulls():
     """POST HOC — not preregistered. Every one of this experiment's three criteria
     is met by the data; each of these asks whether a chance process meets it too.
-    They were written after the criteria were met, and they overturn all three."""
+
+    CORRECTED 2026-08-26: these were single draws. One permutation is not a null
+    — ALIFE-EXP-008 had a finished positive result reversed by going from one draw
+    to twenty (`DECISIONS.md` D54) — and the same defect was here, in a published
+    result, unnoticed because its verdicts happened to survive. They are sampled
+    now, through `impl/sigma_nulls.py`, and the receipt carries the draw count.
+    The verdicts did not move; that they did not is a fact and was not a given."""
     out = {}
     for budget in (C.BUDGET_SWEEP[0], C.ATP_PER_REACTION):
         cell = {}
         for seed in C.SEEDS[:2]:
             r = run_soup(budget, seed, reactions=NULL_REACTIONS, keep_edges=True)
-            edges = r["edges"]
+            edges = [(i, a, b, c) for i, (a, b, c) in enumerate(r["edges"])]
+            core_dist = N.sample(edges, lambda e: len(l1_core(
+                [(a, b, c) for _, a, b, c in e])), "shuffle_products",
+                draws=NULL_DRAWS, seed=seed)
+            closure_dist = N.sample(edges, lambda e: replay_closure(
+                [c for _, _, _, c in e], seed), "shuffle_products",
+                draws=NULL_DRAWS, seed=seed + 1)
             cell[str(seed)] = {
-                "core_observed": len(l1_core(edges)),
-                "core_shuffled": len(shuffled_core(edges, seed)),
+                "core_observed": len(l1_core(r["edges"])),
+                "core_shuffled": core_dist["max"],
+                "core_shuffled_mean": core_dist["mean"],
                 "closure_observed": r["closure"],
-                "closure_shuffled": shuffled_closure(edges, seed),
+                "closure_shuffled": closure_dist["max"],
+                "closure_shuffled_mean": closure_dist["mean"],
+                "null_draws": NULL_DRAWS,
             }
         out[str(budget)] = cell
-    # H3's null: do the SOUPS overlap less than the cores?
     lo = run_soup(C.BUDGET_SWEEP[0], C.SEEDS[0], reactions=NULL_REACTIONS,
                   keep_edges=True)
     hi = run_soup(C.BUDGET_SWEEP[-1], C.SEEDS[0], reactions=NULL_REACTIONS,
@@ -223,6 +253,7 @@ def nulls():
         "core": jaccard(l1_core(lo["edges"]), l1_core(hi["edges"])),
         "products": jaccard({c for _, _, c in lo["edges"]},
                             {c for _, _, c in hi["edges"]}),
+        "null_draws": NULL_DRAWS,
     }
     return out
 
@@ -268,8 +299,8 @@ def summarize(result):
     n = result["nulls"]
     print("\nNULLS (post hoc, not preregistered) — every criterion above, "
           "against chance\n")
-    print(f"{'budget':>7s} {'seed':>10s} {'core':>6s} {'core/shuffled':>14s} "
-          f"{'closure':>8s} {'closure/shuffled':>17s}")
+    print(f"{'budget':>7s} {'seed':>10s} {'core':>6s} {'core/null max':>14s} "
+          f"{'closure':>8s} {'closure/null max':>17s}   (nulls sampled)")
     for budget, cells in n.items():
         if budget == "overlap":
             continue

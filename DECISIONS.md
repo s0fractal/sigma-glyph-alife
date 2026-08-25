@@ -477,3 +477,40 @@ hoc.** EXP-007 met three criteria and lost all three; EXP-008 met its first and
 lost it to a stronger chance model. Neither null was preregistered. That is now
 the single most reliable way this repository finds its own errors, and the least
 preregistered part of its method.
+
+---
+
+## 2026-08-26 — paying down D57
+
+**D58. The chance models are infrastructure now, not per-experiment code.**
+`impl/sigma_nulls.py` holds three, each destroying exactly one thing and holding
+the rest fixed — which pair made what (everywhere / only within a window), and
+when a reaction happened. `tests/alife_nulls.py` checks what each one *preserves*,
+because a null that quietly destroys more than it advertises makes any statistic
+significant. Every model returns a sampled distribution; none returns a graph.
+
+**D59. A spelling rule beats a good intention.** `tools/receipt_guard.py` walks
+every committed receipt, finds every key that names a null, and demands a draw
+count of at least 20 reachable from it. It cannot tell a good chance model from a
+bad one and does not pretend to; it can tell that nobody sampled one, which is the
+error that actually happened, twice.
+
+It found three things on its first run:
+  * **ALIFE-EXP-001's nulls were single draws**, in a published receipt. Sampled
+    now, and the verdict got *stronger*: the settled population sits below the
+    size-matched null's minimum over twenty draws, so H2's failure never depended
+    on which draw was reported.
+  * **ALIFE-EXP-007's nulls were single draws too.** Its two headline verdicts
+    survive sampling; its closure residual does not — it falls from
+    +0.012…+0.065 to −0.008…+0.044, so a number this repository published as
+    "consistently positive across four cells" is not.
+  * **ALIFE-EXP-003 was calling a control arm a null.** The `s = 0` colony is a
+    deterministic arm, not a chance model. Renamed `no_library`; no number moved.
+    The guard was right to ask what the word meant.
+
+**D60. The guard was wrong first, and was fixed rather than exempted.** Its first
+version looked for the draw count in the same object as the null's *name*, so a
+receipt that declares draws per cell — which is where the number belongs — was
+reported as an offender. Loosening a guard to fit a receipt is how guards die; the
+rule is now "findable from the thing it describes", which is what it should have
+said.

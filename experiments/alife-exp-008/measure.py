@@ -197,6 +197,7 @@ def analyse(run, seed):
         "best_window": best_w,
         "best_size": len(best),
         "null_local_at_best": curve[str(best_w)]["null_local"] if best_w else 0,
+        "null_draws": NULL_DRAWS,
         "history_core": len(history_core(run["edges"])),
         "alive": len(alive),
         "ok": run["ok"], "fail": run["fail"],

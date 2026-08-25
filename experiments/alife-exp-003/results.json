@@ -1186,7 +1186,7 @@
           "total_atp": 496,
           "total_spent": 438
         },
-        "null": {
+        "no_library": {
           "agent_spent": 496,
           "agents": 16,
           "atp_per_agent": 31,
@@ -1271,7 +1271,7 @@
           "total_atp": 992,
           "total_spent": 691
         },
-        "null": {
+        "no_library": {
           "agent_spent": 712,
           "agents": 32,
           "atp_per_agent": 31,
@@ -1389,7 +1389,7 @@
           "total_atp": 1984,
           "total_spent": 1513
         },
-        "null": {
+        "no_library": {
           "agent_spent": 1467,
           "agents": 64,
           "atp_per_agent": 31,

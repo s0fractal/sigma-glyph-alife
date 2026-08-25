@@ -194,9 +194,28 @@ def measure():
     pop, trace = run_population(entries, seed=C.SEED)
     result["mixed"] = {"birth": trace[0], "settled": trace[-1],
                        "ticks": len(trace) - 1, "trace": trace}
-    result["null"] = size_matched_null(trace[-1]["nodes_total"], seed=C.SEED + 1)
-    result["null_matched_agents"] = null_matched_agents(entries, seed=C.SEED + 2)
-    result["null_same_terms"] = null_same_terms(entries)
+    # CORRECTED 2026-08-26: the two nulls that DRAW are sampled now, twenty times
+    # each, rather than once. `tools/receipt_guard.py` found this in a published
+    # receipt; ALIFE-EXP-008 had a positive result reversed by exactly this
+    # (DECISIONS.md D54, D58). The third is not a chance model at all — it is the
+    # same 64 terms, materialised — so it is renamed to say so and carries no draw
+    # count.
+    draws = 20
+    sized = [size_matched_null(trace[-1]["nodes_total"], seed=C.SEED + 1 + d)
+             for d in range(draws)]
+    matched = [null_matched_agents(entries, seed=C.SEED + 2 + 1000 * d)
+               for d in range(draws)]
+
+    def dist(rows, key):
+        vals = [r[key] for r in rows]
+        return {"mean": sum(vals) / len(vals), "max": max(vals), "min": min(vals)}
+
+    result["null"] = dict(sized[0], null_draws=draws,
+                          sharing_factor_dist=dist(sized, "sharing_factor"))
+    result["null_matched_agents"] = dict(
+        matched[0], null_draws=draws,
+        sharing_factor_dist=dist(matched, "sharing_factor"))
+    result["unreduced_same_terms"] = null_same_terms(entries)
     return result
 
 
@@ -209,9 +228,14 @@ def summarize(result):
               f"{s['sharing_factor'] - b['sharing_factor']:+7.3f} "
               f"{s['nodes_total']:7d} {s['nodes_unique']:7d} "
               f"{s['atp_spent']:8d} {s['normal']:4d}/{s['agents']:<3d}")
+    for key in ("null", "null_matched_agents"):
+        d = result[key].get("sharing_factor_dist")
+        if d:
+            print(f"  {key}: sharing factor over {result[key]['null_draws']} draws "
+                  f"— mean {d['mean']:.3f}, range {d['min']:.3f}..{d['max']:.3f}")
     for label, key in (("NULL/size", "null"),
                        ("NULL/count*", "null_matched_agents"),
-                       ("NULL/same*", "null_same_terms")):
+                       ("NULL/same*", "unreduced_same_terms")):
         n = result[key]
         print(f"{label:10s} {'':8s} {n['sharing_factor']:8.3f} {'':7s} "
               f"{n['nodes_total']:7d} {n['nodes_unique']:7d} {'':8s} "
@@ -223,11 +247,23 @@ def summarize(result):
     print(f"H1 (settled > birth, mixed): "
           f"{m['sharing_factor']:.3f} vs {result['mixed']['birth']['sharing_factor']:.3f} "
           f"-> {'holds' if m['sharing_factor'] > result['mixed']['birth']['sharing_factor'] else 'FAILS'}")
-    print(f"H2 (settled > size-matched null): "
-          f"{m['sharing_factor']:.3f} vs {n['sharing_factor']:.3f} "
-          f"-> {'holds' if m['sharing_factor'] > n['sharing_factor'] else 'FAILS'}")
+    d = n.get("sharing_factor_dist")
+    if d:
+        # Scored against the null's MINIMUM over its draws: if the settled
+        # population is below even the friendliest draw, the verdict does not
+        # depend on which one was reported. It was reported from a single draw
+        # until 2026-08-26.
+        print(f"H2 (settled > size-matched null): {m['sharing_factor']:.3f} vs "
+              f"{d['mean']:.3f} mean over {n['null_draws']} draws "
+              f"(range {d['min']:.3f}..{d['max']:.3f}) -> "
+              f"{'holds' if m['sharing_factor'] > d['max'] else 'FAILS'}"
+              f"{' — below even the friendliest draw' if m['sharing_factor'] < d['min'] else ''}")
+    else:
+        print(f"H2 (settled > size-matched null): "
+              f"{m['sharing_factor']:.3f} vs {n['sharing_factor']:.3f} "
+              f"-> {'holds' if m['sharing_factor'] > n['sharing_factor'] else 'FAILS'}")
     for label, key in (("agent-count-matched", "null_matched_agents"),
-                       ("same terms unreduced", "null_same_terms")):
+                       ("same terms unreduced", "unreduced_same_terms")):
         nn = result[key]
         print(f"   post hoc, {label}: {m['sharing_factor']:.3f} vs "
               f"{nn['sharing_factor']:.3f} -> "

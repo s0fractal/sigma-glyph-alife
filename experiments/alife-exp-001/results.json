@@ -720,15 +720,27 @@
       "agents": 17,
       "nodes_total": 481,
       "nodes_unique": 108,
-      "sharing_factor": 4.453703703703703
+      "null_draws": 20,
+      "sharing_factor": 4.453703703703703,
+      "sharing_factor_dist": {
+        "max": 4.453703703703703,
+        "mean": 3.6820359357620935,
+        "min": 3.19205298013245
+      }
     },
     "null_matched_agents": {
       "agents": 64,
       "nodes_total": 1543,
       "nodes_unique": 393,
-      "sharing_factor": 3.926208651399491
+      "null_draws": 20,
+      "sharing_factor": 3.926208651399491,
+      "sharing_factor_dist": {
+        "max": 4.451327433628318,
+        "mean": 4.108739672017246,
+        "min": 3.792817679558011
+      }
     },
-    "null_same_terms": {
+    "unreduced_same_terms": {
       "agents": 64,
       "nodes_total": 1500,
       "nodes_unique": 376,

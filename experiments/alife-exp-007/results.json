@@ -42,33 +42,46 @@
       "200": {
         "20260825": {
           "closure_observed": 0.2634920634920635,
-          "closure_shuffled": 0.20317460317460317,
+          "closure_shuffled": 0.24126984126984127,
+          "closure_shuffled_mean": 0.2226984126984127,
           "core_observed": 0,
-          "core_shuffled": 0
+          "core_shuffled": 0,
+          "core_shuffled_mean": 0,
+          "null_draws": 20
         },
         "20260826": {
           "closure_observed": 0.34796238244514105,
-          "closure_shuffled": 0.2946708463949843,
+          "closure_shuffled": 0.30407523510971785,
+          "closure_shuffled_mean": 0.27899686520376177,
           "core_observed": 77,
-          "core_shuffled": 111
+          "core_shuffled": 94,
+          "core_shuffled_mean": 61.85,
+          "null_draws": 20
         }
       },
       "50": {
         "20260825": {
           "closure_observed": 0.43388429752066116,
-          "closure_shuffled": 0.4214876033057851,
+          "closure_shuffled": 0.44214876033057854,
+          "closure_shuffled_mean": 0.42169421487603304,
           "core_observed": 24,
-          "core_shuffled": 84
+          "core_shuffled": 93,
+          "core_shuffled_mean": 77.1,
+          "null_draws": 20
         },
         "20260826": {
           "closure_observed": 0.42857142857142855,
-          "closure_shuffled": 0.363265306122449,
+          "closure_shuffled": 0.42448979591836733,
+          "closure_shuffled_mean": 0.3930612244897959,
           "core_observed": 30,
-          "core_shuffled": 62
+          "core_shuffled": 80,
+          "core_shuffled_mean": 60.25,
+          "null_draws": 20
         }
       },
       "overlap": {
         "core": 0.05454545454545454,
+        "null_draws": 20,
         "products": 0.03197674418604651
       }
     },
