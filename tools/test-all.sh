@@ -65,6 +65,14 @@ else
   skip "experiment replay was not diffed against the committed receipt (no git)"
 fi
 
+say "ALIFE-EXP-003 replay: the committed receipt must be what it derives"
+python3 experiments/alife-exp-003/measure.py --record | tail -4
+if command -v git >/dev/null 2>&1 && git rev-parse --git-dir >/dev/null 2>&1; then
+  git diff --exit-code experiments/alife-exp-003/results.json
+else
+  skip "ALIFE-EXP-003 replay was not diffed against the committed receipt (no git)"
+fi
+
 say "The need packet reproduces what it claims"
 # sigma-glyph's own lesson: papers stated numbers about the repository and
 # nothing enforced them. A need packet is a document that states numbers about

@@ -107,10 +107,25 @@ preregistered hypotheses failed too. What it found instead:
 > the same memo cuts population ATP by 8–17%. **Sharing pays only where something
 > demands it by address, and lineage is the demand path that exists for free.**
 
+[ALIFE-EXP-003](experiments/alife-exp-003/RESULT.md) asked the economic question
+underneath that — *given a fixed amount of ATP, is a colony better off funding a
+shared library than its own agents?* — and got the repository's first positive
+result:
+
+> A library of normal forms, filled **on demand** out of a reservoir the agents
+> did not get, settles **37 of 64 agents against 33** at the same total ATP. It
+> can also be overfunded: at half the colony's ATP it settles 28, *worse than not
+> having one*. And it pays only in a band — at the poorest level tested, no share
+> beats no library at all. Every agent that settled under a library and not
+> without one had bought at least one entry: 4 of 4, 10 of 10, 14 of 14, 13 of 13.
+> Meanwhile the entries agents donate for free — EXP-002's mechanism — produced
+> 30 entries and **zero** hits. Everything the library is worth comes from what
+> somebody paid to derive on demand.
+
 That is what the separate repository is for. `sigma-glyph` is a specification
 under threshold-warrant governance; this is a place where a founding hypothesis
 can be wrong in public on the first measurement, and its replacement wrong on the
-second.
+second, before anything is right on the third.
 
 ## Layout
 

@@ -122,7 +122,7 @@ class Agent:
     plus the commons pool is invariant (see `Economy`).
     """
     __slots__ = ("aid", "root", "term", "atp", "spent", "status", "lineage",
-                 "born", "s0", "stats", "peak")
+                 "born", "s0", "stats", "peak", "hits")
 
     def __init__(self, aid, root, atp, lineage=(), born=0):
         self.aid = aid
@@ -136,6 +136,10 @@ class Agent:
         self.s0 = 1                    # a root thunk is size 1 (hash-leaf model)
         self.stats = {"fetches": 0}    # per LIFETIME, not per slice — see reduce_slice
         self.peak = 1
+        self.hits = 0                  # memo installs this agent bought. Per-agent
+                                       # so a colony-level win can be traced to the
+                                       # agents that actually used the mechanism,
+                                       # rather than inferred from a total.
 
     @property
     def size(self):
@@ -216,6 +220,7 @@ def reduce_slice(agent, store, slice_atp, limits=None, probe=False, memo=None):
                             agent.term = _replace_at(agent.term, act[2], nf)
                             spent += cost
                             memo.hits += 1
+                            agent.hits += 1
                             memo.hits_by_hash[act[1]] += 1
                             memo.paid += cost
                             memo.avoided += max(0, first_spent - cost)

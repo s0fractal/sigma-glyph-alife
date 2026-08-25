@@ -181,3 +181,77 @@ Pushing a branch and opening a PR against a governed repository is a distinct
 outward-facing action from publishing this one, and s0fractal authorized the
 second, not the first. The packet is complete and validated against
 `decision-archaeology.need@v0`; filing it takes one word.
+
+---
+
+## 2026-08-25 — ALIFE-EXP-003
+
+**D24. The experiment I announced last turn does not exist.** I proposed "memo hit
+rate against mutation distance" and then checked whether it could fire before
+building it. It cannot: a point mutation changes the hash of every node on the
+path to the root and leaves the sibling subtrees alone, so a descendant demands
+its own new root (never memoized) and surviving subterm hashes (which a memo
+keyed by whole-agent roots does not hold). Measured: hits at distance 1, 2, 4, 8
+were 2, 1, 0, 0 out of 8 — and the non-zero ones were mutations that happened to
+replace an atom with the same atom. There is no gradient of genetic distance to
+measure, only a binary: an agent either demands a known root or it does not.
+Proposing an experiment and then killing it with a five-minute probe is cheaper
+than preregistering it, so the probe is the rule and not the exception.
+
+**D25. The library is funded by the COLONY, not by the agent that missed.**
+Charging the first agent to demand a hash for deriving it makes that agent
+subsidise everyone after it, and a substrate whose costs depend on arrival order
+cannot be reasoned about. A colony-funded reservoir turns the mechanism question
+into an economic one — *is this worth funding* — which is the question worth
+asking and the one EXP-003 measures. → `ALIFE-EXP-003`.
+
+**D26. `Memo.learn` no longer trusts its caller.** *This entry is a correction.*
+Every call site guarded on `status == NORMAL`; the first thing that did not was
+my own throwaway probe, which filed the DISSONANCE of an unresolved run. It would
+have served that to every agent that asked afterwards. The guard moved into
+`learn`: a term with an action left is refused, and so are `DISSONANCE(ATP
+Exhausted)` and `DISSONANCE(Unresolved Reference)` — those are functions of a
+budget and of a store, not of the hash. `DISSONANCE(Invalid Object)` is a function
+of the bytes and is allowed. An API whose soundness depends on remembering to
+check is a bug with a delay.
+
+**D27. The library debits its reservoir up front.** *This entry is a correction.*
+A fill can trigger a fill; the worker held a view of the reservoir and the outer
+assignment overwrote what the nested one had booked, so the ledger lost ATP. The
+consequence of the fix is stated in the code rather than discovered later: a fill
+that has drawn the whole reservoir leaves nothing for a nested fill, so the
+librarian does not file recursively. Subterms are filed when an agent demands
+them directly.
+
+**D28. `s = 0` means no memoization at all**, not a memo with an empty reservoir.
+The second would have quietly included EXP-002's donation mechanism in the null
+and understated the library. The donation mechanism is measured separately as the
+`donation-only` diagnostic, which is **not** in the preregistration and is
+labelled everywhere it appears. It produced 30 entries and 0 hits — EXP-002's
+negative, reproduced in a different harness at a different scarcity.
+
+**D29. The one tuned number was chosen blind, before any arm ran.** EXP-002 had to
+learn this by wasting two frames (D20); here the scarcity level was picked by
+running the `s = 0` arm alone and taking a level inside a 40–70% settle band, with
+no library arm computed or guessed at, and two further levels preregistered so no
+conclusion rests on one economy. Applying a lesson before the fact is the only
+evidence that it was learned.
+
+**D30. H3's verdict was not softened to fit.** *This entry is a correction.* My
+summary code scored H3 as holding because the last delta exceeded the first. The
+preregistration says the advantage *increases* with population size; +2, +7, +4
+does not increase. The check is monotone now and H3 reads FAILS, in the
+repository's first experiment that had a positive result to protect.
+
+**D31. Agents count their own memo hits.** Added specifically so a colony-level
+win can be *traced* rather than inferred: of the agents that settled in a library
+arm and not in the null, 4 of 4, 10 of 10, 14 of 14 and 13 of 13 had bought at
+least one memo install. Without that column the result would have been a
+correlation between an arm and a count, with budget granularity as an untested
+rival explanation.
+
+**D32. No venue targets, no schedule.** s0fractal, 2026-08-25: these are our
+experiments and they are not attached to anything. `ALIFE-ADR-001 §9` already
+declined the founding proposal's 16-week plan and venue table as "a promise
+nothing can check"; this makes it a standing direction rather than a one-time
+rejection. Publish when there is something worth publishing, or do not.
