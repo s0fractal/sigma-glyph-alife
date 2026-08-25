@@ -89,6 +89,14 @@ else
   skip "ALIFE-EXP-003 replay was not diffed against the committed receipt (no git)"
 fi
 
+say "ALIFE-EXP-006 replay: what resumption is worth, in agents"
+python3 experiments/alife-exp-006/measure.py --record | tail -4
+if command -v git >/dev/null 2>&1 && git rev-parse --git-dir >/dev/null 2>&1; then
+  git diff --exit-code experiments/alife-exp-006/results.json
+else
+  skip "ALIFE-EXP-006 replay was not diffed against the committed receipt (no git)"
+fi
+
 say "ALIFE-EXP-005 addendum: where the copy-pricing discount binds"
 # Post hoc and by a different author from the harness, so it is run separately
 # and its receipt is diffed separately.

@@ -370,3 +370,38 @@ the arms would have put a second thing between the question and the answer, and
 the addendum questions the preregistration, not the implementation. Its numbers
 were verified first: an independently written R-S detector reproduces the
 harness's counts exactly, family by family.
+
+---
+
+## 2026-08-25 — ALIFE-EXP-006, the theorem finally used
+
+**D45. The power condition went into the preregistration, not the harness.** D42's
+lesson, applied: the document fixes a 25–75% settle band for the equal arm and
+says the run is UNADJUDICATED outside it, and the total was chosen blind by
+running that arm alone. It landed at 73% — inside, and close enough to the edge to
+be worth saying.
+
+**D46. Every threshold was a number before the harness existed.** D41's lesson:
+"≥ 8 agents", "doubles between 2 and 32 pulses", "25–75%". EXP-005 showed what
+happens otherwise — its implementer had to invent `2×` and seven-fewer-settlers,
+and said so. With no second model available for this one, numeric thresholds were
+the only compensation on offer.
+
+**D47. Integer division nearly produced a finding.** *Correction.* The allocator
+wrote `budget // n`; at 32 pulses that is `62 // 64 = 0`, so every agent received
+nothing and the equal arm settled 0 of 64. The first grid showed a dramatic
+collapse at fine granularity that would have been reported as a result about
+pulse size. It was a division. Fixed by distributing the remainder, and the
+concentration policies now pass leftover down the order after an agent settles,
+which is what the preregistration had said and the code had not done.
+
+**D48. A settled agent returns its unspent ATP at the end of a pulse.** Not
+specified in the preregistration; decided here and applied identically in every
+arm, because otherwise a policy that settles agents early is penalised by ATP
+frozen inside them.
+
+**D49. H3's explanation is post hoc and labelled.** The premium plateaus because
+the resuming arm hits the budget ceiling — 47 of 64 is all 2000 ATP can settle —
+while the restarting arm degrades monotonically (25, 21, 20, 16, 16). That reading
+was formed after seeing the numbers. The preregistered statement was about the
+gap; the gap does not grow; H3 fails.

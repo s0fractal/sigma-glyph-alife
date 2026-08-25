@@ -132,6 +132,20 @@ result:
 > 30 entries and **zero** hits. Everything the library is worth comes from what
 > somebody paid to derive on demand.
 
+[ALIFE-EXP-006](experiments/alife-exp-006/RESULT.md) finally spent the theorem.
+Deliver a colony's ATP in pulses instead of one endowment, and an agent stopped
+mid-reduction is holding capital — work already paid for, which persists only
+because the substrate can resume:
+
+> **Resumption is worth about half the population.** On the same 2000 ATP and the
+> same schedule, a resuming colony settles 47 of 64 agents where a restarting one
+> settles 16. But nothing the colony can *see* spends that capital better than an
+> even split: concentration recovers 96% of the stranded ATP — 1003 down to 44 —
+> and converts it into **two** more settled agents. Stranded capital is not
+> recoverable capital; the binding constraint is the distribution of remaining
+> costs, and an agent's spend so far tells you almost nothing about what it still
+> owes.
+
 That is what the separate repository is for. `sigma-glyph` is a specification
 under threshold-warrant governance; this is a place where a founding hypothesis
 can be wrong in public on the first measurement, and its replacement wrong on the
