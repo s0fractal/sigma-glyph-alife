@@ -207,13 +207,16 @@ def reduce_slice(agent, store, slice_atp, limits=None, probe=False, memo=None):
                     entry = memo.lookup(act[1])
                     if entry is None:
                         memo.misses += 1
-                    else:
+                        if memo.on_miss(act[1], store, limits):
+                            entry = memo.lookup(act[1])
+                    if entry is not None:
                         nf, first_spent = entry
                         cost = memo.price(nf)
                         if cost <= budget - spent:
                             agent.term = _replace_at(agent.term, act[2], nf)
                             spent += cost
                             memo.hits += 1
+                            memo.hits_by_hash[act[1]] += 1
                             memo.paid += cost
                             memo.avoided += max(0, first_spent - cost)
                             if probe:
@@ -358,22 +361,128 @@ class Memo:
         self.nf = {}
         self.price = price or Memo.derived_price
         self.hits = 0
+        self.hits_by_hash = Counter()   # which entries were ever bought again:
+                                        # an entry filed and never demanded twice
+                                        # is work the colony paid for and nobody
+                                        # used, and that waste is the whole risk
+                                        # of a demand-filled library
         self.misses = 0
         self.paid = 0            # ATP spent on hits
         self.avoided = 0         # ATP the same work cost the first time round
 
     def learn(self, root, term, spent):
-        """Record a normal form. Only ever called with a run that REACHED one:
-        a starved or unresolved agent knows nothing about the normal form of its
-        root. A hash whose normal form is itself (a bare genesis thunk) is not
-        recorded — it saves nothing and installing it would spin."""
-        if term == ("thunk", root) or root in self.nf:
-            return
+        """Record a normal form, and refuse anything that is not one.
+
+        The first version trusted its caller — every caller in this repository
+        guards on `status == NORMAL`, and the first thing that did not was a
+        throwaway probe, which happily filed the DISSONANCE of an unresolved run
+        and would have handed it to every agent that asked afterwards. An API
+        whose soundness rests on remembering to check is a bug with a delay, so
+        the check moved in here:
+
+          * a term with an action still available is not a normal form;
+          * `DISSONANCE(ATP Exhausted)` and `DISSONANCE(Unresolved Reference)`
+            are functions of a BUDGET and a STORE, not of the hash — the same
+            hash resolves differently with more ATP or a fuller store, so they
+            are never memoizable. `DISSONANCE(Invalid Object)` is a function of
+            the bytes and is allowed;
+          * a hash whose normal form is itself saves nothing and would spin.
+        """
+        if root in self.nf or term == ("thunk", root):
+            return False
+        if _next_action(term) is not None:
+            return False
+        if term[0] == "dis" and term[1] in (sg.R_ATP, sg.R_UNRES):
+            return False
         self.nf[root] = (term, spent)
+        return True
+
+    def on_miss(self, h, store, limits=None):
+        """A plain memo learns only what its agents finish. Returns False: there
+        is nothing to be done about a miss. `Library` overrides this."""
+        return False
 
     def lookup(self, h):
         entry = self.nf.get(h)
         return entry if entry else None
+
+
+
+class Library(Memo):
+    """A memo the COLONY pays for, filled on demand rather than on completion.
+
+    ALIFE-EXP-002 found that a memo keyed by whole-agent normal forms fires only
+    where lineage supplies a demand path, and named the alternative as the road
+    not taken: memoize the SUBTERMS agents actually ask for. The objection to it
+    was never soundness — Book I determinism makes any hash's normal form a
+    function — but accounting. Reducing a hash the moment somebody asks for it is
+    work nobody has paid for, and charging it to the agent that missed would make
+    the first agent to want a thing subsidise everyone after it.
+
+    So the colony pays. A `Library` holds a reservoir set aside from the commons;
+    on a miss it spends its OWN ATP to reduce the demanded hash to a normal form,
+    using the same driver at the same prices, and files it. Later agents buy it
+    at `size(nf)` like any other memo hit. Nothing is minted and nothing is free:
+    the library's reservoir is ATP the agents did not get, which is exactly the
+    trade ALIFE-EXP-003 measures.
+
+    Three guards, each with a reason:
+      * `in_progress` — filing a hash demands its subterms, which can demand it
+        again through a REF cycle. A hash being filed is not filed twice.
+      * `max_depth` — filing recurses; without a bound one miss can walk a whole
+        store.
+      * a librarian run that does NOT reach a normal form files nothing and is
+        counted as `failed`. It still spent the ATP. That is the waste this
+        mechanism can lose money on, and it is reported rather than hidden.
+    """
+
+    def __init__(self, price=None, atp=0, max_depth=4, fill_cap=None):
+        super().__init__(price)
+        self.atp = atp               # the reservoir the commons set aside
+        self.fill_cap = fill_cap     # per-fill draw; None = whatever is left
+        self.spent = 0               # what filing has cost so far
+        self.filed = 0
+        self.failed = 0
+        self.in_progress = set()
+        self.depth = 0
+        self.max_depth = max_depth
+
+    def on_miss(self, h, store, limits=None):
+        if self.atp <= 0 or h in self.nf or h in self.in_progress:
+            return False
+        if self.depth >= self.max_depth:
+            return False
+        self.in_progress.add(h)
+        self.depth += 1
+        try:
+            # DEBIT UP FRONT, credit the remainder back. The first version handed
+            # the worker a VIEW of the reservoir and assigned `self.atp =
+            # worker.atp` afterwards, which is correct only while nothing else
+            # touches the reservoir in between — and a fill can trigger a fill.
+            # A nested fill updated the reservoir, the outer assignment then
+            # overwrote it, and the ledger lost ATP. Caught by control L3, which
+            # exists because a conserved ledger that stops being conserved is the
+            # one failure this substrate cannot notice on its own.
+            #
+            # A consequence, stated rather than hidden: a fill that has taken the
+            # whole reservoir leaves nothing for a fill nested inside it, so the
+            # librarian does not file recursively. Subterms get filed when an
+            # agent demands them directly, one miss at a time.
+            draw = min(self.atp, self.fill_cap or self.atp)
+            self.atp -= draw
+            worker = Agent(f"lib:{h.hex()[:8]}", h, draw)
+            reduce_slice(worker, store, draw, limits=limits, memo=self)
+            self.spent += worker.spent
+            self.atp += worker.atp         # unspent budget returns to the pool
+            if worker.status == NORMAL and self.learn(h, worker.term, worker.spent):
+                put_term(worker.term, store)
+                self.filed += 1
+                return True
+            self.failed += 1
+            return False
+        finally:
+            self.depth -= 1
+            self.in_progress.discard(h)
 
 
 # ---------- CAS traffic ----------
@@ -520,8 +629,12 @@ class Economy:
         self.pool += amount
         return amount
 
-    def check(self, agents):
+    def check(self, agents, extra=()):
+        """`extra` is anything else holding ATP that is not an agent — a
+        `Library` reservoir, for instance. Leaving it out of the sum is how a
+        conserved ledger quietly stops being one."""
         held = sum(a.atp + a.spent for a in agents)
+        held += sum(x.atp + x.spent for x in extra)
         return self.pool + held == self.endowment
 
 

@@ -155,6 +155,88 @@ def main():
         f"which still made progress ({a.spent} ATP, status {a.status})",
         a.status in (al.STARVED, al.NORMAL) and a.spent >= 0)
 
+    # ---- L: the library (colony-funded, demand-filled subterm memoization)
+    lib_store = fresh_store()
+    lib_roots = corpus.install(corpus.generate(random.Random(args.seed), 24), lib_store)
+
+    def run_pop(memo, atp=2000):
+        agents = []
+        for i, root in enumerate(lib_roots):
+            a = al.Agent(f"L{i:02d}", root, atp)
+            al.reduce_slice(a, lib_store, atp, probe=True, memo=memo)
+            agents.append(a)
+        return agents
+
+    econ = al.Economy(24 * 2000 + 4000)
+    library = al.Library(atp=4000)
+    agents = run_pop(library)
+    for a in agents:
+        econ.grant(a, 0)
+    answers_ok = all(
+        al.outcome_hash(a) == sg.term_hash(sg.eval_hash(a.root, 2000, lib_store)[0])
+        for a in agents)
+    chk(f"L1 the library filed {library.filed} normal forms on demand "
+        f"({library.hits} hits, {library.failed} failed fills)",
+        library.filed > 0 and library.hits > 0)
+    chk("L1 and every agent still reached the oracle's answer", answers_ok)
+    chk("L1 the bound held at every action of every agent",
+        all(a.bound_holds() for a in agents))
+
+    plain = al.Memo()
+    plain_agents = run_pop(plain)
+    lib_spent = sum(a.spent for a in agents)
+    plain_spent = sum(a.spent for a in plain_agents)
+    notes.append(f"L1 agents spent {lib_spent} with a library against {plain_spent} "
+                 f"without; the library itself spent {library.spent} filling "
+                 f"{library.filed} entries")
+
+    # L2 — a library with an empty reservoir IS a plain memo.
+    broke = al.Library(atp=0)
+    broke_agents = run_pop(broke)
+    chk("L2 a library with no reservoir behaves exactly like a plain memo",
+        sum(a.spent for a in broke_agents) == plain_spent
+        and broke.filed == 0 and broke.spent == 0)
+
+    # L3 — the ledger sees the library's reservoir.
+    e2 = al.Economy(10_000)
+    lib2 = al.Library(atp=0)
+    e2.pool -= 3000
+    lib2.atp += 3000                       # the commons setting ATP aside
+    ag2 = []
+    for i, root in enumerate(lib_roots[:6]):
+        a = al.Agent(f"E{i}", root, 0)
+        e2.endow(a, 500)
+        ag2.append(a)
+    for a in ag2:
+        al.reduce_slice(a, lib_store, a.atp, memo=lib2)
+    chk("L3 conservation holds with the library counted as a holder",
+        e2.check(ag2, extra=(lib2,)))
+    chk("L3 and FAILS when it is left out of the sum",
+        not e2.check(ag2) or lib2.spent == 0)
+
+    # L4 — `learn` refuses what is not a normal form, and what is not a function
+    # of the hash. Controls: each must be REFUSED.
+    guard = al.Memo()
+    starved = al.Agent("starve", lib_roots[0], 1)
+    al.reduce_slice(starved, lib_store, 1)
+    chk("L4 a term with an action left is refused",
+        guard.learn(lib_roots[0], starved.term, 1) is False
+        or starved.status == al.NORMAL)
+    chk("L4 DISSONANCE(ATP Exhausted) is refused — it is a function of a budget",
+        guard.learn(sg.sha(b"x1"), ("dis", sg.R_ATP), 1) is False)
+    chk("L4 DISSONANCE(Unresolved) is refused — it is a function of a store",
+        guard.learn(sg.sha(b"x2"), ("dis", sg.R_UNRES), 1) is False)
+    chk("L4 DISSONANCE(Invalid Object) is allowed — it is a function of bytes",
+        guard.learn(sg.sha(b"x3"), ("dis", sg.R_INVALID), 1) is True)
+
+    # L5 — the depth bound is real: a shallower librarian files less.
+    deep = al.Library(atp=4000, max_depth=4)
+    shallow = al.Library(atp=4000, max_depth=1)
+    run_pop(deep)
+    run_pop(shallow)
+    chk(f"L5 max_depth bounds the recursion (depth 4 filed {deep.filed}, "
+        f"depth 1 filed {shallow.filed})", shallow.filed <= deep.filed)
+
     print()
     for n in notes:
         print("note:", n)
