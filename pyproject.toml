@@ -1,0 +1,37 @@
+[build-system]
+requires = ["setuptools>=77"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "sigma-glyph-alife"
+version = "0.1.0"
+description = "ATP-limited population dynamics on the Σ-GLYPH content-addressed combinator machine: agents that starve without dying, and a memory bound that survives being interrupted."
+readme = "README.md"
+requires-python = ">=3.9"
+license = "MIT"
+license-files = ["LICENSE"]
+authors = [{ name = "s0fractal" }]
+keywords = ["artificial-life", "content-addressed", "deterministic", "ski", "combinators", "resource-bounded"]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Science/Research",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3",
+    "Topic :: Scientific/Engineering :: Artificial Life",
+]
+# Book I is the whole dependency. The upper bound is not defensive habit: the
+# substrate reads `step5`, `size` and the ATP pricing directly, which are
+# semantics a MINOR release is allowed to change, and ALIFE-ADR-001 §5 is the
+# deviation that would go silent if it did.
+dependencies = ["sigma-glyph>=0.6.7,<0.7.0"]
+
+[project.urls]
+Homepage = "https://github.com/s0fractal/sigma-glyph-alife"
+Repository = "https://github.com/s0fractal/sigma-glyph-alife"
+"Book I (the dependency)" = "https://github.com/s0fractal/sigma-glyph"
+
+# Same flat layout as sigma-glyph: the file you read is the file that runs, and
+# `python3 impl/sigma_alife.py` is its own self-test.
+[tool.setuptools]
+package-dir = { "" = "impl" }
+py-modules = ["sigma_alife"]
