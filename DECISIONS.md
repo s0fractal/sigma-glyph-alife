@@ -522,3 +522,41 @@ at 3000 ATP, at 101 seconds per soup, three seeds in each of two experiments. Th
 two replays are separate jobs now, running in parallel, with a 45-minute limit
 each. Trimming the corpus or the budget sweep would have been changing a result to
 fit a runner.
+
+---
+
+## 2026-08-26 — filed
+
+**D62. DA-SIGMA-0002 is filed, on a branch, unmerged.** s0fractal authorized the
+filing and asked explicitly that it not be merged, so it goes through review:
+[s0fractal/sigma-glyph#25](https://github.com/s0fractal/sigma-glyph/pull/25),
+`needs/da-sigma-0002-memo-pricing` → `master`.
+
+How, and what was checked:
+
+  * **On a worktree, never on their checkout.** sigma-glyph was sitting on
+    `spec/adr-009-candidate`; a branch checkout there would have moved somebody
+    else's working tree. A temporary worktree from `origin/master` left it
+    untouched, and was removed afterwards.
+  * **Branched from the exact revision the packet names.** `origin/master` is
+    `d3f1b51`, which is the manifest's `target.revision` and this repository's own
+    `SIGMA_GLYPH_PIN`. The packet is filed against the commit it was measured on.
+  * **The reproducer was run inside their checkout**, against their
+    `impl/sigma_glyph.py` (SHA-256 `413d1f98…`, the digest the packet cites), and
+    printed `DA-SIGMA-0002: REPRODUCED`.
+  * **Their CI validated it**: `test`, `lean`, `cross-repo`, SonarCloud and
+    GitGuardian all pass on the PR, and their `test` job runs the pinned
+    `needs@v0` validator over the packet.
+  * **Nothing claims review or adoption.** The commit says in as many words that
+    no gate was run, no roster saw it, and merging would record demand and routing
+    only. The disposition stays `untriaged` — that field is theirs to write, not
+    mine, and writing it would be the false-provenance failure their `AGENTS.md`
+    exists to prevent.
+
+**D63. Two polling loops of mine had been spinning for two and a half hours.**
+*Correction, in my own housekeeping.* `until grep -q "oracle:" <file>; do sleep 30;
+done` waits forever when the run it watches dies with a traceback instead of
+printing that marker — which is exactly what happened twice while EXP-008's
+harness was being fixed. Later loops match `oracle:|Traceback`; the two survivors
+were killed. A wait condition that only recognises success is a hang with a
+schedule.

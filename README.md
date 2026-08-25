@@ -225,7 +225,10 @@ the pin.
 - `needs/DA-SIGMA-0002-memo-pricing/` — the one question this work sends back to
   Book I: may a conforming implementation reuse a result it has already paid for,
   and at which of two prices? Filed as a `decision-archaeology.need@v0` packet
-  with a reproducer, not as a proposal. Prepared, not yet filed upstream.
+  with a reproducer, not as a proposal. **Filed 2026-08-26** as
+  [s0fractal/sigma-glyph#25](https://github.com/s0fractal/sigma-glyph/pull/25) —
+  open, unmerged, awaiting owner-side triage. Its disposition stays `untriaged`
+  until they say otherwise.
 - `RELATED.md` — the two nearest ancestors (Fontana & Buss's AlChemy; Kruszewski
   & Mikolov's Combinatory Chemistry) and what is actually new here, which is the
   machine and not the metaphor.
