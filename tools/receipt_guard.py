@@ -13,6 +13,7 @@ object. It is a spelling rule, deliberately: it cannot tell a good chance model
 from a bad one, and it can tell that nobody sampled one.
 
 Usage:  python3 tools/receipt_guard.py
+        python3 tools/receipt_guard.py --self-test   (the negative controls)
 """
 import json
 import sys
@@ -23,32 +24,74 @@ MIN_DRAWS = 20
 NULL_KEYS = ("null", "shuffled", "chance")
 
 
-def has_draws(obj):
-    """Does a draw count of at least MIN_DRAWS live anywhere inside this value?
-    The first version only looked in the SAME object, so a receipt that named its
-    nulls at the top and declared the draws per cell — which is where the number
-    belongs — was reported as an offender. The rule is: the count has to be
-    findable from the thing it describes, not adjacent to its name."""
+def declared_draws(obj):
+    """Every draw count declared anywhere INSIDE this value, in document order.
+
+    Returns a list rather than a boolean, because "is there a big enough number
+    somewhere" and "is every number here big enough" are different questions and
+    the first version asked the wrong one. See `offenders`.
+    """
+    out = []
     if isinstance(obj, dict):
-        d = obj.get("null_draws", obj.get("draws"))
-        if isinstance(d, int) and d >= MIN_DRAWS:
-            return True
-        return any(has_draws(v) for v in obj.values())
-    if isinstance(obj, list):
-        return any(has_draws(v) for v in obj)
-    return False
+        for key in ("null_draws", "draws"):
+            if isinstance(obj.get(key), int):
+                out.append(obj[key])
+        for v in obj.values():
+            out += declared_draws(v)
+    elif isinstance(obj, list):
+        for v in obj:
+            out += declared_draws(v)
+    return out
+
+
+def own_draws(obj):
+    """The draw count this object declares for itself, or None. This is the
+    "explicitly defined parent schema" case: a cell that names several nulls and
+    states one `null_draws` beside them describes all of them."""
+    if not isinstance(obj, dict):
+        return None
+    for key in ("null_draws", "draws"):
+        if isinstance(obj.get(key), int):
+            return obj[key]
+    return None
 
 
 def offenders(obj, path=""):
-    """Yield (path, reason) for every named null with no sampling behind it."""
+    """Yield (path, reason) for every named null with no sampling behind it.
+
+    THE LOCALITY RULE, and the bug it is a fix for. The first version asked
+    `has_draws(obj)` — does a draw count of at least MIN_DRAWS live anywhere
+    inside the CONTAINING dictionary — which let one unrelated sibling license
+    every null beside it. Codex's review supplied the reproducer:
+
+        offenders({"null_a": {"draws": 1}, "unrelated": {"draws": 20}})  ->  []
+
+    A guard whose stated rule is locality and whose implementation searches
+    arbitrary siblings is worse than no guard, because it reads as enforcement.
+    The rule now binds a count to the null it describes:
+
+      * every draw count declared inside the named null's own value must be at
+        least MIN_DRAWS, and there must be at least one of them; or
+      * if that value declares none — a null reported as a bare number, which is
+        the common case — the count comes from the named null's OWN parent
+        object and from nowhere else.
+
+    A sibling subtree is never consulted."""
     if isinstance(obj, dict):
         named = [k for k in obj
                  if any(t in k.lower() for t in NULL_KEYS)
                  and not k.lower().endswith("draws")]
         for k in named:
-            if has_draws(obj) or has_draws(obj[k]):
+            inside = declared_draws(obj[k])
+            if inside:
+                if min(inside) >= MIN_DRAWS:
+                    continue
+                yield (path or "<root>",
+                       f"`{k}` with only {min(inside)} draws")
                 continue
-            d = obj.get("null_draws", obj.get("draws"))
+            d = own_draws(obj)
+            if d is not None and d >= MIN_DRAWS:
+                continue
             why = (f"`{k}` with only {d} draws" if d is not None
                    else f"`{k}` with no draw count")
             yield path or "<root>", why
@@ -59,7 +102,46 @@ def offenders(obj, path=""):
             yield from offenders(v, f"{path}[{i}]")
 
 
+# ---------- negative controls ----------
+# A guard with no failing case is a guard nobody has seen fail. Each mutation
+# below is a way a receipt has actually been wrong, or — for the third — a way
+# this guard WAS wrong until Codex's review of 2026-08-26.
+MUTATIONS = (
+    ("deletion: a named null with no draw count at all",
+     {"core_shuffled": 12}),
+    ("undersampling: the ALIFE-EXP-008 defect, one draw",
+     {"core_shuffled": 12, "null_draws": 1}),
+    ("unrelated sibling: a draw count that describes something else",
+     {"null_a": {"draws": 1}, "unrelated": {"draws": MIN_DRAWS}}),
+    ("nested undersampling: a big count at the top, a small one in a cell",
+     {"nulls": {"draws": MIN_DRAWS, "cell": {"chance_max": 3, "draws": 2}}}),
+)
+CLEAN = (
+    ("a null with its own count", {"core_shuffled": 12, "null_draws": MIN_DRAWS}),
+    ("a null whose cells carry the count",
+     {"nulls": {"a": {"chance_max": 3, "draws": MIN_DRAWS}}}),
+)
+
+
+def self_test():
+    """Every mutation must be caught and every clean case must pass."""
+    ok = True
+    for why, doc in MUTATIONS:
+        found = list(offenders(doc))
+        print(("OK  " if found else "FAIL"), f"caught - {why}")
+        ok = ok and bool(found)
+    for why, doc in CLEAN:
+        found = list(offenders(doc))
+        print(("OK  " if not found else "FAIL"), f"passed - {why}")
+        ok = ok and not found
+    print(f"\nRECEIPT-GUARD-SELFTEST: {'ALL PASS' if ok else 'FAILURES PRESENT'} "
+          f"({len(MUTATIONS)} mutations, {len(CLEAN)} clean cases)")
+    return 0 if ok else 1
+
+
 def main():
+    if "--self-test" in sys.argv:
+        return self_test()
     receipts = sorted(ROOT.glob("experiments/*/results.json")) + \
         sorted(ROOT.glob("experiments/*/*.json"))
     seen, bad = set(), []

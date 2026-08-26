@@ -39,6 +39,14 @@ CASES = {
     "proofs/premise_guard.py": ([], "PREMISE-GUARD: ALL PASS",
                                 ("    failures, skips = [], []",
                                  "    failures, skips = ['injected'], []")),
+    # Added 2026-08-26 after Codex's review: both of these ARE gates — one is
+    # the receipt guard's own negative controls, the other is the proof that a
+    # changed result is caught by something. A gate that reports its verdict
+    # only on stdout is the exact defect this file exists for.
+    "tools/receipt_guard.py": (["--self-test"], "RECEIPT-GUARD-SELFTEST: ALL PASS",
+                               ("    ok = True", "    ok = False")),
+    "tests/receipt_identity_guard.py": ([], "RECEIPT-IDENTITY-GUARD: ALL PASS",
+                                        ("    ok = True", "    ok = False")),
 }
 
 
@@ -51,8 +59,16 @@ def main():
     env = dict(os.environ)
     # The throwaway copy has no sibling sigma-glyph checkout above it, so the
     # oracle has to be named explicitly — the same variable the loader documents.
-    env["SIGMA_GLYPH"] = str(Path(al.ORACLE_SOURCE.replace("installed:", "")).parent)
-    env["SIGMA_GLYPH_PROOFS"] = str(Path(env["SIGMA_GLYPH"]).parent / "proofs")
+    # RESOLVED, not as written. `ORACLE_SOURCE` is normally a RELATIVE path
+    # (`../sigma-glyph/impl/sigma_glyph.py`, the sibling checkout), and the
+    # throwaway tree lives under /tmp where that resolves to nothing — so the
+    # premise guard reported a missing SizeBound.lean and this file printed
+    # FAILURES PRESENT on a repository whose every gate was green. Codex's
+    # review asked for one canonical command that is terminal; a guard that
+    # cannot find its own dependency is one of the reasons it was not.
+    sigma = Path(al.ORACLE_SOURCE.replace("installed:", "")).resolve().parent
+    env["SIGMA_GLYPH"] = str(sigma)
+    env["SIGMA_GLYPH_PROOFS"] = str(sigma.parent / "proofs")
 
     ok = []
     with tempfile.TemporaryDirectory() as tmp:
