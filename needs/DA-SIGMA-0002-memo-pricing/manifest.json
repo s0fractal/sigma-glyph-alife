@@ -6,7 +6,7 @@
   "status": "filed",
   "source": {
     "repository": "https://github.com/s0fractal/sigma-glyph-alife",
-    "revision": "fb6b37da7aa73c681f5750cbdc5e70ef03c244e4",
+    "revision": "793c2fbe412113304d3254fa35dfcf0bc0a317a8",
     "case_id": "alife-exp-002-does-sharing-pay",
     "artifacts": [
       {
@@ -15,7 +15,7 @@
       },
       {
         "path": "impl/sigma_alife.py",
-        "sha256": "4c134f401700335386c51e204da869a3ea2f1be97dd03159af25c4118b14210d"
+        "sha256": "e80483098491b7ae3fd07547a54a01d8d6cde4e7a39e4816b415f86676f011eb"
       }
     ]
   },
