@@ -171,6 +171,20 @@ wide margin. Then a stronger null:
 > experiment reported the opposite is that it drew **one** permutation: twenty
 > draws and a worst-case statistic reversed the result.
 
+[ALIFE-EXP-009](experiments/alife-exp-009/RESULT.md) turned out to be half
+research and half a bug with a measurement attached. Book I §3.5 makes
+`DISSONANCE(Unresolved Reference)` an outcome **relative to a store**, and §3.4
+says a failed resolve is not charged — so in a population whose store grows, such
+an agent is *waiting*. This engine had `RUNNABLE = (LIVE, STARVED)`, and seven
+experiments ran on it:
+
+> **Treating an unresolved reference as death discarded 45 of 64 agents.** Letting
+> them wait settles the entire population — the same number that settles when
+> nothing was withheld at all — for **337 extra ATP**, about seven and a half per
+> recovered agent, because each had already done its work and sat one force from
+> finishing. Zero ATP is spent while waiting, and every recovered agent reaches the
+> answer it reaches when the term was never withheld.
+
 That is what the separate repository is for. `sigma-glyph` is a specification
 under threshold-warrant governance; this is a place where a founding hypothesis
 can be wrong in public on the first measurement, and its replacement wrong on the

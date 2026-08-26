@@ -265,6 +265,36 @@ def main():
     chk(f"L5 max_depth bounds the recursion (depth 4 filed {deep.filed}, "
         f"depth 1 filed {shallow.filed})", shallow.filed <= deep.filed)
 
+    # ---- W: an unresolved agent is waiting, not dead, when the caller says so
+    wstore = fresh_store()
+    future = ("app", ("lit", sg.sha(b"later")), ("lit", sg.sha(b"I")))
+    fhash = sg.term_hash(future)
+    root = al.put_term(("app", ("lit", sg.sha(b"I")), ("thunk", fhash)), wstore)
+    def one_pass(wait):
+        st = al.Agent("w", root, 0)
+        econ = al.Economy(1000)
+        econ.endow(st, 200)
+        pop = al.Population(wstore, [st], econ, random.Random(1),
+                            wait_on_unresolved=wait)
+        pop.phase_reduce()
+        return st
+
+    blocked = one_pass(False)
+    chk("W an agent that demands an absent hash reports UNRESOLVED",
+        blocked.status == al.UNRESOLVED)
+    for node in (sg.term_bytes(future[1]), sg.term_bytes(future[2]),
+                 sg.term_bytes(future)):
+        wstore.put(node)                       # the environment delivers
+    revived = one_pass(True)
+    chk("W with wait_on_unresolved the same agent settles once the hash arrives",
+        revived.status == al.NORMAL)
+    stubborn = al.Agent("s", root, 200)
+    stubborn.status = al.UNRESOLVED
+    pop = al.Population(wstore, [stubborn], al.Economy(0), random.Random(1))
+    pop.phase_reduce()
+    chk("W the DEFAULT still treats it as terminal, so old receipts stand",
+        stubborn.status == al.UNRESOLVED and stubborn.spent == 0)
+
     print()
     for n in notes:
         print("note:", n)

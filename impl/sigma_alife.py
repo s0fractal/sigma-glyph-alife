@@ -843,7 +843,8 @@ class Population:
     every phase that could depend on iteration order sorts by agent id first."""
 
     def __init__(self, store, agents, economy, rng, slice_atp=64,
-                 rebate_rate=0.0, transfers=False, probe=False, memo=None):
+                 rebate_rate=0.0, transfers=False, probe=False, memo=None,
+                 wait_on_unresolved=False):
         self.store = store
         self.agents = list(agents)
         self.economy = economy
@@ -853,6 +854,17 @@ class Population:
         self.transfers = transfers
         self.probe = probe
         self.memo = memo
+        # An UNRESOLVED agent demanded a hash the store does not hold. Book I §3.5
+        # makes that an outcome relative to a STORE, and §3.4 says the failed
+        # resolve is not charged — so in a population whose store grows, such an
+        # agent is WAITING, not dead. ALIFE-EXP-009 measured what treating it as
+        # death costs: 45 of 64 agents discarded, recoverable for 337 ATP.
+        #
+        # The default stays False, and deliberately. Flipping it would change
+        # every experiment already committed here and silently move seven
+        # receipts, which is a worse thing than an unattractive default. New work
+        # should pass True; `RUNNABLE` is left alone.
+        self.wait_on_unresolved = wait_on_unresolved
         self.tick = 0
         self.history = []
         self.archived = []
@@ -872,6 +884,8 @@ class Population:
         """
         spent = 0
         for a in sorted(self.agents, key=lambda x: x.aid):
+            if a.status == UNRESOLVED and self.wait_on_unresolved:
+                a.status = LIVE          # the store may have grown since
             if a.status not in RUNNABLE:
                 continue
             budget = self.slice_atp

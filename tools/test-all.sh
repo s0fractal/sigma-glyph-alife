@@ -98,6 +98,14 @@ else
   skip "ALIFE-EXP-003 replay was not diffed against the committed receipt (no git)"
 fi
 
+say "ALIFE-EXP-009 replay: is an unresolved reference a death or a wait?"
+python3 experiments/alife-exp-009/measure.py --record | tail -5
+if command -v git >/dev/null 2>&1 && git rev-parse --git-dir >/dev/null 2>&1; then
+  git diff --exit-code experiments/alife-exp-009/results.json
+else
+  skip "ALIFE-EXP-009 replay was not diffed against the committed receipt (no git)"
+fi
+
 say "ALIFE-EXP-008: controls only (the replay is a ten-minute job)"
 # C1 is three hand cases rather than one: the self-maintenance condition is the
 # only thing that separates this from EXP-007's history-core, and a peeling bug

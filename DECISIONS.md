@@ -630,3 +630,34 @@ to 16.6%. An operator sizing memory from the theorem overpays about 16×, of whi
 roughly 6× is budget that never became structure and 2.6× is structure held more
 than once — the first a property of the terms, the second of the alphabet. They
 should be estimated separately, and until now they were multiplied together.
+
+---
+
+## 2026-08-26 — ALIFE-EXP-009
+
+**D68. Preregister the CEILING of a statistic, not only a threshold on it.**
+*Correction, and the third of its family.* EXP-009's H1 asked for ≥ 30 recovered
+agents, chosen from a blind probe saying 51 agents block. Nobody asked how many of
+those 51 could settle *even with the hash present* — and before a delivery bug was
+found, that ceiling was 17. H1 could not have held at any magnitude of the real
+effect. EXP-005 preregistered a budget at which its H2 could not be true (D42) and
+EXP-006 nearly did the same. *Practice adopted:* every numeric threshold gets the
+maximum attainable value of its statistic computed beside it, in the
+preregistration, and a threshold above the ceiling is a defect in the document.
+
+**D69. An exact-value hypothesis caught a defect a soft one would have hidden.**
+H3 demanded **exactly 0** ATP spent while waiting, because Book I says a failed
+resolve is not charged. The first run reported 432, which cannot happen — and it
+was real: the environment was delivering the withheld term's ROOT NODE and not the
+term, so an agent forced the arrived `APPLY` for 3 ATP, got two thunks whose bytes
+had never been stored, and blocked again on a child. Twenty-eight charged retries,
+every one of which had changed the term. A threshold like "waiting is cheap" would
+have passed and shipped the bug with the result.
+
+**D70. The engine's default was not changed, and that is the decision.** Treating
+`UNRESOLVED` as terminal discards agents Book I calls waiting — measured: 45 of
+64, recoverable for 337 ATP. The fix is one line. It is **opt-in**
+(`Population(..., wait_on_unresolved=True)`) and `RUNNABLE` is untouched, because
+flipping the default would change every experiment already committed here and
+silently move seven receipts. An unattractive default that keeps the record
+honest beats a better one that rewrites it. New work should pass `True`.
