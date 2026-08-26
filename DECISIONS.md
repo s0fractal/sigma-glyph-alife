@@ -864,3 +864,92 @@ is the oracle's own dispatch; the three together are what let Arm M's numbers be
 about a price. It also supplies the only honest way to count how many
 duplications the *energy* arm performs, which is the denominator every Arm M
 statement is implicitly against.
+
+---
+
+## 2026-08-26 — ALIFE-EXP-010 after an adversarial review
+
+Codex reviewed `97bc847` and returned CHANGES REQUESTED
+([`reviews/codex-2026-08-26.md`](reviews/codex-2026-08-26.md)). Two of its
+findings were verified independently before it was committed. The
+preregistration author owns the design-level defects — compound intervention,
+attractor language — in `reviews/claude-fable-2026-08-26-exp010-response.md`.
+These four are the harness's, and none of them moves a verdict: H1 HOLDS, H2
+FAILS, H3 FAILS, exactly as scored. What moves is the descriptive numbers and
+what they are called.
+
+**D88. `waiting` is a third terminal outcome, and H3's window is reported as an
+interval.** The first harness folded every outstanding wait into `fail`, which
+made a reaction that is *unresolved at the observation horizon* indistinguishable
+from one that starved. It is also arm-specific censoring: Arm E has no parked
+state at all, and inside Arm M a reaction born at 950 has had fifty reactions to
+be woken while one born at 100 had nine hundred. The receipt now carries
+`terminal_settled`, `terminal_failed` and `terminal_waiting` separately, and
+`window_outcomes` splits every window three ways with a `[rate_lower,
+rate_upper]` interval — the lower end being the preregistered statistic and the
+upper end the rate that would obtain if every outstanding wait were eventually
+answered. **The preregistered scoring is untouched and H3 still fails 1 of 3.**
+The interval is reported beside it because the sentence "M's success rate is
+lower" is only honest with the censoring in view. The word "permanent" is gone
+from the RESULT: nothing here ran the environment forward to show a copy can
+never arrive, and "permanent" is a reachability claim.
+
+**D89. Three ATP quantities, named apart, because the first receipt reported one
+of them under the others' name.** The withdrawn 0.8%–7.0% figure divided
+`rs_atp` — R-S spend over *every* reaction — by `ok × mean_cost`, which is the
+spend of the *settled* reactions only. Numerator and denominator were over
+different populations. The receipt now emits `spent_total`, `spend_settled`,
+`spend_failed`, `spend_parked`, `held_terminal` and the identity
+`pool + held + spent = endowment` (control **C9**, which is new and can fail),
+and reports two estimands rather than one:
+
+  * **R-S share of spend** — `rs_atp / spent_total`: what this arm charged for
+    duplication as a fraction of everything the colony spent;
+  * **counterfactual price saving** — `(rs_book_i_atp − rs_floor_atp) /
+    spent_total`: the price intervention itself, evaluated on *one arm's own
+    trace*. It is not recoverable from the difference of the two arms' totals,
+    because the arms take different trajectories, and the first RESULT's
+    cross-arm reasoning was wrong for that reason and not only arithmetically.
+
+Both counterfactual prices are functions of `size(z)`, so `rs_zsize_hist`
+carries the per-event pair the review asked for in full, without putting 1858
+rows in a receipt.
+
+**D90. Victim-hash multiplicity is recorded, and it refutes the mechanism the
+first RESULT proposed.** "Eating a duplicate spends redundancy, not population"
+was an explanation with no measurement under it: the gate proved only that *some*
+living body carried the demanded hash, never how many. Every consumption now
+records how many living bodies carried it the instant before — after is
+`before − 1` by construction — and the answer is that **74.7%, 77.2% and 90.3%
+of consumptions ate the last living copy of that hash.** The redundancy story is
+not merely unmeasured, it is contradicted by its own event-level statistic. The
+fuller mediation Codex specifies (the counterfactual cull that would have
+occurred) is left to the successor and named as left, not done; product novelty
+is already in the receipt as `1 − closure`.
+
+**D91. ALIFE-EXP-010 replays in both profiles of `test-all.sh`, and three guards
+gained the negative controls they never had.** The experiment sat in the
+repository with no replay behind it: the advertised matrix was green while its
+headline could rot. It costs about half a minute, so it is **not** behind
+`RUN_SLOW` — the ten-minute soups are the only replays that get to be optional,
+and a cheap experiment hiding behind an expensive one's exemption is how a
+coverage hole is made. Also:
+
+  * `tools/receipt_guard.py` searched arbitrary siblings for a draw count, so
+    one unrelated subtree with `draws: 20` licensed every null beside it,
+    including one drawn once. Codex supplied the reproducer. The rule now binds
+    a count to the null it describes or to that null's own parent, never to a
+    sibling, and `--self-test` runs four mutations (deletion, undersampling,
+    the borrowed sibling, a nested small count) and two clean cases. All
+    fourteen committed receipts still pass, so the fix has no false positives.
+  * `tests/receipt_identity_guard.py` is new and states the thing the review
+    said in prose: a shape guard cannot see a changed result. Six scored-field
+    mutations — a flipped verdict, H3's seed count raised to its threshold, the
+    withdrawn ATP share put back — must be invisible to the shape guard and
+    caught by the identity diff.
+  * `tests/exit_status_guard.py` resolved the oracle path only as written, and
+    `ORACLE_SOURCE` is normally relative, so its throwaway tree under `/tmp`
+    could not find `SizeBound.lean` and the guard printed FAILURES PRESENT on a
+    repository whose every gate was green. One `.resolve()`. It is why the
+    canonical command was not terminal, and the canonical command is now
+    documented at the top of `test-all.sh`.

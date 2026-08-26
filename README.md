@@ -35,7 +35,18 @@ tools/test-all.sh                             # everything, and it names its ski
 ```
 
 `tools/test-all.sh` counts and names every surface it could not check and says so
-in the exit status. A skipped surface is not a passed one.
+in the exit status. A skipped surface is not a passed one — the bare command
+prints `NOT COMPLETE` and exits 2 when it skipped the ten-minute soup replays or
+the external need-packet validator. **The canonical command, terminal only when
+every claimed experiment has actually replayed, is:**
+
+```sh
+RUN_SLOW=1 DECISION_ARCHAEOLOGY=/path/to/decision-archaeology tools/test-all.sh
+```
+
+"test-all is green" is a false sentence unless that is what was run, or its two
+surfaces ran in their own workflows on the same commit. Every other experiment,
+ALIFE-EXP-010 included, replays in both profiles.
 
 ## The one interesting engineering decision
 
@@ -195,10 +206,20 @@ hypotheses held, and the finding is the thing none of them asked:
 > **In a lazy machine, a duplication is a duplication of an ADDRESS.** Book I
 > fires `R-S` leftmost-outermost, so the duplicated argument is nearly always
 > still a thunk of size 1 and the energy price `1 + size(z)` is usually **2**.
-> The entire difference between the two currencies is **0.8% to 7.0%** of what
-> the colony spends. The arms do end up sharing not one surviving molecule — but
-> two runs of the *same* currency at different seeds share none either, so the
-> hypothesis that detected the separation cannot tell it from turnover.
+> The price intervention — what Book I charges for a duplication minus what the
+> floor charges, on a fixed trace — is **0.4% to 1.4%** of what the colony
+> spends. The arms do end up sharing not one surviving molecule; but two runs of
+> the *same* currency at different seeds share none either, so the hypothesis
+> that detected the separation cannot tell it from turnover.
+
+An adversarial review (Codex, `reviews/codex-2026-08-26.md`) then returned
+CHANGES REQUESTED on that receipt: the first version of those percentages had
+the wrong denominator and named the wrong estimand, "eating a duplicate spends
+redundancy" was an explanation with no measurement under it — three consumptions
+in four turn out to remove the *last* living copy — and the experiment was
+absent from this repository's own test matrix. The verdicts did not move; the
+numbers and their names did, in a dated erratum, and EXP-010 now replays in both
+profiles of `tools/test-all.sh`.
 
 That is what the separate repository is for. `sigma-glyph` is a specification
 under threshold-warrant governance; this is a place where a founding hypothesis

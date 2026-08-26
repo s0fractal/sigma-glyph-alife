@@ -17,7 +17,14 @@ below) were found by the party that could not fix them quietly.
 
 **H1 holds and cannot discriminate. H2 and H3 fail. The result is the third
 thing: in a lazy machine a duplication is a duplication of an ADDRESS, so the
-entire currency question is worth between 0.8% and 7.0% of the colony's ATP.**
+price intervention is worth 0.77%, 0.40% and 1.39% of the colony's total ATP —
+a lever of about one part in a hundred.**
+
+> **Corrected 2026-08-26**, after an adversarial review found the first version
+> of this sentence had the wrong denominator and the wrong estimand. It said
+> "between 0.8% and 7.0%". Both numbers are withdrawn; see the
+> [erratum](#erratum--2026-08-26) for what they were, what they are, and why
+> the corrected ones make the same qualitative point at a third of the size.
 
 | | |
 | --- | --- |
@@ -25,7 +32,7 @@ entire currency question is worth between 0.8% and 7.0% of the colony's ATP.**
 | arms | E = ALIFE-EXP-007's chemistry unchanged; M = R-S priced at the action floor plus one consumed body |
 | frame | 64 founders, capacity 64, 1000 reactions, 200 ATP/reaction, slice 32 |
 | seeds | `20260825`, `20260826`, `20260827`, pinned in the preregistration |
-| controls | eleven (C1–C8 preregistered, C0/C0b/C0c added), all passing |
+| controls | twelve (C1–C8 preregistered, C0/C0b/C0c/C9 added), all passing |
 | receipt | `results.json`, reproduced field for field on a second run of every arm × seed |
 
 ## The measurement
@@ -93,12 +100,33 @@ requirement of 2 of 3. **H2 FAILS on both clauses**, and the falsifier the
 preregistration named is exactly what happened: *diversity in M matches or
 exceeds E at those thresholds*, in two seeds of three, and by 6 and 15 hashes.
 
-The direction is the interesting part. Consumption does remove bodies — 194,
-101 and 62 of them — but a consumed body is removed at the moment its hash is
-*in demand*, and what replaces it is a product that was not there before.
-Matter-pricing does not thin the colony; on two of three seeds it **widens**
-it, because eating a duplicate is a way of spending redundancy rather than
-population.
+The direction is the interesting part, and the explanation this section gave for
+it on 2026-08-26 was **wrong and is withdrawn**. It said matter-pricing widens
+the colony "because eating a duplicate is a way of spending redundancy rather
+than population". The harness never recorded how many living bodies carried the
+demanded hash before a consumption, so it could not tell redundancy-spending
+from eating the last copy. It records it now (`DECISIONS.md` D90):
+
+| seed | consumptions | ate the **last** living copy | share | multiplicity histogram |
+|---|---:|---:|---:|---|
+| 20260825 | 194 | 145 | **74.7%** | 1×145, 2×27, 3×12, 4×6, 5×3, 6×1 |
+| 20260826 | 101 | 78 | **77.2%** | 1×78, 2×16, 3×5, 6×1, 7×1 |
+| 20260827 | 62 | 56 | **90.3%** | 1×56, 2×3, 3×2, 4×1 |
+
+> Three consumptions in four — nine in ten on one seed — remove the **only**
+> living body carrying that hash. The proposed mechanism is not merely
+> unmeasured; its own event-level statistic contradicts it. Consumption in this
+> arm is overwhelmingly the destruction of a singleton, not the spending of a
+> surplus.
+
+What *does* produce Arm M's higher distinctness is therefore unidentified here.
+The candidates the review names — fewer culls (Arm M culls 394/281/498 against
+Arm E's 629/493/430, because a consumed body leaves a slot the capacity rule
+then does not have to clear), the blocked reactions, and the diverged
+trajectory — are not separated by this design and cannot be, for the reason the
+preregistration author owns in the erratum to
+[`reviews/claude-fable-2026-08-26-exp010-response.md`](../../reviews/claude-fable-2026-08-26-exp010-response.md):
+Arm M is a compound intervention.
 
 ### H3 — the self-pricing-out curve bends: **FAILS**
 
@@ -123,35 +151,84 @@ as scoring nothing (D79) agree and do not rescue it:
 | 20260826 | −4.0 | −2.0 | −7.7 |
 | 20260827 | +24.0 | +16.5 | +29.2 |
 
+**H3's statistic is right-censored, and only one arm has anything to censor**
+(`DECISIONS.md` D88, added 2026-08-26). A reaction still parked at reaction 1000
+counts against M's rate; Arm E has no parked state at all, and inside Arm M a
+reaction born late has had less time to be woken. The window is therefore
+reported as an interval — the preregistered statistic is its lower end, and its
+upper end is the rate that would obtain if *every* outstanding wait were
+eventually answered:
+
+| seed | last-100 window, M: settled / waiting / failed | M rate interval | E rate |
+|---|---|---:|---:|
+| 20260825 | 29 / 10 / 61 | [29.0%, 39.0%] | 52.0% |
+| 20260826 | 9 / 6 / 85 | [9.0%, 15.0%] | 13.0% |
+| 20260827 | 49 / 0 / 51 | [49.0%, 49.0%] | 25.0% |
+
+> Censoring does not rescue H3. On 20260825 even the upper end is 13 points
+> below Arm E; on 20260827 there is nothing censored in the window at all; only
+> 20260826, whose Δ is −4 points, becomes indeterminate. **The verdict is not
+> re-adjudicated and does not move: 1 of 3.**
+
 ## Why H3 could not have worked, and it is the finding
 
-H3's mechanism is "the ATP not spent on duplication remains available for other
-work". The harness measured how much ATP that is:
+*Every number in this section was recomputed on 2026-08-26; the table it
+replaces is in the [erratum](#erratum--2026-08-26).*
 
-| arm | seed | R-S fired | ATP on R-S | ATP spent | share | mean `size(z)` | max `size(z)` |
+H3's mechanism is "the ATP not spent on duplication remains available for other
+work". How much ATP is that? Two different questions, which the first version of
+this section ran together:
+
+**(a) What each arm charges for duplication, over everything the colony spends.**
+The denominator is `spent_total` — the spend of every individual ever born,
+settled, failed and parked alike — and the ledger identity
+`pool + held at the horizon + spent = endowment` closes in all six runs (control
+**C9**).
+
+| arm | seed | R-S fired | ATP on R-S | total spend | **R-S share** | mean `size(z)` | max `size(z)` |
 |---|---:|---:|---:|---:|---:|---:|---:|
-| E | 20260825 | 612 | 1 628 | 58 296 | **2.79%** | 1.66 | 15 |
-| E | 20260826 | 331 | 928 | 47 903 | **1.94%** | 1.80 | 21 |
-| E | 20260827 | 1 042 | 3 274 | 46 973 | **6.97%** | 2.14 | 43 |
-| M | 20260825 | 764 | 764 | 47 688 | 1.60% | 1.21 | 5 |
-| M | 20260826 | 604 | 604 | 40 138 | 1.50% | 1.26 | 3 |
-| M | 20260827 | 490 | 490 | 61 688 | 0.79% | 1.10 | 9 |
+| E | 20260825 | 612 | 1 628 | 132 098 | **1.23%** | 1.66 | 15 |
+| E | 20260826 | 331 | 928 | 148 795 | **0.62%** | 1.80 | 21 |
+| E | 20260827 | 1 042 | 3 274 | 160 395 | **2.04%** | 2.14 | 43 |
+| M | 20260825 | 764 | 764 | 103 950 | 0.73% | 1.21 | 5 |
+| M | 20260826 | 604 | 604 | 140 365 | 0.43% | 1.26 | 3 |
+| M | 20260827 | 490 | 490 | 136 625 | 0.36% | 1.10 | 9 |
+
+**(b) The price intervention itself**, which is neither column above. It is the
+counterfactual `Book I price − floor price` evaluated on *one arm's own trace*:
+what that arm's duplications would have cost under the other rule, with the
+trajectory held fixed. It cannot be recovered by subtracting the two arms'
+totals, because the arms do not take the same trajectory.
+
+| arm | seed | Book I − floor, on this trace | **as a share of total spend** |
+|---|---:|---:|---:|
+| E | 20260825 | 1 016 | **0.77%** |
+| E | 20260826 | 597 | **0.40%** |
+| E | 20260827 | 2 232 | **1.39%** |
+| M | 20260825 | 924 | 0.89% |
+| M | 20260826 | 762 | 0.54% |
+| M | 20260827 | 538 | 0.39% |
 
 > **Book I evaluates leftmost-outermost with lazy spine resolution, so when
 > `R-S` fires, `z` is nearly always still a THUNK — an address of size 1.** Book
 > I's energy price for a duplication, `1 + size(z)`, is therefore usually **2**,
 > not "one plus a tree". Mean `size(z)` over every duplication in the energy arm
-> is 1.66, 1.80 and 2.14. The whole difference between the two currencies is
-> between 0.8% and 7.0% of what the colony spends, and switching to the floor
-> saves at most one ATP per duplication in the common case.
+> is 1.66, 1.80 and 2.14. So switching to the floor saves one ATP per
+> duplication in the common case, and the whole price intervention is worth
+> **0.4% to 1.4%** of what the colony spends. `rs_zsize_hist` in the receipt
+> carries the per-event counterfactual pair in full: both prices are functions
+> of `size(z)`.
 
 The two pricings are not two economies. They are the same economy with a rounding
-difference, plus a hard constraint — the copy must exist as a body — that has
-nothing to do with ATP at all. Whatever separates the arms (and H1 shows they are
-completely separated) is that constraint and the RNG divergence that follows it,
-not the money. ALIFE-EXP-005 found that "Book I's lazy, address-based pricing is
+difference of about one part in a hundred, plus a hard constraint — the copy must
+exist as a body — that has nothing to do with ATP at all. Whatever separates the
+arms (and H1 shows they are completely separated) is that constraint, the
+blocking it causes, and the RNG divergence that follows, not the money. This
+experiment cannot apportion the separation among those, because Arm M changes
+them together; that is the compound-intervention defect the preregistration
+author owns. ALIFE-EXP-005 found that "Book I's lazy, address-based pricing is
 capability, not accounting — inside a band"; this is the same sentence arriving
-from the other side. Matter-pricing lands *outside* that band.
+from the other side, and matter-pricing lands *outside* that band.
 
 ## The nulls, as preregistered
 
@@ -178,8 +255,10 @@ same density scores as high or higher.
 
 ## Controls
 
-Eleven, all passing before any number was recorded. Three were not in the
-preregistration and are named as additions rather than folded in:
+Twelve, all passing before any number was recorded. Four were not in the
+preregistration and are named as additions rather than folded in — C9 was added
+on 2026-08-26 in response to the review, and would have caught the arithmetic
+this receipt had to correct:
 
 | | control | outcome |
 |---|---|---|
@@ -194,12 +273,20 @@ preregistration and are named as additions rather than folded in:
 | **C6** | waiting spends nothing; resumed answers are unchanged | **0 ATP** spent while waiting across Arm M; 75/75 sampled products equal the oracle's own normal form |
 | **C7** | census accounting is total | 1064 individuals per run partitioned every tick into alive / consumed / culled / starved / waiting; 0 reconciliation failures; 0 consumed bodies appearing alive; 0 material shortfalls |
 | **C8** | saturation is reported | below |
+| **C9** | *(added 2026-08-26, D89)* the ledger identity is emitted and closes | `pool + held at the horizon + spent = endowment` in 6/6 runs; spend splits into settled/failed/parked exactly |
 
 **C8, saturation.** Waits outstanding at the final tick: Arm M **152, 130, 73**
-of 1000 reactions — between 7% and 15% of the colony is still waiting for a copy
-that never arrived. Arm E: 0, by construction. Transfer overflow guards: 0, and
-that number is empty for the reason in D77. Faults: 0. Unresolved: 0.
-`DISSONANCE` never entered either soup.
+of 1000 reactions — between 7% and 15% of the colony is **unresolved at the
+observation horizon**, holding 26 720, 23 175 and 12 733 ATP it may still spend.
+Arm E: 0, by construction. Transfer overflow guards: 0, and that number is empty
+for the reason in D77. Faults: 0. Unresolved-reference outcomes: 0. `DISSONANCE`
+never entered either soup.
+
+> *Corrected 2026-08-26.* This paragraph said those reactions were waiting "for
+> a copy that never arrived". Nothing here ran the environment past reaction
+> 1000, so non-arrival was never observed — only non-arrival **within the
+> horizon**. "Never" is a reachability claim and this experiment does not make
+> one. The same correction applies wherever this receipt said "permanent".
 
 ## Corrections, named rather than absorbed
 
@@ -252,9 +339,11 @@ that number is empty for the reason in D77. Faults: 0. Unresolved: 0.
 ## What this does not say
 
 - It does not say the two currencies are the same. They are not: no molecule
-  survives in both arms, and Arm M leaves 7–15% of its reactions permanently
-  waiting for a copy. It says the *ATP* difference between them is 0.8–7.0% and
-  that H3, which was about the ATP, was never going to find it.
+  survives in both arms, and Arm M leaves 7–15% of its reactions unresolved at
+  the observation horizon. It says the *price intervention* between them is
+  0.4–1.4% of colony spend and that H3, which was about the ATP, was never
+  going to find it. It does **not** say which of the several things Arm M
+  changes at once produced the separation: it cannot.
 - It does not say matter-pricing is worse. On two of three seeds it ends with
   more distinct molecules than the energy arm.
 - It says nothing about Combinatory Chemistry. Arm M is K&M-*inspired* pricing
@@ -276,8 +365,125 @@ that number is empty for the reason in D77. Faults: 0. Unresolved: 0.
    would offer a different set of consumable copies.
 3. The waiting machinery is EXP-009's, used here for the first time outside
    delivery, and its outstanding waits (152/130/73) are the largest single
-   uncontrolled difference between the arms after the price itself.
+   uncontrolled difference between the arms after the price itself. They are
+   right-censored: the run stops at reaction 1000 without a settlement phase, so
+   what is measured is unresolved-at-horizon and nothing here shows a copy could
+   not arrive later.
 4. `mean size(z)` is a property of leftmost-outermost lazy evaluation. A strict
    or a normalizing strategy would make duplication expensive and the currency
    question large again — which is the successor experiment, and it is about the
    evaluation order, not about the money.
+5. **Arm M is a compound intervention.** It changes the price, affordability, the
+   requirement for a living exact-hash body, the removal of that body, and — by
+   consuming different positions in the RNG stream — the whole downstream
+   trajectory. H1 establishes that two compound transition kernels produce
+   different finite-horizon populations. H2's and H3's signs cannot be
+   attributed to price, to matter conservation, or to victim availability
+   separately. The preregistration said "the pricing of `R-S`, and nothing
+   else"; its author owns that sentence as false-as-designed in the erratum to
+   the response, and names the 2×2 factorial successor.
+6. **"Attractor" is not operationalised here.** Three 1000-reaction trajectories
+   with no burn-in, no stationarity or recurrence criterion and no convergence
+   across horizons measure **finite-horizon population states**. Where this
+   receipt or its preregistration says attractor, read that.
+
+---
+
+## Erratum — 2026-08-26
+
+An adversarial review by Codex ([`reviews/codex-2026-08-26.md`](../../reviews/codex-2026-08-26.md),
+verdict CHANGES REQUESTED) found one quantitative misstatement, two
+identification failures and a release-gate hole in this receipt as first
+committed (`eeb6466`). Two of its findings were reproduced independently before
+it was committed. The house pattern for this is sigma-glyph's EXP-004 — re-run
+at equal work, say what moved — so the measurement was re-run and this section
+says what moved rather than the diff saying it.
+
+**No verdict moves. H1 HOLDS, H2 FAILS, H3 FAILS — 1 of 3, exactly as scored on
+2026-08-26 before the review.** Every preregistered criterion is unchanged and
+was rescored on the re-run: H1 3/3 seeds below 0.5, H2 census 2/3 and distinct
+1/3, H3 1/3. What changed is descriptive numbers and their names.
+
+### 1. The ATP share had the wrong denominator and was the wrong estimand
+
+Withdrawn: **"the entire currency question is worth between 0.8% and 7.0% of the
+colony's ATP"**, and this table:
+
+| arm | seed | withdrawn "ATP spent" | withdrawn share |
+|---|---:|---:|---:|
+| E | 20260825 | 58 296 | 2.79% |
+| E | 20260826 | 47 903 | 1.94% |
+| E | 20260827 | 46 973 | 6.97% |
+| M | 20260825 | 47 688 | 1.60% |
+| M | 20260826 | 40 138 | 1.50% |
+| M | 20260827 | 61 688 | 0.79% |
+
+The denominator was `ok × mean_cost` — the spend of the reactions that
+*settled*. The numerator counted R-S actions in every reaction, including those
+that later starved or parked. Two different populations. The corrected R-S
+shares of actual total spend are **1.23% / 0.62% / 2.04%** in Arm E and
+**0.73% / 0.43% / 0.36%** in Arm M.
+
+Worse than the arithmetic: R-S expenditure is not the price intervention at all.
+The intervention is the counterfactual `Book I price − floor price` on a fixed
+trace, and on Arm E's own traces it is **0.77% / 0.40% / 1.39%** of total spend.
+The receipt now emits `spent_total`, `spend_settled`, `spend_failed`,
+`spend_parked`, `held_terminal`, `rs_book_i_atp`, `rs_floor_atp` and
+`rs_zsize_hist` (which carries every event's counterfactual pair, both prices
+being functions of `size(z)`), and control **C9** asserts the ledger identity
+the review had to reconstruct by hand. `DECISIONS.md` D89.
+
+The qualitative conclusion survives at roughly a third of the stated size: lazy
+address-based pricing makes the currency a **one-part-in-a-hundred** lever, not
+a seven-part one. The argument for the successor regime — enforced copy pricing,
+where duplication is genuinely expensive — is *stronger* under the corrected
+numbers, and that is motivation rather than a measurement.
+
+### 2. "Eating a duplicate spends redundancy" was an explanation with nothing under it
+
+H2's discussion explained Arm M's higher distinctness by a mechanism the harness
+had never measured. It measures it now: **74.7%, 77.2% and 90.3% of consumptions
+removed the only living body carrying that hash.** The mechanism is contradicted
+by its own event-level statistic and is withdrawn; the cause of Arm M's higher
+distinctness is left unidentified, with candidates named. `DECISIONS.md` D90.
+
+### 3. "Permanent" waiting, and H3's arm-specific censoring
+
+This receipt said 152/130/73 reactions were waiting "for a copy that never
+arrived" and called them permanently waiting. The run stops at reaction 1000
+without a settlement phase, so what was observed is **unresolved at the
+observation horizon**; "never" is a reachability claim this experiment does not
+make. Every such phrase is corrected above. `waiting` is now a third terminal
+outcome in the receipt rather than folded into `fail`, and H3's window is
+reported as an interval whose lower end is the preregistered statistic. The
+interval does not change the verdict — one seed becomes indeterminate, one is
+uncensored, and one is 13 points short even at its upper end. `DECISIONS.md` D88.
+
+### 4. This experiment was absent from the advertised test matrix
+
+Neither `tools/test-all.sh` nor CI replayed ALIFE-EXP-010: the matrix was green
+while the headline could rot. It now replays in **both** profiles of
+`test-all.sh` — it costs half a minute, and the ten-minute soups are the only
+replays that get to be optional — and has a path-triggered CI job of its own.
+Three guards gained the negative controls they lacked: `receipt_guard.py`'s
+locality rule was not enforcing locality (Codex's reproducer returned `[]`; it
+now returns the offender, and all fourteen committed receipts still pass),
+`tests/receipt_identity_guard.py` is new and proves that a flipped verdict is
+invisible to a shape guard and caught by the replay diff, and
+`tests/exit_status_guard.py` could not resolve its own oracle path from a
+temporary tree, which is why the canonical command was not terminal. That
+command is now documented at the top of `test-all.sh`. `DECISIONS.md` D91.
+
+### What the review changed that this receipt does not fix
+
+The compound-intervention and attractor findings are design defects of the
+preregistration, owned by its author in the erratum to
+[`reviews/claude-fable-2026-08-26-exp010-response.md`](../../reviews/claude-fable-2026-08-26-exp010-response.md),
+and named in Limitations 5 and 6 above. The narrower statement the review says
+is currently publishable is the one this receipt now makes:
+
+> In this bounded implementation, two compound reactor policies produce
+> seed-sensitive finite-horizon populations; the preregistered survivor-overlap
+> statistic is non-discriminating, and outstanding matter waits are substantial
+> at the observation horizon. The marginal ATP price effect has not yet been
+> identified.
