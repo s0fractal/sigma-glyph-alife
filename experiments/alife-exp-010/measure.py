@@ -23,7 +23,7 @@ import platform
 import random
 import statistics
 import sys
-from collections import deque
+from collections import Counter, deque
 from pathlib import Path
 
 HERE = Path(__file__).resolve().parent
@@ -182,7 +182,13 @@ class Soup:
 
         self.parked = {}               # awaited hash -> [Individual] (D81)
         self.observed = []             # (a, b, product) reaction edges
-        self.ok = self.fail = self.closed = self.poisoned = 0
+        # THREE terminal outcomes, not two (Codex [MAJOR], D88). `fail` as the
+        # preregistered success rate uses it is `terminal_failed +
+        # terminal_waiting`, and both halves are now emitted separately because
+        # only one of them is an outcome: a parked reaction is unresolved AT THE
+        # OBSERVATION HORIZON, which is not the same claim as failed.
+        self.ok = self.closed = self.poisoned = 0
+        self.terminal_failed = 0
         self.costs = []
         self.trace = []
         self.settled_at_birth = set()
@@ -192,10 +198,27 @@ class Soup:
         # matter bookkeeping
         self.rs_fired = 0
         self.rs_genesis = 0
-        self.rs_atp = 0                 # what duplication actually costs in this
-        self.rs_zsize_sum = 0           # arm, and how much term is being copied:
-        self.rs_zsize_max = 0           # the machine is LAZY, so `z` is usually
-                                        # an address and `1 + size(z)` is usually 2
+        # THREE numbers, not one, because Codex's review was right that they are
+        # three different estimands and the first receipt reported one of them
+        # under the others' name:
+        #   rs_atp        what THIS arm actually charged for duplication;
+        #   rs_book_i_atp what Book I would have charged on THIS arm's own trace;
+        #   rs_floor_atp  what the action floor would have charged on it.
+        # The price intervention is `rs_book_i_atp - rs_floor_atp` — a
+        # counterfactual on one trace — and NOT a difference of the two arms'
+        # totals, which are taken on different trajectories and cannot recover it.
+        self.rs_atp = 0
+        self.rs_book_i_atp = 0
+        self.rs_floor_atp = 0
+        self.rs_zsize_sum = 0           # the machine is LAZY, so `z` is usually
+        self.rs_zsize_max = 0           # an address and `1 + size(z)` is usually 2
+        self.rs_zsize_hist = Counter()  # the per-event counterfactual pair, in
+                                        # full: `book_i = 1 + size(z)` and
+                                        # `floor = MATTER_PRICE` are both
+                                        # functions of size(z), so this histogram
+                                        # loses nothing a per-event list would
+                                        # carry and does not put 1858 rows in a
+                                        # receipt
         self.consumed = 0
         self.blocked_events = 0
         self.blocked_on = None
@@ -214,13 +237,31 @@ class Soup:
         self.census_bound_ok = True
         self.census_counts_ok = True
         self.consumed_but_alive = 0
-        self.spent_total = 0
+        # The ledger, split the way the review asked for. `ok * mean_cost` — what
+        # the first receipt divided by — is the spend of the SETTLED reactions
+        # only, while `rs_atp` counts R-S in reactions that later starved or
+        # parked. Numerator and denominator were over different populations.
+        self.spend_settled = 0
+        self.spend_failed = 0
+        # Consumption mediation, recorded so the redundancy HYPOTHESIS in the
+        # first RESULT becomes adjudicable instead of asserted: how many living
+        # bodies carried the demanded hash immediately before the consumption.
+        self.consumption_multiplicity = Counter()
+        self.consumed_last_copy = 0
+
+    @property
+    def spent_released(self):
+        return self.spend_settled + self.spend_failed
 
     def note_z(self, z, price):
+        """One R-S event, with BOTH prices it could have been charged."""
         n = sg.size(z)
         self.rs_atp += price
+        self.rs_book_i_atp += 1 + n          # Book I: `1 + size(z)`
+        self.rs_floor_atp += C.MATTER_PRICE  # the action floor
         self.rs_zsize_sum += n
         self.rs_zsize_max = max(self.rs_zsize_max, n)
+        self.rs_zsize_hist[n] += 1
 
     # -- the matter price -----------------------------------------------------
     def afford_duplication(self, agent, z, spent):
@@ -246,8 +287,10 @@ class Soup:
             self.rs_genesis += 1
             return True
         victim = None
+        multiplicity = 0
         for ind in self.soup:
             if ind.hash == h:
+                multiplicity += 1
                 victim = ind if victim is None or ind.born < victim.born else victim
         if victim is None:
             self.blocked_events += 1
@@ -261,6 +304,15 @@ class Soup:
         self.atp_transferred += moved
         if agent.atp - before != moved:
             self.transfer_mismatches += 1
+        # How many living bodies carried this hash the instant before the
+        # consumption. The first RESULT explained Arm M's higher distinctness as
+        # "eating a duplicate spends redundancy, not population" and had no way
+        # to tell that from eating the LAST copy — Codex [MAJOR]. Multiplicity
+        # after the event is `multiplicity - 1` by construction, so recording the
+        # before-value records both.
+        self.consumption_multiplicity[multiplicity] += 1
+        if multiplicity == 1:
+            self.consumed_last_copy += 1
         self.soup.remove(victim)
         victim.state = "consumed"
         self.consumed += 1
@@ -306,17 +358,23 @@ class Soup:
         self.econ.collect(agent, agent.atp)
         ind.state = {al.STARVED: "starved", al.FAULT: "faulted",
                      al.UNRESOLVED: "unresolved"}.get(agent.status, "starved")
-        self.fail += 1
-        self.release(ind)
+        self.terminal_failed += 1
+        self.release(ind, "failed")
         return None
 
-    def release(self, ind):
+    def release(self, ind, bucket):
         """An individual that will never run again hands its ledger line to the
         run total and drops the term. Keeping a thousand finished agents alive
         would hold a thousand terms in memory for no reason; keeping their SPEND
         is not optional, because the ledger and the census bound are both stated
-        against a sum over everything ever born."""
-        self.spent_total += ind.agent.spent
+        against a sum over everything ever born — and, since Codex's review, so
+        is keeping it SPLIT: the spend of reactions that settled is not the spend
+        of the colony, and dividing by the first while counting actions from the
+        second is what produced the withdrawn 0.8-7.0% figure."""
+        if bucket == "settled":
+            self.spend_settled += ind.agent.spent
+        else:
+            self.spend_failed += ind.agent.spent
         ind.agent = None
 
     def settle(self, ind):
@@ -343,7 +401,7 @@ class Soup:
         ind.hash = product
         ind.size = sg.size(agent.term)
         ind.state = "alive"
-        self.release(ind)
+        self.release(ind, "settled")
         self.soup.append(ind)
         if len(self.soup) > self.capacity:
             victim = self.soup.pop(self.rng.randrange(len(self.soup)))
@@ -369,8 +427,8 @@ class Soup:
     def check_invariants(self):
         parked = [i for i in self.individuals if i.state == "waiting"]
         held = sum(i.agent.atp for i in parked if i.agent)
-        spent = self.spent_total + sum(i.agent.spent
-                                       for i in self.individuals if i.agent)
+        spent = self.spent_released + sum(i.agent.spent
+                                          for i in self.individuals if i.agent)
         if self.econ.pool + held + spent != self.econ.endowment:
             self.ledger_ok = False
         alive = [i for i in self.individuals if i.state == "alive"]
@@ -419,16 +477,40 @@ class Soup:
                 self.trace.append({"reaction": i + 1,
                                    "distinct": len({m.hash for m in self.soup}),
                                    "closure": self.closed / max(1, self.ok),
-                                   "ok": self.ok, "fail": self.fail,
+                                   "ok": self.ok,
+                                   "fail": self.terminal_failed,
                                    "census": len(self.soup),
                                    "waiting": counts["waiting"],
                                    "consumed": counts["consumed"]})
         outstanding = counts["waiting"]
-        self.fail += outstanding
+        parked = [i for i in self.individuals if i.state == "waiting"]
+        spend_parked = sum(i.agent.spent for i in parked if i.agent)
+        held_terminal = sum(i.agent.atp for i in parked if i.agent)
+        spent_total = self.spent_released + spend_parked
+        # The identity the review recomputed the receipt against, asserted here
+        # so the receipt carries it rather than inviting a reader to derive it:
+        # everything endowed is either unspent in the commons, held by an agent
+        # still parked at the horizon, or spent.
+        ledger_identity_ok = (self.econ.pool + held_terminal + spent_total
+                              == self.econ.endowment)
+        # `fail` keeps its preregistered meaning — everything that is not a
+        # settled reaction — because H1-H3 were scored against it and those
+        # verdicts do not move. The three-way split beside it is what the review
+        # required and what any statement about censoring has to use.
+        fail = self.terminal_failed + outstanding
         core = l1_core(self.observed)
         return {
             "arm": self.arm, "budget": self.budget, "seed": self.seed,
-            "reactions": self.reactions, "ok": self.ok, "fail": self.fail,
+            "reactions": self.reactions, "ok": self.ok, "fail": fail,
+            "terminal_settled": self.ok,
+            "terminal_failed": self.terminal_failed,
+            "terminal_waiting": outstanding,
+            "spent_total": spent_total,
+            "spend_settled": self.spend_settled,
+            "spend_failed": self.spend_failed,
+            "spend_parked": spend_parked,
+            "held_terminal": held_terminal,
+            "ledger_identity_ok": ledger_identity_ok,
             "success_rate": self.ok / self.reactions,
             "closure": self.closed / max(1, self.ok),
             "distinct": len({m.hash for m in self.soup}),
@@ -456,10 +538,23 @@ class Soup:
             "rs_fired": self.rs_fired,
             "rs_genesis": self.rs_genesis,
             "rs_atp": self.rs_atp,
+            "rs_book_i_atp": self.rs_book_i_atp,
+            "rs_floor_atp": self.rs_floor_atp,
+            "rs_counterfactual_saving": self.rs_book_i_atp - self.rs_floor_atp,
+            "rs_share_of_spend": (self.rs_atp / spent_total
+                                  if spent_total else 0.0),
+            "rs_counterfactual_saving_share": (
+                (self.rs_book_i_atp - self.rs_floor_atp) / spent_total
+                if spent_total else 0.0),
             "rs_zsize_mean": (self.rs_zsize_sum / self.rs_fired
                               if self.rs_fired else 0),
             "rs_zsize_max": self.rs_zsize_max,
+            "rs_zsize_hist": {str(k): v
+                              for k, v in sorted(self.rs_zsize_hist.items())},
             "consumed_deaths": self.consumed,
+            "consumption_multiplicity": {
+                str(k): v for k, v in sorted(self.consumption_multiplicity.items())},
+            "consumed_last_copy": self.consumed_last_copy,
             "blocked_events": self.blocked_events,
             "waits_outstanding": outstanding,
             "wake_events": self.wake_events,
@@ -475,7 +570,29 @@ class Soup:
             "window_success": {str(w): window_success(self.settled_at_birth,
                                                       self.reactions, w)
                                for w in C.SENSITIVITY_WINDOWS},
+            "window_outcomes": {str(w): self.window_outcomes(w)
+                                for w in C.SENSITIVITY_WINDOWS},
         }
+
+    def window_outcomes(self, window):
+        """The last `window` reactions split three ways by BIRTH index, and the
+        censoring interval that follows (D88).
+
+        `window_success` — the preregistered H3 statistic — is `settled/window`,
+        which treats a reaction still parked at the horizon as a failure. That is
+        a right-censoring artifact and it is arm-specific: Arm E has no censored
+        state at all, and inside Arm M later births have had less time to be
+        woken. The verdict is not re-adjudicated; the interval below is what any
+        statement about it has to be read against, and its upper end is the rate
+        that would obtain if every outstanding wait were eventually answered."""
+        lo = self.reactions - window
+        settled = sum(1 for i in self.settled_at_birth if i >= lo)
+        waiting = sum(1 for i in self.individuals
+                      if not i.founder and i.born >= lo and i.state == "waiting")
+        return {"settled": settled, "waiting": waiting,
+                "failed": window - settled - waiting,
+                "rate_lower": settled / window,
+                "rate_upper": (settled + waiting) / window}
 
 
 def window_success(settled_at_birth, reactions, window):
@@ -594,8 +711,14 @@ def controls():
     # C0c (D87) — the hook is the identity when it prices nothing.
     armEg = {s: run_soup("E", C.ATP_PER_REACTION, s, probe=True, observe=True)
              for s in C.SEEDS}
-    volatile = ("checked", "mismatches", "oracle_unfinished", "rs_fired",
-                "rs_genesis", "rs_atp", "rs_zsize_mean", "rs_zsize_max")
+    # Everything the OBSERVING gate populates and the ungated run cannot: Arm E
+    # measured without the hook fires no gate, so its R-S columns are empty by
+    # construction rather than different.
+    volatile = ("checked", "mismatches", "oracle_unfinished",
+                "rs_fired", "rs_genesis", "rs_atp", "rs_book_i_atp",
+            "rs_floor_atp", "rs_counterfactual_saving",
+            "rs_share_of_spend", "rs_counterfactual_saving_share",
+            "rs_zsize_mean", "rs_zsize_max", "rs_zsize_hist")
     ident = [str(s) for s in C.SEEDS
              if {k: v for k, v in armE[s].items() if k not in volatile}
              != {k: v for k, v in armEg[s].items() if k not in volatile}]
@@ -605,8 +728,10 @@ def controls():
                 f"- so the hook re-prices one rule rather than perturbing the "
                 f"loop", not ident))
     for s in C.SEEDS:
-        for f in ("rs_fired", "rs_genesis", "rs_atp", "rs_zsize_mean",
-                  "rs_zsize_max"):
+        for f in ("rs_fired", "rs_genesis", "rs_atp", "rs_book_i_atp",
+            "rs_floor_atp", "rs_counterfactual_saving",
+            "rs_share_of_spend", "rs_counterfactual_saving_share",
+            "rs_zsize_mean", "rs_zsize_max", "rs_zsize_hist"):
             armE[s][f] = armEg[s][f]
 
     armM = {s: run_soup("M", C.ATP_PER_REACTION, s, sample_check=25)
@@ -673,6 +798,23 @@ def controls():
                 f"at least the material its copy created ({len(tot)} "
                 f"reconciliation failures, {shortfalls} material shortfalls)",
                 not tot and shortfalls == 0))
+
+    # C9 (added after Codex's review, D89) — the ledger identity the review had
+    # to reconstruct is emitted, and it closes.
+    ident_bad, split_bad = [], []
+    for arm, runs in (("E", armE), ("M", armM)):
+        for s in C.SEEDS:
+            r = runs[s]
+            if not r["ledger_identity_ok"]:
+                ident_bad.append(f"{arm}/{s}")
+            if (r["spend_settled"] + r["spend_failed"] + r["spend_parked"]
+                    != r["spent_total"]):
+                split_bad.append(f"{arm}/{s}")
+    out.append((f"C9 every receipt carries the ledger identity `pool + held at "
+                f"the horizon + spent = endowment` and it closes, and the spend "
+                f"splits into settled/failed/parked exactly "
+                f"({len(ident_bad)} identity failures, {len(split_bad)} split "
+                f"failures)", not ident_bad and not split_bad))
 
     # C8 — saturation is reported.
     sat = {f"M/{s}": {"waits_outstanding": armM[s]["waits_outstanding"],
@@ -782,7 +924,14 @@ def score(primary):
         h2d[str(s)] = {"E": e["distinct"], "M": m["distinct"],
                        "fewer": m["distinct"] < e["distinct"]}
         h3[str(s)] = {"E": e["window_success"][w], "M": m["window_success"][w],
-                      "delta": m["window_success"][w] - e["window_success"][w]}
+                      "delta": m["window_success"][w] - e["window_success"][w],
+                      # reported, never scored (D88): H3's statistic counts a
+                      # reaction still parked at the horizon as a failure, and
+                      # only one arm has a parked state to count.
+                      "censoring": {"E": e["window_outcomes"][w],
+                                    "M": m["window_outcomes"][w],
+                                    "delta_upper": (m["window_outcomes"][w]["rate_upper"]
+                                                    - e["window_outcomes"][w]["rate_upper"])}}
     h1_hits = sum(1 for v in h1.values() if v is not None and v < C.H1_OVERLAP_MAX)
     h2c_hits = sum(1 for v in h2c.values() if v["smaller"])
     h2d_hits = sum(1 for v in h2d.values() if v["fewer"])
@@ -874,17 +1023,70 @@ def summarize(result):
           + ", ".join(str(v) for v in b["survivor_counts"]["E"].values())
           + " | M " + ", ".join(str(v) for v in b["survivor_counts"]["M"].values()))
 
-    print("\nWHAT DUPLICATION ACTUALLY COSTS (the size of H3's mechanism)\n")
+    print("\nWHAT DUPLICATION COSTS — two estimands, named apart (see the "
+          "2026-08-26 erratum)\n")
     print(f"{'arm':>4s} {'seed':>10s} {'R-S':>6s} {'ATP on R-S':>11s} "
-          f"{'ATP spent':>10s} {'share':>7s} {'mean size(z)':>13s} "
-          f"{'max size(z)':>12s}")
+          f"{'total spend':>12s} {'R-S share':>10s} {'Book I-floor':>13s} "
+          f"{'saving share':>13s} {'mean size(z)':>13s}")
     for arm in C.ARMS:
         for s in C.SEEDS:
             r = p[arm][str(s)]
-            tot = r["ok"] * r["mean_cost"]
             print(f"{arm:>4s} {s:>10d} {r['rs_fired']:>6d} {r['rs_atp']:>11d} "
-                  f"{tot:>10.0f} {r['rs_atp'] / tot:>6.2%} "
-                  f"{r['rs_zsize_mean']:>13.2f} {r['rs_zsize_max']:>12d}")
+                  f"{r['spent_total']:>12d} {r['rs_share_of_spend']:>9.2%} "
+                  f"{r['rs_counterfactual_saving']:>13d} "
+                  f"{r['rs_counterfactual_saving_share']:>12.2%} "
+                  f"{r['rs_zsize_mean']:>13.2f}")
+    print("   R-S share      = what this arm charged for duplication, over ALL "
+          "spend by all\n                    individuals ever born - settled, "
+          "failed and parked alike.")
+    print("   saving share   = the price intervention, per trace: what Book I "
+          "would have\n                    charged on THIS arm's own R-S events "
+          "minus what the floor\n                    would have. It is a "
+          "counterfactual on one trajectory and is NOT\n                    "
+          "recoverable from the difference of the two arms' totals.")
+
+    print("\nTHE LEDGER, SPLIT (Codex [BLOCKER]: numerator and denominator "
+          "were over different\npopulations in the first receipt)\n")
+    print(f"{'arm':>4s} {'seed':>10s} {'settled':>9s} {'failed':>9s} "
+          f"{'parked':>8s} {'held@horizon':>13s} {'pool left':>10s} "
+          f"{'= endowment':>12s}")
+    for arm in C.ARMS:
+        for s in C.SEEDS:
+            r = p[arm][str(s)]
+            print(f"{arm:>4s} {s:>10d} {r['spend_settled']:>9d} "
+                  f"{r['spend_failed']:>9d} {r['spend_parked']:>8d} "
+                  f"{r['held_terminal']:>13d} {r['pool_left']:>10d} "
+                  f"{'yes' if r['ledger_identity_ok'] else 'NO':>12s}")
+
+    print("\nCENSORING — the three terminal outcomes, and H3's window as an "
+          "interval (D88).\nThe preregistered statistic is the LOWER end and "
+          "the verdict above is unchanged.\n")
+    print(f"{'arm':>4s} {'seed':>10s} {'settled':>8s} {'failed':>7s} "
+          f"{'waiting':>8s}   {'last-100 window: settled/waiting/failed':<42s} "
+          f"{'rate interval':>18s}")
+    for arm in C.ARMS:
+        for s in C.SEEDS:
+            r = p[arm][str(s)]
+            w = r["window_outcomes"][str(C.FINAL_WINDOW)]
+            split = f"{w['settled']} / {w['waiting']} / {w['failed']}"
+            interval = (f"[{100 * w['rate_lower']:.1f}%, "
+                        f"{100 * w['rate_upper']:.1f}%]")
+            print(f"{arm:>4s} {s:>10d} {r['terminal_settled']:>8d} "
+                  f"{r['terminal_failed']:>7d} {r['terminal_waiting']:>8d}   "
+                  f"{split:<42s} {interval:>18s}")
+
+    print("\nCONSUMPTION MEDIATION — how many living bodies carried the "
+          "demanded hash the\ninstant before it was eaten (Codex [MAJOR]; the "
+          "redundancy story is scored here)\n")
+    print(f"{'arm':>4s} {'seed':>10s} {'consumed':>9s} {'ate the LAST copy':>18s} "
+          f"{'share':>7s}   multiplicity histogram")
+    for s in C.SEEDS:
+        r = p["M"][str(s)]
+        hist = ", ".join(f"{k}x{v}" for k, v in r["consumption_multiplicity"].items())
+        share = (r["consumed_last_copy"] / r["consumed_deaths"]
+                 if r["consumed_deaths"] else 0.0)
+        print(f"{'M':>4s} {s:>10d} {r['consumed_deaths']:>9d} "
+              f"{r['consumed_last_copy']:>18d} {share:>6.1%}   {hist}")
 
     print("\nECONOMY AND CENSUS")
     print(f"{'arm':>4s} {'seed':>10s} {'R-S fired':>10s} {'genesis':>8s} "

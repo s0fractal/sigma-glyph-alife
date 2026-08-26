@@ -10,7 +10,8 @@
     "C5 the corpus is ALIFE-EXP-001's, fingerprint 53cc6da80f66d220": true,
     "C6 waiting spent 0 ATP across Arm M, and 75/75 sampled Arm M products equal the oracle's own normal form (0 the oracle could not finish at 400000 ATP)": true,
     "C7 every individual ever alive is settled, starved, waiting, culled or consumed, the counts reconcile on every tick, no consumed body appears alive, and every consumed body carried at least the material its copy created (0 reconciliation failures, 0 material shortfalls)": true,
-    "C8 saturation reported: waits outstanding at the final tick [152, 130, 73] in Arm M, [0, 0, 0] in Arm E; transfer overflow guards 0 (D77)": true
+    "C8 saturation reported: waits outstanding at the final tick [152, 130, 73] in Arm M, [0, 0, 0] in Arm E; transfer overflow guards 0 (D77)": true,
+    "C9 every receipt carries the ledger identity `pool + held at the horizon + spent = endowment` and it closes, and the spend splits into settled/failed/parked exactly (0 identity failures, 0 split failures)": true
   },
   "corpus_fingerprint": "53cc6da80f66d220",
   "experiment": "ALIFE-EXP-010",
@@ -182,6 +183,8 @@
           "closure": 0.3386327503974563,
           "consumed_but_alive": 0,
           "consumed_deaths": 0,
+          "consumed_last_copy": 0,
+          "consumption_multiplicity": {},
           "core": [
             "00bf675f55285a486efe1cc9b8f991f2d88af43047d00ff9b869c6f0094575a4",
             "01fcb96eb5c8cf28645cd66973c93d4d8f0d35b7e0cf2aae9819914f4d68a47a",
@@ -335,7 +338,9 @@
           "edges": null,
           "endowment": 200001,
           "fail": 371,
+          "held_terminal": 0,
           "l0": [],
+          "ledger_identity_ok": true,
           "ledger_ok": true,
           "material_created": 0,
           "material_freed": 0,
@@ -349,8 +354,22 @@
           "pool_left": 67903,
           "reactions": 1000,
           "rs_atp": 1628,
+          "rs_book_i_atp": 1628,
+          "rs_counterfactual_saving": 1016,
+          "rs_counterfactual_saving_share": 0.0076912595194476826,
           "rs_fired": 612,
+          "rs_floor_atp": 612,
           "rs_genesis": 296,
+          "rs_share_of_spend": 0.01232418356068979,
+          "rs_zsize_hist": {
+            "1": 483,
+            "11": 1,
+            "15": 1,
+            "3": 84,
+            "5": 31,
+            "7": 4,
+            "9": 8
+          },
           "rs_zsize_max": 15,
           "rs_zsize_mean": 1.6601307189542485,
           "seed": 20260825,
@@ -985,6 +1004,10 @@
             996,
             997
           ],
+          "spend_failed": 73802,
+          "spend_parked": 0,
+          "spend_settled": 58296,
+          "spent_total": 132098,
           "success_rate": 0.629,
           "survivors": [
             "07eaa6ca0ebae0fa38c80234a941628a9b973783e761741d6fd55d92a631e15e",
@@ -1032,6 +1055,9 @@
             "fcb5f1390ae39e5bc441269a6e99c8a6c452a837033d883fd1932810510db963",
             "fd9bd10c446bf9307d0e9b8c3cbc168ccda5af88361d10757920e8436b50de01"
           ],
+          "terminal_failed": 371,
+          "terminal_settled": 629,
+          "terminal_waiting": 0,
           "trace": [
             {
               "census": 64,
@@ -1137,6 +1163,29 @@
           "transfer_mismatches": 0,
           "waits_outstanding": 0,
           "wake_events": 0,
+          "window_outcomes": {
+            "100": {
+              "failed": 48,
+              "rate_lower": 0.52,
+              "rate_upper": 0.52,
+              "settled": 52,
+              "waiting": 0
+            },
+            "200": {
+              "failed": 93,
+              "rate_lower": 0.535,
+              "rate_upper": 0.535,
+              "settled": 107,
+              "waiting": 0
+            },
+            "400": {
+              "failed": 204,
+              "rate_lower": 0.49,
+              "rate_upper": 0.49,
+              "settled": 196,
+              "waiting": 0
+            }
+          },
           "window_success": {
             "100": 0.52,
             "200": 0.535,
@@ -1168,6 +1217,8 @@
           "closure": 0.385395537525355,
           "consumed_but_alive": 0,
           "consumed_deaths": 0,
+          "consumed_last_copy": 0,
+          "consumption_multiplicity": {},
           "core": [
             "03f58203b40e7274b0c1d8ed00065f07f7721d3be603f16741ff4b6ddeefbe14",
             "061fda8f45accc0fa94b600a081767140096a43bef24a69a5ed6c144654e9170",
@@ -1331,9 +1382,11 @@
           "edges": null,
           "endowment": 200001,
           "fail": 507,
+          "held_terminal": 0,
           "l0": [
             "2f33694d09810641fa5b8c47a7c0dc42e1b99eb8c9784a00aaee9a66330f4162"
           ],
+          "ledger_identity_ok": true,
           "ledger_ok": true,
           "material_created": 0,
           "material_freed": 0,
@@ -1347,8 +1400,24 @@
           "pool_left": 51206,
           "reactions": 1000,
           "rs_atp": 928,
+          "rs_book_i_atp": 928,
+          "rs_counterfactual_saving": 597,
+          "rs_counterfactual_saving_share": 0.004012231593803556,
           "rs_fired": 331,
+          "rs_floor_atp": 331,
           "rs_genesis": 184,
+          "rs_share_of_spend": 0.006236768708625962,
+          "rs_zsize_hist": {
+            "1": 275,
+            "11": 1,
+            "13": 1,
+            "15": 1,
+            "21": 1,
+            "3": 24,
+            "5": 15,
+            "7": 1,
+            "9": 12
+          },
           "rs_zsize_max": 21,
           "rs_zsize_mean": 1.8036253776435045,
           "seed": 20260826,
@@ -1847,6 +1916,10 @@
             974,
             988
           ],
+          "spend_failed": 100892,
+          "spend_parked": 0,
+          "spend_settled": 47903,
+          "spent_total": 148795,
           "success_rate": 0.493,
           "survivors": [
             "03f58203b40e7274b0c1d8ed00065f07f7721d3be603f16741ff4b6ddeefbe14",
@@ -1890,6 +1963,9 @@
             "f9d6ea1f13b86036384590d6dd4eee5691792ccfb1aa7a034c1c906f46cf62eb",
             "ff4fb485a678d10ec12c67ecd30e95b61ee1709ad3b406cb232d660b547ed14a"
           ],
+          "terminal_failed": 507,
+          "terminal_settled": 493,
+          "terminal_waiting": 0,
           "trace": [
             {
               "census": 64,
@@ -1995,6 +2071,29 @@
           "transfer_mismatches": 0,
           "waits_outstanding": 0,
           "wake_events": 0,
+          "window_outcomes": {
+            "100": {
+              "failed": 87,
+              "rate_lower": 0.13,
+              "rate_upper": 0.13,
+              "settled": 13,
+              "waiting": 0
+            },
+            "200": {
+              "failed": 173,
+              "rate_lower": 0.135,
+              "rate_upper": 0.135,
+              "settled": 27,
+              "waiting": 0
+            },
+            "400": {
+              "failed": 315,
+              "rate_lower": 0.2125,
+              "rate_upper": 0.2125,
+              "settled": 85,
+              "waiting": 0
+            }
+          },
           "window_success": {
             "100": 0.13,
             "200": 0.135,
@@ -2026,6 +2125,8 @@
           "closure": 0.22790697674418606,
           "consumed_but_alive": 0,
           "consumed_deaths": 0,
+          "consumed_last_copy": 0,
+          "consumption_multiplicity": {},
           "core": [
             "031895fd0a3bdf20af4f956bf86e46744607cbf561c076b2ebc125416f3cf776",
             "0447c8613ea41b545348714b5ea188fe1aafdeb51389598f086b27df981b95a2",
@@ -2075,9 +2176,11 @@
           "edges": null,
           "endowment": 200001,
           "fail": 570,
+          "held_terminal": 0,
           "l0": [
             "2f33694d09810641fa5b8c47a7c0dc42e1b99eb8c9784a00aaee9a66330f4162"
           ],
+          "ledger_identity_ok": true,
           "ledger_ok": true,
           "material_created": 0,
           "material_freed": 0,
@@ -2091,8 +2194,28 @@
           "pool_left": 39606,
           "reactions": 1000,
           "rs_atp": 3274,
+          "rs_book_i_atp": 3274,
+          "rs_counterfactual_saving": 2232,
+          "rs_counterfactual_saving_share": 0.013915645749555785,
           "rs_fired": 1042,
+          "rs_floor_atp": 1042,
           "rs_genesis": 524,
+          "rs_share_of_spend": 0.020412107609339442,
+          "rs_zsize_hist": {
+            "1": 805,
+            "11": 9,
+            "13": 8,
+            "15": 3,
+            "17": 2,
+            "19": 1,
+            "21": 2,
+            "27": 1,
+            "3": 94,
+            "43": 1,
+            "5": 64,
+            "7": 28,
+            "9": 24
+          },
           "rs_zsize_max": 43,
           "rs_zsize_mean": 2.1420345489443378,
           "seed": 20260827,
@@ -2528,6 +2651,10 @@
             996,
             998
           ],
+          "spend_failed": 113422,
+          "spend_parked": 0,
+          "spend_settled": 46973,
+          "spent_total": 160395,
           "success_rate": 0.43,
           "survivors": [
             "031895fd0a3bdf20af4f956bf86e46744607cbf561c076b2ebc125416f3cf776",
@@ -2568,6 +2695,9 @@
             "e55d1a305fea00820aea772f35b0f4b3c81a666a47295c13621cadb171aa8dc2",
             "eb5fe54b90311bda3e695807c33fc455349b70f85bd70ce922ae12066f4dbfd5"
           ],
+          "terminal_failed": 570,
+          "terminal_settled": 430,
+          "terminal_waiting": 0,
           "trace": [
             {
               "census": 64,
@@ -2673,6 +2803,29 @@
           "transfer_mismatches": 0,
           "waits_outstanding": 0,
           "wake_events": 0,
+          "window_outcomes": {
+            "100": {
+              "failed": 75,
+              "rate_lower": 0.25,
+              "rate_upper": 0.25,
+              "settled": 25,
+              "waiting": 0
+            },
+            "200": {
+              "failed": 140,
+              "rate_lower": 0.3,
+              "rate_upper": 0.3,
+              "settled": 60,
+              "waiting": 0
+            },
+            "400": {
+              "failed": 312,
+              "rate_lower": 0.22,
+              "rate_upper": 0.22,
+              "settled": 88,
+              "waiting": 0
+            }
+          },
           "window_success": {
             "100": 0.25,
             "200": 0.3,
@@ -2706,6 +2859,15 @@
           "closure": 0.3065068493150685,
           "consumed_but_alive": 0,
           "consumed_deaths": 194,
+          "consumed_last_copy": 145,
+          "consumption_multiplicity": {
+            "1": 145,
+            "2": 27,
+            "3": 12,
+            "4": 6,
+            "5": 3,
+            "6": 1
+          },
           "core": [
             "00779b82767eef9d2fa3c24cc6a1350b3abfe4eddc173652bdf800b6dee5fed3",
             "02c50dcaaafaeff1ca7738bfd193e0bae78d7505702c152d069775a0bd8d50bc",
@@ -3001,9 +3163,11 @@
           "edges": null,
           "endowment": 200001,
           "fail": 416,
+          "held_terminal": 26720,
           "l0": [
             "2f33694d09810641fa5b8c47a7c0dc42e1b99eb8c9784a00aaee9a66330f4162"
           ],
+          "ledger_identity_ok": true,
           "ledger_ok": true,
           "material_created": 8,
           "material_freed": 10662,
@@ -3017,8 +3181,18 @@
           "pool_left": 69331,
           "reactions": 1000,
           "rs_atp": 764,
+          "rs_book_i_atp": 1688,
+          "rs_counterfactual_saving": 924,
+          "rs_counterfactual_saving_share": 0.008888888888888889,
           "rs_fired": 764,
+          "rs_floor_atp": 764,
           "rs_genesis": 411,
+          "rs_share_of_spend": 0.00734968734968735,
+          "rs_zsize_hist": {
+            "1": 688,
+            "3": 72,
+            "5": 4
+          },
           "rs_zsize_max": 5,
           "rs_zsize_mean": 1.2094240837696335,
           "seed": 20260825,
@@ -3608,6 +3782,10 @@
             994,
             999
           ],
+          "spend_failed": 52582,
+          "spend_parked": 3680,
+          "spend_settled": 47688,
+          "spent_total": 103950,
           "success_rate": 0.584,
           "survivors": [
             "02d910a2d35b2ef4710db3c2b264e9122bae7f340d376bf78b088750ff547220",
@@ -3661,6 +3839,9 @@
             "fc66f11bcbdbb8164662af329c71f579a9360872347ce0a53da8e68ee44dd867",
             "fe5ac405b3515822ad66c7ca05c3d066d0e1fcd75f5fcb7559eb761eff64fe54"
           ],
+          "terminal_failed": 264,
+          "terminal_settled": 584,
+          "terminal_waiting": 152,
           "trace": [
             {
               "census": 64,
@@ -3766,6 +3947,29 @@
           "transfer_mismatches": 0,
           "waits_outstanding": 152,
           "wake_events": 7,
+          "window_outcomes": {
+            "100": {
+              "failed": 61,
+              "rate_lower": 0.29,
+              "rate_upper": 0.39,
+              "settled": 29,
+              "waiting": 10
+            },
+            "200": {
+              "failed": 117,
+              "rate_lower": 0.285,
+              "rate_upper": 0.415,
+              "settled": 57,
+              "waiting": 26
+            },
+            "400": {
+              "failed": 206,
+              "rate_lower": 0.365,
+              "rate_upper": 0.485,
+              "settled": 146,
+              "waiting": 48
+            }
+          },
           "window_success": {
             "100": 0.29,
             "200": 0.285,
@@ -3797,6 +4001,14 @@
           "closure": 0.2335958005249344,
           "consumed_but_alive": 0,
           "consumed_deaths": 101,
+          "consumed_last_copy": 78,
+          "consumption_multiplicity": {
+            "1": 78,
+            "2": 16,
+            "3": 5,
+            "6": 1,
+            "7": 1
+          },
           "core": [
             "030668b221b50c19d5e85cb657c95f67fd90d45307f5d4e1f4d9d276a8365f86",
             "0c11f7d5410ad2143924e61e7820cf94f8166dc4a44df87f11d52e42249662eb",
@@ -3885,7 +4097,9 @@
           "edges": null,
           "endowment": 200001,
           "fail": 619,
+          "held_terminal": 23175,
           "l0": [],
+          "ledger_identity_ok": true,
           "ledger_ok": true,
           "material_created": 0,
           "material_freed": 7159,
@@ -3899,8 +4113,17 @@
           "pool_left": 36461,
           "reactions": 1000,
           "rs_atp": 604,
+          "rs_book_i_atp": 1366,
+          "rs_counterfactual_saving": 762,
+          "rs_counterfactual_saving_share": 0.005428703736686496,
           "rs_fired": 604,
+          "rs_floor_atp": 604,
           "rs_genesis": 369,
+          "rs_share_of_spend": 0.004303067003882734,
+          "rs_zsize_hist": {
+            "1": 525,
+            "3": 79
+          },
           "rs_zsize_max": 3,
           "rs_zsize_mean": 1.2615894039735098,
           "seed": 20260826,
@@ -4287,6 +4510,10 @@
             977,
             998
           ],
+          "spend_failed": 97402,
+          "spend_parked": 2825,
+          "spend_settled": 40138,
+          "spent_total": 140365,
           "success_rate": 0.381,
           "survivors": [
             "059b633d2b8f81563d5275503d9167e3c31a9d1d1ea8d6ccf0a03dacf9963b3b",
@@ -4346,6 +4573,9 @@
             "f9059bc99a73e5b81d068a7aef542cc3bf79a60db7b4a1aa0ad8d21ab685df17",
             "fc5e5cba5a5a096e634a30eb9bbc7c3425fa4d5a0f315def1d24ffb3b103242b"
           ],
+          "terminal_failed": 489,
+          "terminal_settled": 381,
+          "terminal_waiting": 130,
           "trace": [
             {
               "census": 64,
@@ -4451,6 +4681,29 @@
           "transfer_mismatches": 0,
           "waits_outstanding": 130,
           "wake_events": 4,
+          "window_outcomes": {
+            "100": {
+              "failed": 85,
+              "rate_lower": 0.09,
+              "rate_upper": 0.15,
+              "settled": 9,
+              "waiting": 6
+            },
+            "200": {
+              "failed": 164,
+              "rate_lower": 0.115,
+              "rate_upper": 0.18,
+              "settled": 23,
+              "waiting": 13
+            },
+            "400": {
+              "failed": 317,
+              "rate_lower": 0.135,
+              "rate_upper": 0.2075,
+              "settled": 54,
+              "waiting": 29
+            }
+          },
           "window_success": {
             "100": 0.09,
             "200": 0.115,
@@ -4482,6 +4735,13 @@
           "closure": 0.3767857142857143,
           "consumed_but_alive": 0,
           "consumed_deaths": 62,
+          "consumed_last_copy": 56,
+          "consumption_multiplicity": {
+            "1": 56,
+            "2": 3,
+            "3": 2,
+            "4": 1
+          },
           "core": [
             "00bd7c03b2465378abb403d7403506095b1ecab402fba841c162a0704fa1504f",
             "01fb9f59f73e49b9a54dce4aa6b878acd44ec5654e4695e155b9f0b92c6e093e",
@@ -4598,7 +4858,9 @@
           "edges": null,
           "endowment": 200001,
           "fail": 440,
+          "held_terminal": 12733,
           "l0": [],
+          "ledger_identity_ok": true,
           "ledger_ok": true,
           "material_created": 6,
           "material_freed": 1664,
@@ -4612,8 +4874,19 @@
           "pool_left": 50643,
           "reactions": 1000,
           "rs_atp": 490,
+          "rs_book_i_atp": 1028,
+          "rs_counterfactual_saving": 538,
+          "rs_counterfactual_saving_share": 0.003937785910338518,
           "rs_fired": 490,
+          "rs_floor_atp": 490,
           "rs_genesis": 346,
+          "rs_share_of_spend": 0.003586459286367795,
+          "rs_zsize_hist": {
+            "1": 471,
+            "3": 16,
+            "5": 2,
+            "9": 1
+          },
           "rs_zsize_max": 9,
           "rs_zsize_mean": 1.0979591836734695,
           "seed": 20260827,
@@ -5179,6 +5452,10 @@
             998,
             999
           ],
+          "spend_failed": 73070,
+          "spend_parked": 1867,
+          "spend_settled": 61688,
+          "spent_total": 136625,
           "success_rate": 0.56,
           "survivors": [
             "1334b5d9b7c2f6da9bf3902b15484cf623e9a74a78b019fe8d25a904d892932f",
@@ -5210,6 +5487,9 @@
             "f0c6b43c12d8fcad50ec4befa0f894d9600349d11cf98ad08fdf74d8cf670a5e",
             "fe0a7706436c52dfcfe3a629fb5016801db772700e6de44717c01502a1286e3f"
           ],
+          "terminal_failed": 367,
+          "terminal_settled": 560,
+          "terminal_waiting": 73,
           "trace": [
             {
               "census": 64,
@@ -5315,6 +5595,29 @@
           "transfer_mismatches": 0,
           "waits_outstanding": 73,
           "wake_events": 9,
+          "window_outcomes": {
+            "100": {
+              "failed": 51,
+              "rate_lower": 0.49,
+              "rate_upper": 0.49,
+              "settled": 49,
+              "waiting": 0
+            },
+            "200": {
+              "failed": 107,
+              "rate_lower": 0.465,
+              "rate_upper": 0.465,
+              "settled": 93,
+              "waiting": 0
+            },
+            "400": {
+              "failed": 195,
+              "rate_lower": 0.5125,
+              "rate_upper": 0.5125,
+              "settled": 205,
+              "waiting": 0
+            }
+          },
           "window_success": {
             "100": 0.49,
             "200": 0.465,
@@ -5381,16 +5684,67 @@
           "20260825": {
             "E": 0.52,
             "M": 0.29,
+            "censoring": {
+              "E": {
+                "failed": 48,
+                "rate_lower": 0.52,
+                "rate_upper": 0.52,
+                "settled": 52,
+                "waiting": 0
+              },
+              "M": {
+                "failed": 61,
+                "rate_lower": 0.29,
+                "rate_upper": 0.39,
+                "settled": 29,
+                "waiting": 10
+              },
+              "delta_upper": -0.13
+            },
             "delta": -0.23000000000000004
           },
           "20260826": {
             "E": 0.13,
             "M": 0.09,
+            "censoring": {
+              "E": {
+                "failed": 87,
+                "rate_lower": 0.13,
+                "rate_upper": 0.13,
+                "settled": 13,
+                "waiting": 0
+              },
+              "M": {
+                "failed": 85,
+                "rate_lower": 0.09,
+                "rate_upper": 0.15,
+                "settled": 9,
+                "waiting": 6
+              },
+              "delta_upper": 0.01999999999999999
+            },
             "delta": -0.04000000000000001
           },
           "20260827": {
             "E": 0.25,
             "M": 0.49,
+            "censoring": {
+              "E": {
+                "failed": 75,
+                "rate_lower": 0.25,
+                "rate_upper": 0.25,
+                "settled": 25,
+                "waiting": 0
+              },
+              "M": {
+                "failed": 51,
+                "rate_lower": 0.49,
+                "rate_upper": 0.49,
+                "settled": 49,
+                "waiting": 0
+              },
+              "delta_upper": 0.24
+            },
             "delta": 0.24
           }
         },
