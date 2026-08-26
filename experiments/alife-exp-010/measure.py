@@ -733,7 +733,42 @@ def measure():
         for s in C.SEEDS:
             runs[arm][s]["edges"] = None
     primary = {arm: {str(s): runs[arm][s] for s in C.SEEDS} for arm in C.ARMS}
-    return {"primary": primary, "nulls": nulls, "scores": score(primary)}
+    return {"primary": primary, "nulls": nulls, "scores": score(primary),
+            "overlap_baseline": overlap_baseline(primary)}
+
+
+def overlap_baseline(primary):
+    """POST HOC, not preregistered, and it scores nothing.
+
+    H1 asks whether the two arms' survivors overlap by less than 0.5. EXP-007's
+    own H3 met a threshold of exactly that shape and its RESULT then found the
+    threshold uninformative: the molecules in a bounded high-turnover soup barely
+    overlap between ANY two runs, so a near-zero overlap measures turnover rather
+    than the manipulation. The same question has to be asked here before H1's
+    verdict is allowed to mean anything, so: the same statistic between two runs
+    of the SAME arm at different seeds, where the currency is held fixed and only
+    the seed moves. If that is near zero too, H1's number is about the soup.
+    """
+    def survivors(arm, seed):
+        return primary[arm][str(seed)]["survivors"]
+    out = {"E_vs_M_same_seed": {str(s): jaccard(survivors("E", s),
+                                                survivors("M", s))
+                                for s in C.SEEDS}}
+    for arm in C.ARMS:
+        cell = {}
+        for i, a in enumerate(C.SEEDS):
+            for b in C.SEEDS[i + 1:]:
+                cell[f"{a}|{b}"] = jaccard(survivors(arm, a), survivors(arm, b))
+        out[f"{arm}_vs_{arm}_across_seeds"] = cell
+    cross = {}
+    for a in C.SEEDS:
+        for b in C.SEEDS:
+            if a != b:
+                cross[f"{a}|{b}"] = jaccard(survivors("E", a), survivors("M", b))
+    out["E_vs_M_across_seeds"] = cross
+    out["survivor_counts"] = {arm: {str(s): len(survivors(arm, s))
+                                    for s in C.SEEDS} for arm in C.ARMS}
+    return out
 
 
 def score(primary):
@@ -824,6 +859,32 @@ def summarize(result):
             n = result["nulls"][arm][str(s)]
             print(f"{arm:>4s} {s:>10d} {n['core_observed']:>6d} "
                   f"{n['full_shuffle_max']:>18d} {n['locality_max']:>14d}")
+
+    b = result["overlap_baseline"]
+    print("\nH1's THRESHOLD AGAINST A BASELINE — post hoc, scores nothing. The "
+          "same statistic\nwith the currency held FIXED and only the seed moved "
+          "(EXP-007's H3 lesson).\n")
+    print(f"   E vs M, same seed (this is H1):   "
+          + "  ".join(f"{v:.4f}" for v in b["E_vs_M_same_seed"].values()))
+    print(f"   E vs E, seed pairs:               "
+          + "  ".join(f"{v:.4f}" for v in b["E_vs_E_across_seeds"].values()))
+    print(f"   M vs M, seed pairs:               "
+          + "  ".join(f"{v:.4f}" for v in b["M_vs_M_across_seeds"].values()))
+    print(f"   surviving non-genesis hashes:     E "
+          + ", ".join(str(v) for v in b["survivor_counts"]["E"].values())
+          + " | M " + ", ".join(str(v) for v in b["survivor_counts"]["M"].values()))
+
+    print("\nWHAT DUPLICATION ACTUALLY COSTS (the size of H3's mechanism)\n")
+    print(f"{'arm':>4s} {'seed':>10s} {'R-S':>6s} {'ATP on R-S':>11s} "
+          f"{'ATP spent':>10s} {'share':>7s} {'mean size(z)':>13s} "
+          f"{'max size(z)':>12s}")
+    for arm in C.ARMS:
+        for s in C.SEEDS:
+            r = p[arm][str(s)]
+            tot = r["ok"] * r["mean_cost"]
+            print(f"{arm:>4s} {s:>10d} {r['rs_fired']:>6d} {r['rs_atp']:>11d} "
+                  f"{tot:>10.0f} {r['rs_atp'] / tot:>6.2%} "
+                  f"{r['rs_zsize_mean']:>13.2f} {r['rs_zsize_max']:>12d}")
 
     print("\nECONOMY AND CENSUS")
     print(f"{'arm':>4s} {'seed':>10s} {'R-S fired':>10s} {'genesis':>8s} "
