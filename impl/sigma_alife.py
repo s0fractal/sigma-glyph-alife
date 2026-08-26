@@ -109,6 +109,16 @@ STARVED = "starved"        # reservoir empty, term preserved at the stopping poi
 UNRESOLVED = "unresolved"  # demanded a hash the store does not hold
 FAULT = "fault"            # local ResourceFault: non-canonical, an implementation limit
 ARCHIVED = "archived"      # culled; the term stays in the CAS, the agent stops running
+BLOCKED = "blocked"        # a priced action the ENVIRONMENT cannot currently
+                           # supply — ALIFE-EXP-010's matter-priced R-S with no
+                           # copy to consume. Deliberately NOT in RUNNABLE and
+                           # deliberately not UNRESOLVED: an unresolved agent is
+                           # waiting on the STORE, a blocked one on the CENSUS,
+                           # and conflating them would make ALIFE-EXP-009's
+                           # measurement unreadable. Nothing in this module puts
+                           # an agent in this state unless a caller passes
+                           # `duplication_gate`, so every existing receipt is
+                           # untouched.
 RUNNABLE = (LIVE, STARVED)
 
 
@@ -159,7 +169,8 @@ class Agent:
 
 
 # ---------- The driver: Book I's priced action, our loop ----------
-def reduce_slice(agent, store, slice_atp, limits=None, probe=False, memo=None):
+def reduce_slice(agent, store, slice_atp, limits=None, probe=False, memo=None,
+                 duplication_gate=None):
     """Spend up to `min(slice_atp, agent.atp)` on this agent and return what was
     spent. Sets `agent.status`; leaves `agent.term` at the stopping point.
 
@@ -183,6 +194,43 @@ def reduce_slice(agent, store, slice_atp, limits=None, probe=False, memo=None):
     by `memo.price`. A hit that the remaining budget cannot afford is SKIPPED
     rather than fatal — the plain force costs at most 4, so an agent is never
     starved by the existence of a shortcut it could not buy.
+
+    `duplication_gate` re-prices exactly one rule, `R-S`, and is how ALIFE-EXP-010
+    runs a MATTER-priced arm without a second driver. It must supply
+
+        .price_of(z)        int — what this arm charges to duplicate `z`;
+        .afford(agent, z, spent)
+                            bool — may this R-S fire now? The gate performs any
+                            census bookkeeping (consuming a copy, transferring
+                            its reservoir) and returns False when the environment
+                            cannot currently supply the duplicate. `spent` is
+                            what this slice has burned so far, which `agent.spent`
+                            does not yet include: without it a gate cannot say
+                            what the agent's ledger reads at the moment it acts,
+                            and ALIFE-EXP-010 has to, because measuring how badly
+                            a re-priced rule breaks Book I's per-agent bound is
+                            half of what that experiment is for.
+
+    The rewrite is Book I's, unconditionally: `((S x) y) z -> (x z)(y z)`. A gate
+    that answers `1 + size(z)` and always affords is Book I, and running an
+    unchanged chemistry through the hook must therefore leave every number where
+    it was — which is a checkable claim, and ALIFE-EXP-010's C0c checks it.
+
+    A refused R-S is NOT a death and NOT a fault: the term is left exactly at the
+    redex, nothing is spent, and the agent settles `BLOCKED` for its harness to
+    park and retry — the ALIFE-EXP-009 discipline, applied to a census rather
+    than to a store. An UNAFFORDABLE R-S is ordinary starvation and takes the
+    same STARVED/LIVE branch `step5`'s `BudgetExhausted` takes.
+
+    `probe` asserts the Book I per-agent bound here exactly as it does
+    everywhere else, and that is the point rather than an oversight:
+    `size <= s0 + spent` follows from `Δsize <= cost - 1`, which is a property of
+    Book I's PRICE, so an arm that charges the floor for a duplication has given
+    up the premise and MUST run with `probe=False`. What survives matter-pricing
+    is a census bound over the whole population — including the body consumed to
+    pay for the copy — and the harness holds the census, so the harness checks it
+    (ALIFE-EXP-010 C1/C7). With `duplication_gate=None`, which is every caller
+    that existed before ALIFE-EXP-010, nothing below changes at all.
     """
     limits = limits or sg.DEFAULT_LIMITS
     if agent.status not in RUNNABLE:
@@ -231,6 +279,30 @@ def reduce_slice(agent, store, slice_atp, limits=None, probe=False, memo=None):
                                     f"{agent.s0} + spent {agent.spent + spent}")
                                 agent.peak = max(agent.peak, sg.size(agent.term))
                             continue
+            if duplication_gate is not None:
+                red = _next_redex(agent.term)
+                if red is not None and red[0] == "S":
+                    x, y, z = red[2]
+                    cost = duplication_gate.price_of(z)
+                    if cost > budget - spent:
+                        # Identical bookkeeping to the BudgetExhausted branch
+                        # below: only the reservoir running out is an outcome.
+                        if cost > agent.atp - spent:
+                            return _settle(STARVED)
+                        return _settle(LIVE)
+                    if not duplication_gate.afford(agent, z, spent):
+                        return _settle(BLOCKED)
+                    agent.term = _replace_at(
+                        agent.term, red[1],
+                        ("app", ("app", x, z), ("app", y, z)))
+                    spent += cost
+                    if probe:
+                        assert sg.size(agent.term) <= agent.s0 + agent.spent + spent, (
+                            f"MEMORY BOUND VIOLATED by a gated R-S: agent "
+                            f"{agent.aid} size {sg.size(agent.term)} > s0 "
+                            f"{agent.s0} + spent {agent.spent + spent}")
+                    agent.peak = max(agent.peak, sg.size(agent.term))
+                    continue
             try:
                 r = sg.step5(agent.term, budget - spent, store, agent.stats, limits)
             except sg.BudgetExhausted:
@@ -331,6 +403,49 @@ def _next_action(t, path=()):
             return ("rule", None, ())
     left = _next_action(f, path + (1,))
     return left if left is not None else _next_action(a, path + (2,))
+
+
+def _next_redex(t, path=()):
+    """The leftmost-outermost action the machine will take next, WITH its kind,
+    its position, and — for `R-S` — the three terms the rule is about.
+
+    Returns one of
+
+        ("force", path, hash)          materialize a thunk
+        ("ref",   path, None)          R-R, unwrap one level
+        ("I",     path, None)          R-I
+        ("K",     path, None)          R-K
+        ("S",     path, (x, y, z))     R-S over `((S x) y) z`
+
+    or None at a normal form. This is a strictly finer mirror of the same
+    dispatch `_next_action` mirrors — `_step_application` tries the head
+    reduction first, then the function, then the argument — and it exists
+    because ALIFE-EXP-010 has to price ONE rule differently from the rest and
+    therefore has to see which rule is next before the oracle fires it.
+
+    `_next_action` is left exactly as it was: it is control M1's subject in
+    `tests/alife_memo.py` and the memo's only consumer, and a shared return
+    shape would have made one of the two callers read the other's fields.
+    Control C0 of ALIFE-EXP-010 holds this mirror to `step5` in the direction
+    that matters — every predicted R-S is a real R-S at the oracle's own price.
+    """
+    k = t[0]
+    if k == "thunk":
+        return None if t[1] in sg.GENESIS else ("force", path, t[1])
+    if k == "ref":
+        return ("ref", path, None)
+    if k != "app":
+        return None
+    f, a = t[1], t[2]
+    if sg.glyph_eq(f, sg.I_H):                                   # R-I
+        return ("I", path, None)
+    if f[0] == "app":
+        if sg.glyph_eq(f[1], sg.K_H):                            # R-K
+            return ("K", path, None)
+        if f[1][0] == "app" and sg.glyph_eq(f[1][1], sg.S_H):    # R-S
+            return ("S", path, (f[1][2], f[2], a))
+    left = _next_redex(f, path + (1,))
+    return left if left is not None else _next_redex(a, path + (2,))
 
 
 def _replace_at(t, path, node):
