@@ -590,3 +590,43 @@ it reported success against a machine it was not measuring. Both are now caught
 and both are demonstrable in reverse. This repository already had the rule for
 its own harnesses — every experiment scores against pinned values — and did not
 apply it to the one artifact it sent to somebody else.
+
+---
+
+## 2026-08-26 — a survey from Grok, and what was left of it
+
+**D66. Half of a research survey was already done, and saying so is the useful
+part.** Grok proposed seven directions. Checked against what is committed:
+
+  * *"formalize in Lean: any redistribution preserving total ATP preserves the
+    population bound"* — that is `transfer_preserves_bound`, proved on day one,
+    and `ALIFE-ADR-002 §7` is about why its triviality is the point.
+  * *"introduce heredity with mutation plus ATP selection"* — that is
+    ALIFE-EXP-002 Part B, which found the degenerate attractor: selection for
+    settling cheaply drives mean term size to 2.8–3.4 nodes, the SKI equivalent
+    of breeding for the empty program.
+  * *"resumption gives ~3× more settled agents"* — the best case. Measured:
+    1.52× at 2 pulses, 2.35× at 8, 2.94× at 32. The range is the finding; the
+    maximum is a headline.
+  * *"automatic generation of null models"* — `impl/sigma_nulls.py` and
+    `tools/receipt_guard.py`, D58–D60.
+  * *"toxins and antibodies — terms that lower another agent's ATP on apply"* —
+    not expressible. A term cannot touch another agent's reservoir: ATP is
+    bookkeeping outside the machine. It could be built as an economy *policy*,
+    and calling it a property of terms would misdescribe the substrate.
+
+What was genuinely open and cheap: the ceiling's decomposition, which two
+independent reviews raised and which needed **no new measurement at all** —
+the receipts were on disk. Done as `analysis-001`, and labelled *descriptive*:
+no hypotheses, no preregistration, no nulls, because it takes no measurement.
+Gated anyway, since it states numbers about this repository's own results and
+nothing else would notice a receipt moving underneath it.
+
+**D67. The finding worth keeping from it.** The two halves of the slack are not
+two views of one thing. Across an alphabet sweep the morphological factor moves
+30 points and the metabolic factor moves 4; over a single run the morphological
+factor freezes after the first tick while the metabolic one decays monotonically
+to 16.6%. An operator sizing memory from the theorem overpays about 16×, of which
+roughly 6× is budget that never became structure and 2.6× is structure held more
+than once — the first a property of the terms, the second of the alphabet. They
+should be estimated separately, and until now they were multiplied together.

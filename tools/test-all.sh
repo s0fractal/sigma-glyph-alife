@@ -157,6 +157,15 @@ else
   skip "EXP-005 addendum was not diffed against its committed receipt (no git)"
 fi
 
+say "Analysis: the ceiling's slack decomposition re-derives from committed receipts"
+# Descriptive, not an experiment — it takes no measurement. It is gated anyway,
+# because it states numbers about this repository's own published results and
+# nothing else would notice if a receipt moved underneath it.
+python3 experiments/analysis-001-where-the-slack-lives/analyse.py --record | tail -3
+if command -v git >/dev/null 2>&1 && git rev-parse --git-dir >/dev/null 2>&1; then
+  git diff --exit-code experiments/analysis-001-where-the-slack-lives/analysis.json
+fi
+
 say "The need packet reproduces what it claims"
 # sigma-glyph's own lesson: papers stated numbers about the repository and
 # nothing enforced them. A need packet is a document that states numbers about

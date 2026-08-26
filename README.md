@@ -259,10 +259,18 @@ No schedule and no venue — `ALIFE-ADR-001 §9`, and standing direction since
   substrate's native interaction, and it is exactly the demand path EXP-002 found
   and EXP-003 had to fund. Whether closed sets form under it — AlChemy's L1 — is
   open.
-- **Does the loose ceiling decompose?** EXP-001's 6.41% is two factors: budget
-  utilisation (472/2840) times deduplication (182/472). They are the metabolic and
-  the morphological halves of the same slack, and only the product has ever been
-  tracked.
+- ~~Does the loose ceiling decompose?~~ **Answered by
+  [analysis-001](experiments/analysis-001-where-the-slack-lives/ANALYSIS.md),
+  from receipts already on disk.** The two halves behave nothing alike: across an
+  alphabet sweep the *morphological* factor travels 30 points and the *metabolic*
+  one moves 4, and the ceiling is dominated by the factor the alphabet does not
+  control. A run turns ~15% of its proved budget into materialised nodes and
+  de-duplicates ~59% of those away — the theorem is loose mostly because reduction
+  spends budget on **reductions**, not on structure. Over a run the morphological
+  factor freezes after the first tick while the metabolic one decays
+  monotonically.
+- **Is there a tighter bound for populations with high sharing?** The
+  decomposition says where to look; nothing here proves anything about it.
 
 ---
 

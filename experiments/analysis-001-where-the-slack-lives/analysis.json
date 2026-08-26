@@ -1,0 +1,559 @@
+{
+  "analysis": "where the ceiling's slack lives",
+  "exp001": {
+    "mixed_settled": {
+      "atp_spent": 2776,
+      "ceiling": 2840,
+      "metabolic": 0.16619718309859155,
+      "morphological": 0.3855932203389831,
+      "nodes_total": 472,
+      "nodes_unique": 182,
+      "occupancy": 0.06408450704225352
+    },
+    "per_family": {
+      "church": {
+        "atp_spent": 1512,
+        "ceiling": 1528,
+        "metabolic": 0.05366492146596859,
+        "morphological": 0.23170731707317074,
+        "nodes_total": 82,
+        "nodes_unique": 19,
+        "occupancy": 0.012434554973821989
+      },
+      "drop": {
+        "atp_spent": 216,
+        "ceiling": 232,
+        "metabolic": 0.20689655172413793,
+        "morphological": 0.5625,
+        "nodes_total": 48,
+        "nodes_unique": 27,
+        "occupancy": 0.11637931034482758
+      },
+      "dup": {
+        "atp_spent": 611,
+        "ceiling": 627,
+        "metabolic": 0.2807017543859649,
+        "morphological": 0.48295454545454547,
+        "nodes_total": 176,
+        "nodes_unique": 85,
+        "occupancy": 0.13556618819776714
+      },
+      "random": {
+        "atp_spent": 437,
+        "ceiling": 453,
+        "metabolic": 0.36644591611479027,
+        "morphological": 0.4879518072289157,
+        "nodes_total": 166,
+        "nodes_unique": 81,
+        "occupancy": 0.17880794701986755
+      }
+    },
+    "per_tick": [
+      {
+        "atp_spent": 0,
+        "ceiling": 64,
+        "metabolic": 1.0,
+        "morphological": 0.921875,
+        "nodes_total": 64,
+        "nodes_unique": 59,
+        "occupancy": 0.921875,
+        "tick": 0
+      },
+      {
+        "atp_spent": 1486,
+        "ceiling": 1550,
+        "metabolic": 0.34580645161290324,
+        "morphological": 0.4253731343283582,
+        "nodes_total": 536,
+        "nodes_unique": 228,
+        "occupancy": 0.14709677419354839,
+        "tick": 1
+      },
+      {
+        "atp_spent": 2131,
+        "ceiling": 2195,
+        "metabolic": 0.23690205011389523,
+        "morphological": 0.40576923076923077,
+        "nodes_total": 520,
+        "nodes_unique": 211,
+        "occupancy": 0.09612756264236902,
+        "tick": 2
+      },
+      {
+        "atp_spent": 2428,
+        "ceiling": 2492,
+        "metabolic": 0.21990369181380418,
+        "morphological": 0.38686131386861317,
+        "nodes_total": 548,
+        "nodes_unique": 212,
+        "occupancy": 0.08507223113964688,
+        "tick": 3
+      },
+      {
+        "atp_spent": 2652,
+        "ceiling": 2716,
+        "metabolic": 0.18556701030927836,
+        "morphological": 0.4007936507936508,
+        "nodes_total": 504,
+        "nodes_unique": 202,
+        "occupancy": 0.0743740795287187,
+        "tick": 4
+      },
+      {
+        "atp_spent": 2774,
+        "ceiling": 2838,
+        "metabolic": 0.16842847075405215,
+        "morphological": 0.38493723849372385,
+        "nodes_total": 478,
+        "nodes_unique": 184,
+        "occupancy": 0.06483439041578576,
+        "tick": 5
+      },
+      {
+        "atp_spent": 2776,
+        "ceiling": 2840,
+        "metabolic": 0.16619718309859155,
+        "morphological": 0.3855932203389831,
+        "nodes_total": 472,
+        "nodes_unique": 182,
+        "occupancy": 0.06408450704225352,
+        "tick": 6
+      }
+    ]
+  },
+  "exp004": {
+    "0.3": {
+      "cells": [
+        {
+          "atp_spent": 3217,
+          "ceiling": 3281,
+          "metabolic": 0.1487351417250838,
+          "morphological": 0.5,
+          "nodes_total": 488,
+          "nodes_unique": 244,
+          "occupancy": 0.0743675708625419,
+          "seed": "20260825"
+        },
+        {
+          "atp_spent": 3421,
+          "ceiling": 3485,
+          "metabolic": 0.1618364418938307,
+          "morphological": 0.6312056737588653,
+          "nodes_total": 564,
+          "nodes_unique": 356,
+          "occupancy": 0.10215208034433286,
+          "seed": "20260826"
+        },
+        {
+          "atp_spent": 3034,
+          "ceiling": 3098,
+          "metabolic": 0.1762427372498386,
+          "morphological": 0.5897435897435898,
+          "nodes_total": 546,
+          "nodes_unique": 322,
+          "occupancy": 0.1039380245319561,
+          "seed": "20260827"
+        },
+        {
+          "atp_spent": 3168,
+          "ceiling": 3232,
+          "metabolic": 0.16831683168316833,
+          "morphological": 0.5202205882352942,
+          "nodes_total": 544,
+          "nodes_unique": 283,
+          "occupancy": 0.0875618811881188,
+          "seed": "20260828"
+        },
+        {
+          "atp_spent": 2676,
+          "ceiling": 2740,
+          "metabolic": 0.18248175182481752,
+          "morphological": 0.586,
+          "nodes_total": 500,
+          "nodes_unique": 293,
+          "occupancy": 0.10693430656934307,
+          "seed": "20260829"
+        },
+        {
+          "atp_spent": 3251,
+          "ceiling": 3315,
+          "metabolic": 0.1779788838612368,
+          "morphological": 0.5830508474576271,
+          "nodes_total": 590,
+          "nodes_unique": 344,
+          "occupancy": 0.10377073906485672,
+          "seed": "20260830"
+        },
+        {
+          "atp_spent": 3211,
+          "ceiling": 3275,
+          "metabolic": 0.13129770992366413,
+          "morphological": 0.5255813953488372,
+          "nodes_total": 430,
+          "nodes_unique": 226,
+          "occupancy": 0.06900763358778626,
+          "seed": "20260831"
+        },
+        {
+          "atp_spent": 2511,
+          "ceiling": 2575,
+          "metabolic": 0.19495145631067962,
+          "morphological": 0.6215139442231076,
+          "nodes_total": 502,
+          "nodes_unique": 312,
+          "occupancy": 0.12116504854368933,
+          "seed": "20260832"
+        },
+        {
+          "atp_spent": 2649,
+          "ceiling": 2713,
+          "metabolic": 0.19535569480280132,
+          "morphological": 0.5320754716981132,
+          "nodes_total": 530,
+          "nodes_unique": 282,
+          "occupancy": 0.10394397346111316,
+          "seed": "20260833"
+        },
+        {
+          "atp_spent": 3426,
+          "ceiling": 3490,
+          "metabolic": 0.18051575931232092,
+          "morphological": 0.4666666666666667,
+          "nodes_total": 630,
+          "nodes_unique": 294,
+          "occupancy": 0.08424068767908309,
+          "seed": "20260834"
+        }
+      ],
+      "metabolic_mean": 0.17177124085874418,
+      "morphological_mean": 0.55560581771321,
+      "occupancy_mean": 0.09570819458328213
+    },
+    "0.5": {
+      "cells": [
+        {
+          "atp_spent": 3110,
+          "ceiling": 3174,
+          "metabolic": 0.15248897290485192,
+          "morphological": 0.45041322314049587,
+          "nodes_total": 484,
+          "nodes_unique": 218,
+          "occupancy": 0.06868304977945809,
+          "seed": "20260825"
+        },
+        {
+          "atp_spent": 2952,
+          "ceiling": 3016,
+          "metabolic": 0.13925729442970822,
+          "morphological": 0.4785714285714286,
+          "nodes_total": 420,
+          "nodes_unique": 201,
+          "occupancy": 0.0666445623342175,
+          "seed": "20260826"
+        },
+        {
+          "atp_spent": 3023,
+          "ceiling": 3087,
+          "metabolic": 0.18205377389050859,
+          "morphological": 0.48398576512455516,
+          "nodes_total": 562,
+          "nodes_unique": 272,
+          "occupancy": 0.08811143505021056,
+          "seed": "20260827"
+        },
+        {
+          "atp_spent": 3107,
+          "ceiling": 3171,
+          "metabolic": 0.14443393251340272,
+          "morphological": 0.4519650655021834,
+          "nodes_total": 458,
+          "nodes_unique": 207,
+          "occupancy": 0.065279091769158,
+          "seed": "20260828"
+        },
+        {
+          "atp_spent": 2983,
+          "ceiling": 3047,
+          "metabolic": 0.1325894322284214,
+          "morphological": 0.44554455445544555,
+          "nodes_total": 404,
+          "nodes_unique": 180,
+          "occupancy": 0.059074499507712507,
+          "seed": "20260829"
+        },
+        {
+          "atp_spent": 3893,
+          "ceiling": 3957,
+          "metabolic": 0.22643416729845842,
+          "morphological": 0.3549107142857143,
+          "nodes_total": 896,
+          "nodes_unique": 318,
+          "occupancy": 0.0803639120545868,
+          "seed": "20260830"
+        },
+        {
+          "atp_spent": 2864,
+          "ceiling": 2928,
+          "metabolic": 0.18442622950819673,
+          "morphological": 0.45555555555555555,
+          "nodes_total": 540,
+          "nodes_unique": 246,
+          "occupancy": 0.08401639344262295,
+          "seed": "20260831"
+        },
+        {
+          "atp_spent": 2959,
+          "ceiling": 3023,
+          "metabolic": 0.17796890506119747,
+          "morphological": 0.4795539033457249,
+          "nodes_total": 538,
+          "nodes_unique": 258,
+          "occupancy": 0.08534568309626199,
+          "seed": "20260832"
+        },
+        {
+          "atp_spent": 2953,
+          "ceiling": 3017,
+          "metabolic": 0.16837918462048393,
+          "morphological": 0.4645669291338583,
+          "nodes_total": 508,
+          "nodes_unique": 236,
+          "occupancy": 0.0782234007292012,
+          "seed": "20260833"
+        },
+        {
+          "atp_spent": 2766,
+          "ceiling": 2830,
+          "metabolic": 0.15830388692579506,
+          "morphological": 0.5424107142857143,
+          "nodes_total": 448,
+          "nodes_unique": 243,
+          "occupancy": 0.08586572438162544,
+          "seed": "20260834"
+        }
+      ],
+      "metabolic_mean": 0.16663357793810243,
+      "morphological_mean": 0.4607477853400676,
+      "occupancy_mean": 0.07616077521450551
+    },
+    "0.7": {
+      "cells": [
+        {
+          "atp_spent": 2884,
+          "ceiling": 2948,
+          "metabolic": 0.11194029850746269,
+          "morphological": 0.42424242424242425,
+          "nodes_total": 330,
+          "nodes_unique": 140,
+          "occupancy": 0.04748982360922659,
+          "seed": "20260825"
+        },
+        {
+          "atp_spent": 2893,
+          "ceiling": 2957,
+          "metabolic": 0.14338856949611092,
+          "morphological": 0.3867924528301887,
+          "nodes_total": 424,
+          "nodes_unique": 164,
+          "occupancy": 0.05546161650321271,
+          "seed": "20260826"
+        },
+        {
+          "atp_spent": 2528,
+          "ceiling": 2592,
+          "metabolic": 0.14814814814814814,
+          "morphological": 0.40625,
+          "nodes_total": 384,
+          "nodes_unique": 156,
+          "occupancy": 0.06018518518518518,
+          "seed": "20260827"
+        },
+        {
+          "atp_spent": 2768,
+          "ceiling": 2832,
+          "metabolic": 0.14901129943502825,
+          "morphological": 0.36255924170616116,
+          "nodes_total": 422,
+          "nodes_unique": 153,
+          "occupancy": 0.05402542372881356,
+          "seed": "20260828"
+        },
+        {
+          "atp_spent": 3122,
+          "ceiling": 3186,
+          "metabolic": 0.1393596986817326,
+          "morphological": 0.38288288288288286,
+          "nodes_total": 444,
+          "nodes_unique": 170,
+          "occupancy": 0.053358443188951665,
+          "seed": "20260829"
+        },
+        {
+          "atp_spent": 3191,
+          "ceiling": 3255,
+          "metabolic": 0.13456221198156681,
+          "morphological": 0.3538812785388128,
+          "nodes_total": 438,
+          "nodes_unique": 155,
+          "occupancy": 0.047619047619047616,
+          "seed": "20260830"
+        },
+        {
+          "atp_spent": 2761,
+          "ceiling": 2825,
+          "metabolic": 0.1465486725663717,
+          "morphological": 0.427536231884058,
+          "nodes_total": 414,
+          "nodes_unique": 177,
+          "occupancy": 0.06265486725663717,
+          "seed": "20260831"
+        },
+        {
+          "atp_spent": 2555,
+          "ceiling": 2619,
+          "metabolic": 0.16953035509736541,
+          "morphological": 0.3783783783783784,
+          "nodes_total": 444,
+          "nodes_unique": 168,
+          "occupancy": 0.06414662084765177,
+          "seed": "20260832"
+        },
+        {
+          "atp_spent": 2758,
+          "ceiling": 2822,
+          "metabolic": 0.1332388377037562,
+          "morphological": 0.3271276595744681,
+          "nodes_total": 376,
+          "nodes_unique": 123,
+          "occupancy": 0.04358610914245216,
+          "seed": "20260833"
+        },
+        {
+          "atp_spent": 3104,
+          "ceiling": 3168,
+          "metabolic": 0.11994949494949494,
+          "morphological": 0.40789473684210525,
+          "nodes_total": 380,
+          "nodes_unique": 155,
+          "occupancy": 0.04892676767676768,
+          "seed": "20260834"
+        }
+      ],
+      "metabolic_mean": 0.13956775865670376,
+      "morphological_mean": 0.38575452868794796,
+      "occupancy_mean": 0.05374539047579461
+    },
+    "0.9": {
+      "cells": [
+        {
+          "atp_spent": 2687,
+          "ceiling": 2751,
+          "metabolic": 0.1054162122864413,
+          "morphological": 0.27586206896551724,
+          "nodes_total": 290,
+          "nodes_unique": 80,
+          "occupancy": 0.029080334423845874,
+          "seed": "20260825"
+        },
+        {
+          "atp_spent": 3022,
+          "ceiling": 3086,
+          "metabolic": 0.10369410239792612,
+          "morphological": 0.278125,
+          "nodes_total": 320,
+          "nodes_unique": 89,
+          "occupancy": 0.028839922229423203,
+          "seed": "20260826"
+        },
+        {
+          "atp_spent": 2692,
+          "ceiling": 2756,
+          "metabolic": 0.0965166908563135,
+          "morphological": 0.24060150375939848,
+          "nodes_total": 266,
+          "nodes_unique": 64,
+          "occupancy": 0.023222060957910014,
+          "seed": "20260827"
+        },
+        {
+          "atp_spent": 2700,
+          "ceiling": 2764,
+          "metabolic": 0.11794500723589002,
+          "morphological": 0.25153374233128833,
+          "nodes_total": 326,
+          "nodes_unique": 82,
+          "occupancy": 0.029667149059334298,
+          "seed": "20260828"
+        },
+        {
+          "atp_spent": 2795,
+          "ceiling": 2859,
+          "metabolic": 0.12102133613151451,
+          "morphological": 0.28034682080924855,
+          "nodes_total": 346,
+          "nodes_unique": 97,
+          "occupancy": 0.033927946834557535,
+          "seed": "20260829"
+        },
+        {
+          "atp_spent": 3570,
+          "ceiling": 3634,
+          "metabolic": 0.23500275178866262,
+          "morphological": 0.16744730679156908,
+          "nodes_total": 854,
+          "nodes_unique": 143,
+          "occupancy": 0.03935057787561915,
+          "seed": "20260830"
+        },
+        {
+          "atp_spent": 2367,
+          "ceiling": 2431,
+          "metabolic": 0.12011517893870835,
+          "morphological": 0.2876712328767123,
+          "nodes_total": 292,
+          "nodes_unique": 84,
+          "occupancy": 0.03455368161250514,
+          "seed": "20260831"
+        },
+        {
+          "atp_spent": 3657,
+          "ceiling": 3721,
+          "metabolic": 0.18865896264445042,
+          "morphological": 0.2336182336182336,
+          "nodes_total": 702,
+          "nodes_unique": 164,
+          "occupancy": 0.04407417360924483,
+          "seed": "20260832"
+        },
+        {
+          "atp_spent": 2613,
+          "ceiling": 2677,
+          "metabolic": 0.12401942472917445,
+          "morphological": 0.2469879518072289,
+          "nodes_total": 332,
+          "nodes_unique": 82,
+          "occupancy": 0.030631303698169594,
+          "seed": "20260833"
+        },
+        {
+          "atp_spent": 2666,
+          "ceiling": 2730,
+          "metabolic": 0.10915750915750916,
+          "morphological": 0.2684563758389262,
+          "nodes_total": 298,
+          "nodes_unique": 80,
+          "occupancy": 0.029304029304029304,
+          "seed": "20260834"
+        }
+      ],
+      "metabolic_mean": 0.13215471761665903,
+      "morphological_mean": 0.25306502367981226,
+      "occupancy_mean": 0.03226511796046389
+    }
+  },
+  "kind": "descriptive \u2014 no hypotheses, no measurement taken",
+  "sources": [
+    "experiments/alife-exp-001/results.json",
+    "experiments/alife-exp-004/results.json"
+  ]
+}
