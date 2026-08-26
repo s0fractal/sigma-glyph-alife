@@ -560,3 +560,33 @@ printing that marker — which is exactly what happened twice while EXP-008's
 harness was being fixed. Later loops match `oracle:|Traceback`; the two survivors
 were killed. A wait condition that only recognises success is a hang with a
 schedule.
+
+**D64. I filed a question about a specification without reading the section that
+answers it.** *Correction, and the most embarrassing one here.* DA-SIGMA-0002
+asked whether Book I permits reusing a result. §3.4's last sentence says it does:
+sharing MAY be used in execution, the reported ATP MUST match tree accounting. I
+had read §3.4 — the memory bound and the seven priced actions are copied into
+`proofs/Population.lean` from it — and stopped at the part I needed.
+
+The failure mode is specific enough to name: **I searched for the word and
+concluded from its absence.** "Memoization" does not appear in Book I, so I
+reported that the specification never discusses it. What the specification
+discusses is *sharing*, in the accounting section, in one normative line. A
+grep-shaped absence is not a spec-shaped absence. *Practice adopted:* before
+claiming a specification is silent, read the section that owns the contract end
+to end, and quote the sentence that would have said it.
+
+Found by an external review (Codex), verified by me against the pinned revision
+before anything was written. Corrected on top of the filed commit rather than by
+force-push: the wrong version stays readable at `2dc2a4e`, because an error that
+vanishes from the history is an error nobody can learn from.
+
+**D65. A reproducer whose verdict does not depend on its numbers is a press
+release.** The filed fixture's success predicate read `broke > 0 and diverged` and
+ignored every measurement. The same review mutated the arm carrying the packet's
+central claim so that it *contradicted* the packet, and the script still printed
+`REPRODUCED` and exited 0; a comment appended to the oracle changed the digest and
+it reported success against a machine it was not measuring. Both are now caught
+and both are demonstrable in reverse. This repository already had the rule for
+its own harnesses — every experiment scores against pinned values — and did not
+apply it to the one artifact it sent to somebody else.
