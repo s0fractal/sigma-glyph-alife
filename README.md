@@ -185,6 +185,21 @@ experiments ran on it:
 > finishing. Zero ATP is spent while waiting, and every recovered agent reaches the
 > answer it reaches when the term was never withheld.
 
+[ALIFE-EXP-010](experiments/alife-exp-010/RESULT.md) asked the question neither
+literature has held everything else fixed for: **does the currency choose the
+colony?** Combinatory Chemistry prices duplication in *matter* — a physical copy
+must already exist and is consumed — and Book I prices it in *energy*. Same act,
+two currencies, one chemistry, three seeds. One of three preregistered
+hypotheses held, and the finding is the thing none of them asked:
+
+> **In a lazy machine, a duplication is a duplication of an ADDRESS.** Book I
+> fires `R-S` leftmost-outermost, so the duplicated argument is nearly always
+> still a thunk of size 1 and the energy price `1 + size(z)` is usually **2**.
+> The entire difference between the two currencies is **0.8% to 7.0%** of what
+> the colony spends. The arms do end up sharing not one surviving molecule — but
+> two runs of the *same* currency at different seeds share none either, so the
+> hypothesis that detected the separation cannot tell it from turnover.
+
 That is what the separate repository is for. `sigma-glyph` is a specification
 under threshold-warrant governance; this is a place where a founding hypothesis
 can be wrong in public on the first measurement, and its replacement wrong on the
