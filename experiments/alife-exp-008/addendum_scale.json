@@ -1,0 +1,1328 @@
+{
+  "addendum": "ALIFE-EXP-008 at ten times the scale",
+  "cells": [
+    {
+      "alive": 3,
+      "curve": {
+        "1000": {
+          "null_draws": 20,
+          "null_full_max": 0,
+          "null_full_mean": 0,
+          "null_local_max": 0,
+          "null_local_mean": 0,
+          "observed": 0,
+          "sustaining_mean_cost": 0.0,
+          "sustaining_reactions": 0
+        },
+        "10000": {
+          "null_draws": 20,
+          "null_full_max": 0,
+          "null_full_mean": 0,
+          "null_local_max": 0,
+          "null_local_mean": 0,
+          "observed": 0,
+          "sustaining_mean_cost": 0.0,
+          "sustaining_reactions": 0
+        },
+        "2000": {
+          "null_draws": 20,
+          "null_full_max": 0,
+          "null_full_mean": 0,
+          "null_local_max": 0,
+          "null_local_mean": 0,
+          "observed": 0,
+          "sustaining_mean_cost": 0.0,
+          "sustaining_reactions": 0
+        },
+        "250": {
+          "null_draws": 20,
+          "null_full_max": 0,
+          "null_full_mean": 0,
+          "null_local_max": 0,
+          "null_local_mean": 0,
+          "observed": 0,
+          "sustaining_mean_cost": 0.0,
+          "sustaining_reactions": 0
+        },
+        "4000": {
+          "null_draws": 20,
+          "null_full_max": 0,
+          "null_full_mean": 0,
+          "null_local_max": 0,
+          "null_local_mean": 0,
+          "observed": 0,
+          "sustaining_mean_cost": 0.0,
+          "sustaining_reactions": 0
+        },
+        "500": {
+          "null_draws": 20,
+          "null_full_max": 0,
+          "null_full_mean": 0,
+          "null_local_max": 0,
+          "null_local_mean": 0,
+          "observed": 0,
+          "sustaining_mean_cost": 0.0,
+          "sustaining_reactions": 0
+        },
+        "6000": {
+          "null_draws": 20,
+          "null_full_max": 0,
+          "null_full_mean": 0,
+          "null_local_max": 0,
+          "null_local_mean": 0,
+          "observed": 0,
+          "sustaining_mean_cost": 0.0,
+          "sustaining_reactions": 0
+        }
+      },
+      "fail": 8634,
+      "history_core": 254,
+      "mean_cost_all": 122.2606149341142,
+      "ok": 1366,
+      "reactions": 10000,
+      "seed": 20260825,
+      "trajectory": [
+        {
+          "alive": 46,
+          "ok": 629,
+          "reactions": 1000,
+          "success_rate": 0.629
+        },
+        {
+          "alive": 21,
+          "ok": 1064,
+          "reactions": 2000,
+          "success_rate": 0.532
+        },
+        {
+          "alive": 7,
+          "ok": 1310,
+          "reactions": 4000,
+          "success_rate": 0.3275
+        },
+        {
+          "alive": 3,
+          "ok": 1366,
+          "reactions": 10000,
+          "success_rate": 0.1366
+        }
+      ]
+    },
+    {
+      "alive": 20,
+      "curve": {
+        "1000": {
+          "null_draws": 20,
+          "null_full_max": 0,
+          "null_full_mean": 0,
+          "null_local_max": 0,
+          "null_local_mean": 0,
+          "observed": 0,
+          "sustaining_mean_cost": 0.0,
+          "sustaining_reactions": 0
+        },
+        "10000": {
+          "null_draws": 20,
+          "null_full_max": 1,
+          "null_full_mean": 0.1,
+          "null_local_max": 2,
+          "null_local_mean": 0.3,
+          "observed": 0,
+          "sustaining_mean_cost": 0.0,
+          "sustaining_reactions": 0
+        },
+        "2000": {
+          "null_draws": 20,
+          "null_full_max": 0,
+          "null_full_mean": 0,
+          "null_local_max": 0,
+          "null_local_mean": 0,
+          "observed": 0,
+          "sustaining_mean_cost": 0.0,
+          "sustaining_reactions": 0
+        },
+        "250": {
+          "null_draws": 20,
+          "null_full_max": 0,
+          "null_full_mean": 0,
+          "null_local_max": 0,
+          "null_local_mean": 0,
+          "observed": 0,
+          "sustaining_mean_cost": 0.0,
+          "sustaining_reactions": 0
+        },
+        "4000": {
+          "null_draws": 20,
+          "null_full_max": 0,
+          "null_full_mean": 0,
+          "null_local_max": 0,
+          "null_local_mean": 0,
+          "observed": 0,
+          "sustaining_mean_cost": 0.0,
+          "sustaining_reactions": 0
+        },
+        "500": {
+          "null_draws": 20,
+          "null_full_max": 0,
+          "null_full_mean": 0,
+          "null_local_max": 0,
+          "null_local_mean": 0,
+          "observed": 0,
+          "sustaining_mean_cost": 0.0,
+          "sustaining_reactions": 0
+        },
+        "6000": {
+          "null_draws": 20,
+          "null_full_max": 0,
+          "null_full_mean": 0,
+          "null_local_max": 0,
+          "null_local_mean": 0,
+          "observed": 0,
+          "sustaining_mean_cost": 0.0,
+          "sustaining_reactions": 0
+        }
+      },
+      "fail": 9274,
+      "history_core": 200,
+      "mean_cost_all": 117.69421487603306,
+      "ok": 726,
+      "reactions": 10000,
+      "seed": 20260826,
+      "trajectory": [
+        {
+          "alive": 42,
+          "ok": 493,
+          "reactions": 1000,
+          "success_rate": 0.493
+        },
+        {
+          "alive": 20,
+          "ok": 679,
+          "reactions": 2000,
+          "success_rate": 0.3395
+        },
+        {
+          "alive": 20,
+          "ok": 721,
+          "reactions": 4000,
+          "success_rate": 0.18025
+        },
+        {
+          "alive": 20,
+          "ok": 726,
+          "reactions": 10000,
+          "success_rate": 0.0726
+        }
+      ]
+    },
+    {
+      "alive": 21,
+      "curve": {
+        "1000": {
+          "null_draws": 20,
+          "null_full_max": 0,
+          "null_full_mean": 0,
+          "null_local_max": 0,
+          "null_local_mean": 0,
+          "observed": 0,
+          "sustaining_mean_cost": 0.0,
+          "sustaining_reactions": 0
+        },
+        "10000": {
+          "null_draws": 20,
+          "null_full_max": 0,
+          "null_full_mean": 0,
+          "null_local_max": 0,
+          "null_local_mean": 0,
+          "observed": 0,
+          "sustaining_mean_cost": 0.0,
+          "sustaining_reactions": 0
+        },
+        "2000": {
+          "null_draws": 20,
+          "null_full_max": 0,
+          "null_full_mean": 0,
+          "null_local_max": 0,
+          "null_local_mean": 0,
+          "observed": 0,
+          "sustaining_mean_cost": 0.0,
+          "sustaining_reactions": 0
+        },
+        "250": {
+          "null_draws": 20,
+          "null_full_max": 0,
+          "null_full_mean": 0,
+          "null_local_max": 0,
+          "null_local_mean": 0,
+          "observed": 0,
+          "sustaining_mean_cost": 0.0,
+          "sustaining_reactions": 0
+        },
+        "4000": {
+          "null_draws": 20,
+          "null_full_max": 0,
+          "null_full_mean": 0,
+          "null_local_max": 0,
+          "null_local_mean": 0,
+          "observed": 0,
+          "sustaining_mean_cost": 0.0,
+          "sustaining_reactions": 0
+        },
+        "500": {
+          "null_draws": 20,
+          "null_full_max": 0,
+          "null_full_mean": 0,
+          "null_local_max": 0,
+          "null_local_mean": 0,
+          "observed": 0,
+          "sustaining_mean_cost": 0.0,
+          "sustaining_reactions": 0
+        },
+        "6000": {
+          "null_draws": 20,
+          "null_full_max": 0,
+          "null_full_mean": 0,
+          "null_local_max": 0,
+          "null_local_mean": 0,
+          "observed": 0,
+          "sustaining_mean_cost": 0.0,
+          "sustaining_reactions": 0
+        }
+      },
+      "fail": 8896,
+      "history_core": 97,
+      "mean_cost_all": 138.18297101449275,
+      "ok": 1104,
+      "reactions": 10000,
+      "seed": 20260827,
+      "trajectory": [
+        {
+          "alive": 38,
+          "ok": 430,
+          "reactions": 1000,
+          "success_rate": 0.43
+        },
+        {
+          "alive": 30,
+          "ok": 586,
+          "reactions": 2000,
+          "success_rate": 0.293
+        },
+        {
+          "alive": 23,
+          "ok": 818,
+          "reactions": 4000,
+          "success_rate": 0.2045
+        },
+        {
+          "alive": 21,
+          "ok": 1104,
+          "reactions": 10000,
+          "success_rate": 0.1104
+        }
+      ]
+    },
+    {
+      "alive": 3,
+      "curve": {
+        "1000": {
+          "null_draws": 20,
+          "null_full_max": 3,
+          "null_full_mean": 1.35,
+          "null_local_max": 0,
+          "null_local_mean": 0,
+          "observed": 0,
+          "sustaining_mean_cost": 0.0,
+          "sustaining_reactions": 0
+        },
+        "10000": {
+          "null_draws": 20,
+          "null_full_max": 3,
+          "null_full_mean": 3,
+          "null_local_max": 3,
+          "null_local_mean": 3,
+          "observed": 0,
+          "sustaining_mean_cost": 0.0,
+          "sustaining_reactions": 0
+        },
+        "2000": {
+          "null_draws": 20,
+          "null_full_max": 3,
+          "null_full_mean": 2.15,
+          "null_local_max": 0,
+          "null_local_mean": 0,
+          "observed": 0,
+          "sustaining_mean_cost": 0.0,
+          "sustaining_reactions": 0
+        },
+        "250": {
+          "null_draws": 20,
+          "null_full_max": 2,
+          "null_full_mean": 0.2,
+          "null_local_max": 0,
+          "null_local_mean": 0,
+          "observed": 0,
+          "sustaining_mean_cost": 0.0,
+          "sustaining_reactions": 0
+        },
+        "4000": {
+          "null_draws": 20,
+          "null_full_max": 3,
+          "null_full_mean": 2.85,
+          "null_local_max": 0,
+          "null_local_mean": 0,
+          "observed": 0,
+          "sustaining_mean_cost": 0.0,
+          "sustaining_reactions": 0
+        },
+        "500": {
+          "null_draws": 20,
+          "null_full_max": 2,
+          "null_full_mean": 0.3,
+          "null_local_max": 0,
+          "null_local_mean": 0,
+          "observed": 0,
+          "sustaining_mean_cost": 0.0,
+          "sustaining_reactions": 0
+        },
+        "6000": {
+          "null_draws": 20,
+          "null_full_max": 3,
+          "null_full_mean": 2.9,
+          "null_local_max": 0,
+          "null_local_mean": 0,
+          "observed": 0,
+          "sustaining_mean_cost": 0.0,
+          "sustaining_reactions": 0
+        }
+      },
+      "fail": 8875,
+      "history_core": 130,
+      "mean_cost_all": 137.19555555555556,
+      "ok": 1125,
+      "reactions": 10000,
+      "seed": 20260828,
+      "trajectory": [
+        {
+          "alive": 38,
+          "ok": 508,
+          "reactions": 1000,
+          "success_rate": 0.508
+        },
+        {
+          "alive": 14,
+          "ok": 853,
+          "reactions": 2000,
+          "success_rate": 0.4265
+        },
+        {
+          "alive": 5,
+          "ok": 1013,
+          "reactions": 4000,
+          "success_rate": 0.25325
+        },
+        {
+          "alive": 3,
+          "ok": 1125,
+          "reactions": 10000,
+          "success_rate": 0.1125
+        }
+      ]
+    },
+    {
+      "alive": 6,
+      "curve": {
+        "1000": {
+          "null_draws": 20,
+          "null_full_max": 6,
+          "null_full_mean": 6,
+          "null_local_max": 6,
+          "null_local_mean": 6,
+          "observed": 6,
+          "sustaining_mean_cost": 9.181720430107527,
+          "sustaining_reactions": 930
+        },
+        "10000": {
+          "null_draws": 20,
+          "null_full_max": 6,
+          "null_full_mean": 6,
+          "null_local_max": 6,
+          "null_local_mean": 6,
+          "observed": 6,
+          "sustaining_mean_cost": 8.559167750325097,
+          "sustaining_reactions": 7690
+        },
+        "2000": {
+          "null_draws": 20,
+          "null_full_max": 6,
+          "null_full_mean": 6,
+          "null_local_max": 6,
+          "null_local_mean": 6,
+          "observed": 6,
+          "sustaining_mean_cost": 9.172467532467532,
+          "sustaining_reactions": 1925
+        },
+        "250": {
+          "null_draws": 20,
+          "null_full_max": 6,
+          "null_full_mean": 6,
+          "null_local_max": 6,
+          "null_local_mean": 6,
+          "observed": 6,
+          "sustaining_mean_cost": 8.080568720379146,
+          "sustaining_reactions": 211
+        },
+        "4000": {
+          "null_draws": 20,
+          "null_full_max": 6,
+          "null_full_mean": 6,
+          "null_local_max": 6,
+          "null_local_mean": 6,
+          "observed": 6,
+          "sustaining_mean_cost": 8.816901408450704,
+          "sustaining_reactions": 3905
+        },
+        "500": {
+          "null_draws": 20,
+          "null_full_max": 6,
+          "null_full_mean": 6,
+          "null_local_max": 6,
+          "null_local_mean": 6,
+          "observed": 6,
+          "sustaining_mean_cost": 9.132286995515695,
+          "sustaining_reactions": 446
+        },
+        "6000": {
+          "null_draws": 20,
+          "null_full_max": 6,
+          "null_full_mean": 6,
+          "null_local_max": 6,
+          "null_local_mean": 6,
+          "observed": 6,
+          "sustaining_mean_cost": 8.49906795458397,
+          "sustaining_reactions": 5901
+        }
+      },
+      "fail": 632,
+      "history_core": 368,
+      "mean_cost_all": 24.534479077711357,
+      "ok": 9368,
+      "reactions": 10000,
+      "seed": 20260829,
+      "trajectory": [
+        {
+          "alive": 36,
+          "ok": 862,
+          "reactions": 1000,
+          "success_rate": 0.862
+        },
+        {
+          "alive": 29,
+          "ok": 1494,
+          "reactions": 2000,
+          "success_rate": 0.747
+        },
+        {
+          "alive": 5,
+          "ok": 3368,
+          "reactions": 4000,
+          "success_rate": 0.842
+        },
+        {
+          "alive": 6,
+          "ok": 9368,
+          "reactions": 10000,
+          "success_rate": 0.9368
+        }
+      ]
+    },
+    {
+      "alive": 2,
+      "curve": {
+        "1000": {
+          "null_draws": 20,
+          "null_full_max": 2,
+          "null_full_mean": 1.2,
+          "null_local_max": 0,
+          "null_local_mean": 0,
+          "observed": 0,
+          "sustaining_mean_cost": 0.0,
+          "sustaining_reactions": 0
+        },
+        "10000": {
+          "null_draws": 20,
+          "null_full_max": 2,
+          "null_full_mean": 2,
+          "null_local_max": 2,
+          "null_local_mean": 2,
+          "observed": 0,
+          "sustaining_mean_cost": 0.0,
+          "sustaining_reactions": 0
+        },
+        "2000": {
+          "null_draws": 20,
+          "null_full_max": 2,
+          "null_full_mean": 1.4,
+          "null_local_max": 0,
+          "null_local_mean": 0,
+          "observed": 0,
+          "sustaining_mean_cost": 0.0,
+          "sustaining_reactions": 0
+        },
+        "250": {
+          "null_draws": 20,
+          "null_full_max": 2,
+          "null_full_mean": 0.2,
+          "null_local_max": 0,
+          "null_local_mean": 0,
+          "observed": 0,
+          "sustaining_mean_cost": 0.0,
+          "sustaining_reactions": 0
+        },
+        "4000": {
+          "null_draws": 20,
+          "null_full_max": 2,
+          "null_full_mean": 1.7,
+          "null_local_max": 0,
+          "null_local_mean": 0,
+          "observed": 0,
+          "sustaining_mean_cost": 0.0,
+          "sustaining_reactions": 0
+        },
+        "500": {
+          "null_draws": 20,
+          "null_full_max": 2,
+          "null_full_mean": 0.6,
+          "null_local_max": 0,
+          "null_local_mean": 0,
+          "observed": 0,
+          "sustaining_mean_cost": 0.0,
+          "sustaining_reactions": 0
+        },
+        "6000": {
+          "null_draws": 20,
+          "null_full_max": 2,
+          "null_full_mean": 1.9,
+          "null_local_max": 0,
+          "null_local_mean": 0,
+          "observed": 0,
+          "sustaining_mean_cost": 0.0,
+          "sustaining_reactions": 0
+        }
+      },
+      "fail": 8962,
+      "history_core": 130,
+      "mean_cost_all": 130.63776493256262,
+      "ok": 1038,
+      "reactions": 10000,
+      "seed": 20260830,
+      "trajectory": [
+        {
+          "alive": 45,
+          "ok": 522,
+          "reactions": 1000,
+          "success_rate": 0.522
+        },
+        {
+          "alive": 16,
+          "ok": 724,
+          "reactions": 2000,
+          "success_rate": 0.362
+        },
+        {
+          "alive": 5,
+          "ok": 933,
+          "reactions": 4000,
+          "success_rate": 0.23325
+        },
+        {
+          "alive": 2,
+          "ok": 1038,
+          "reactions": 10000,
+          "success_rate": 0.1038
+        }
+      ]
+    },
+    {
+      "alive": 46,
+      "curve": {
+        "1000": {
+          "null_draws": 20,
+          "null_full_max": 0,
+          "null_full_mean": 0,
+          "null_local_max": 0,
+          "null_local_mean": 0,
+          "observed": 0,
+          "sustaining_mean_cost": 0.0,
+          "sustaining_reactions": 0
+        },
+        "10000": {
+          "null_draws": 20,
+          "null_full_max": 0,
+          "null_full_mean": 0,
+          "null_local_max": 1,
+          "null_local_mean": 0.05,
+          "observed": 0,
+          "sustaining_mean_cost": 0.0,
+          "sustaining_reactions": 0
+        },
+        "2000": {
+          "null_draws": 20,
+          "null_full_max": 0,
+          "null_full_mean": 0,
+          "null_local_max": 0,
+          "null_local_mean": 0,
+          "observed": 0,
+          "sustaining_mean_cost": 0.0,
+          "sustaining_reactions": 0
+        },
+        "250": {
+          "null_draws": 20,
+          "null_full_max": 0,
+          "null_full_mean": 0,
+          "null_local_max": 0,
+          "null_local_mean": 0,
+          "observed": 0,
+          "sustaining_mean_cost": 0.0,
+          "sustaining_reactions": 0
+        },
+        "4000": {
+          "null_draws": 20,
+          "null_full_max": 0,
+          "null_full_mean": 0,
+          "null_local_max": 0,
+          "null_local_mean": 0,
+          "observed": 0,
+          "sustaining_mean_cost": 0.0,
+          "sustaining_reactions": 0
+        },
+        "500": {
+          "null_draws": 20,
+          "null_full_max": 0,
+          "null_full_mean": 0,
+          "null_local_max": 0,
+          "null_local_mean": 0,
+          "observed": 0,
+          "sustaining_mean_cost": 0.0,
+          "sustaining_reactions": 0
+        },
+        "6000": {
+          "null_draws": 20,
+          "null_full_max": 0,
+          "null_full_mean": 0,
+          "null_local_max": 0,
+          "null_local_mean": 0,
+          "observed": 0,
+          "sustaining_mean_cost": 0.0,
+          "sustaining_reactions": 0
+        }
+      },
+      "fail": 9496,
+      "history_core": 81,
+      "mean_cost_all": 117.2202380952381,
+      "ok": 504,
+      "reactions": 10000,
+      "seed": 20260831,
+      "trajectory": [
+        {
+          "alive": 61,
+          "ok": 373,
+          "reactions": 1000,
+          "success_rate": 0.373
+        },
+        {
+          "alive": 62,
+          "ok": 406,
+          "reactions": 2000,
+          "success_rate": 0.203
+        },
+        {
+          "alive": 55,
+          "ok": 450,
+          "reactions": 4000,
+          "success_rate": 0.1125
+        },
+        {
+          "alive": 46,
+          "ok": 504,
+          "reactions": 10000,
+          "success_rate": 0.0504
+        }
+      ]
+    },
+    {
+      "alive": 44,
+      "curve": {
+        "1000": {
+          "null_draws": 20,
+          "null_full_max": 0,
+          "null_full_mean": 0,
+          "null_local_max": 0,
+          "null_local_mean": 0,
+          "observed": 0,
+          "sustaining_mean_cost": 0.0,
+          "sustaining_reactions": 0
+        },
+        "10000": {
+          "null_draws": 20,
+          "null_full_max": 0,
+          "null_full_mean": 0,
+          "null_local_max": 0,
+          "null_local_mean": 0,
+          "observed": 0,
+          "sustaining_mean_cost": 0.0,
+          "sustaining_reactions": 0
+        },
+        "2000": {
+          "null_draws": 20,
+          "null_full_max": 0,
+          "null_full_mean": 0,
+          "null_local_max": 0,
+          "null_local_mean": 0,
+          "observed": 0,
+          "sustaining_mean_cost": 0.0,
+          "sustaining_reactions": 0
+        },
+        "250": {
+          "null_draws": 20,
+          "null_full_max": 0,
+          "null_full_mean": 0,
+          "null_local_max": 0,
+          "null_local_mean": 0,
+          "observed": 0,
+          "sustaining_mean_cost": 0.0,
+          "sustaining_reactions": 0
+        },
+        "4000": {
+          "null_draws": 20,
+          "null_full_max": 0,
+          "null_full_mean": 0,
+          "null_local_max": 0,
+          "null_local_mean": 0,
+          "observed": 0,
+          "sustaining_mean_cost": 0.0,
+          "sustaining_reactions": 0
+        },
+        "500": {
+          "null_draws": 20,
+          "null_full_max": 0,
+          "null_full_mean": 0,
+          "null_local_max": 0,
+          "null_local_mean": 0,
+          "observed": 0,
+          "sustaining_mean_cost": 0.0,
+          "sustaining_reactions": 0
+        },
+        "6000": {
+          "null_draws": 20,
+          "null_full_max": 0,
+          "null_full_mean": 0,
+          "null_local_max": 0,
+          "null_local_mean": 0,
+          "observed": 0,
+          "sustaining_mean_cost": 0.0,
+          "sustaining_reactions": 0
+        }
+      },
+      "fail": 9370,
+      "history_core": 123,
+      "mean_cost_all": 115.39365079365079,
+      "ok": 630,
+      "reactions": 10000,
+      "seed": 20260832,
+      "trajectory": [
+        {
+          "alive": 50,
+          "ok": 485,
+          "reactions": 1000,
+          "success_rate": 0.485
+        },
+        {
+          "alive": 52,
+          "ok": 598,
+          "reactions": 2000,
+          "success_rate": 0.299
+        },
+        {
+          "alive": 50,
+          "ok": 617,
+          "reactions": 4000,
+          "success_rate": 0.15425
+        },
+        {
+          "alive": 44,
+          "ok": 630,
+          "reactions": 10000,
+          "success_rate": 0.063
+        }
+      ]
+    },
+    {
+      "alive": 2,
+      "curve": {
+        "1000": {
+          "null_draws": 20,
+          "null_full_max": 2,
+          "null_full_mean": 1.1,
+          "null_local_max": 0,
+          "null_local_mean": 0,
+          "observed": 0,
+          "sustaining_mean_cost": 0.0,
+          "sustaining_reactions": 0
+        },
+        "10000": {
+          "null_draws": 20,
+          "null_full_max": 2,
+          "null_full_mean": 2,
+          "null_local_max": 2,
+          "null_local_mean": 2,
+          "observed": 0,
+          "sustaining_mean_cost": 0.0,
+          "sustaining_reactions": 0
+        },
+        "2000": {
+          "null_draws": 20,
+          "null_full_max": 2,
+          "null_full_mean": 1.6,
+          "null_local_max": 0,
+          "null_local_mean": 0,
+          "observed": 0,
+          "sustaining_mean_cost": 0.0,
+          "sustaining_reactions": 0
+        },
+        "250": {
+          "null_draws": 20,
+          "null_full_max": 0,
+          "null_full_mean": 0,
+          "null_local_max": 0,
+          "null_local_mean": 0,
+          "observed": 0,
+          "sustaining_mean_cost": 0.0,
+          "sustaining_reactions": 0
+        },
+        "4000": {
+          "null_draws": 20,
+          "null_full_max": 2,
+          "null_full_mean": 2,
+          "null_local_max": 0,
+          "null_local_mean": 0,
+          "observed": 0,
+          "sustaining_mean_cost": 0.0,
+          "sustaining_reactions": 0
+        },
+        "500": {
+          "null_draws": 20,
+          "null_full_max": 2,
+          "null_full_mean": 0.2,
+          "null_local_max": 0,
+          "null_local_mean": 0,
+          "observed": 0,
+          "sustaining_mean_cost": 0.0,
+          "sustaining_reactions": 0
+        },
+        "6000": {
+          "null_draws": 20,
+          "null_full_max": 2,
+          "null_full_mean": 2,
+          "null_local_max": 0,
+          "null_local_mean": 0,
+          "observed": 0,
+          "sustaining_mean_cost": 0.0,
+          "sustaining_reactions": 0
+        }
+      },
+      "fail": 8683,
+      "history_core": 157,
+      "mean_cost_all": 149.2224753227031,
+      "ok": 1317,
+      "reactions": 10000,
+      "seed": 20260833,
+      "trajectory": [
+        {
+          "alive": 37,
+          "ok": 542,
+          "reactions": 1000,
+          "success_rate": 0.542
+        },
+        {
+          "alive": 14,
+          "ok": 858,
+          "reactions": 2000,
+          "success_rate": 0.429
+        },
+        {
+          "alive": 3,
+          "ok": 1178,
+          "reactions": 4000,
+          "success_rate": 0.2945
+        },
+        {
+          "alive": 2,
+          "ok": 1317,
+          "reactions": 10000,
+          "success_rate": 0.1317
+        }
+      ]
+    },
+    {
+      "alive": 33,
+      "curve": {
+        "1000": {
+          "null_draws": 20,
+          "null_full_max": 0,
+          "null_full_mean": 0,
+          "null_local_max": 0,
+          "null_local_mean": 0,
+          "observed": 0,
+          "sustaining_mean_cost": 0.0,
+          "sustaining_reactions": 0
+        },
+        "10000": {
+          "null_draws": 20,
+          "null_full_max": 0,
+          "null_full_mean": 0,
+          "null_local_max": 0,
+          "null_local_mean": 0,
+          "observed": 0,
+          "sustaining_mean_cost": 0.0,
+          "sustaining_reactions": 0
+        },
+        "2000": {
+          "null_draws": 20,
+          "null_full_max": 0,
+          "null_full_mean": 0,
+          "null_local_max": 0,
+          "null_local_mean": 0,
+          "observed": 0,
+          "sustaining_mean_cost": 0.0,
+          "sustaining_reactions": 0
+        },
+        "250": {
+          "null_draws": 20,
+          "null_full_max": 0,
+          "null_full_mean": 0,
+          "null_local_max": 0,
+          "null_local_mean": 0,
+          "observed": 0,
+          "sustaining_mean_cost": 0.0,
+          "sustaining_reactions": 0
+        },
+        "4000": {
+          "null_draws": 20,
+          "null_full_max": 0,
+          "null_full_mean": 0,
+          "null_local_max": 0,
+          "null_local_mean": 0,
+          "observed": 0,
+          "sustaining_mean_cost": 0.0,
+          "sustaining_reactions": 0
+        },
+        "500": {
+          "null_draws": 20,
+          "null_full_max": 0,
+          "null_full_mean": 0,
+          "null_local_max": 0,
+          "null_local_mean": 0,
+          "observed": 0,
+          "sustaining_mean_cost": 0.0,
+          "sustaining_reactions": 0
+        },
+        "6000": {
+          "null_draws": 20,
+          "null_full_max": 0,
+          "null_full_mean": 0,
+          "null_local_max": 0,
+          "null_local_mean": 0,
+          "observed": 0,
+          "sustaining_mean_cost": 0.0,
+          "sustaining_reactions": 0
+        }
+      },
+      "fail": 9056,
+      "history_core": 302,
+      "mean_cost_all": 120.89406779661017,
+      "ok": 944,
+      "reactions": 10000,
+      "seed": 20260834,
+      "trajectory": [
+        {
+          "alive": 44,
+          "ok": 567,
+          "reactions": 1000,
+          "success_rate": 0.567
+        },
+        {
+          "alive": 48,
+          "ok": 746,
+          "reactions": 2000,
+          "success_rate": 0.373
+        },
+        {
+          "alive": 41,
+          "ok": 907,
+          "reactions": 4000,
+          "success_rate": 0.22675
+        },
+        {
+          "alive": 33,
+          "ok": 944,
+          "reactions": 10000,
+          "success_rate": 0.0944
+        }
+      ]
+    },
+    {
+      "alive": 38,
+      "curve": {
+        "1000": {
+          "null_draws": 20,
+          "null_full_max": 0,
+          "null_full_mean": 0,
+          "null_local_max": 0,
+          "null_local_mean": 0,
+          "observed": 0,
+          "sustaining_mean_cost": 0.0,
+          "sustaining_reactions": 0
+        },
+        "10000": {
+          "null_draws": 20,
+          "null_full_max": 16,
+          "null_full_mean": 2.4,
+          "null_local_max": 18,
+          "null_local_mean": 5.55,
+          "observed": 0,
+          "sustaining_mean_cost": 0.0,
+          "sustaining_reactions": 0
+        },
+        "2000": {
+          "null_draws": 20,
+          "null_full_max": 0,
+          "null_full_mean": 0,
+          "null_local_max": 0,
+          "null_local_mean": 0,
+          "observed": 0,
+          "sustaining_mean_cost": 0.0,
+          "sustaining_reactions": 0
+        },
+        "250": {
+          "null_draws": 20,
+          "null_full_max": 0,
+          "null_full_mean": 0,
+          "null_local_max": 0,
+          "null_local_mean": 0,
+          "observed": 0,
+          "sustaining_mean_cost": 0.0,
+          "sustaining_reactions": 0
+        },
+        "4000": {
+          "null_draws": 20,
+          "null_full_max": 0,
+          "null_full_mean": 0,
+          "null_local_max": 0,
+          "null_local_mean": 0,
+          "observed": 0,
+          "sustaining_mean_cost": 0.0,
+          "sustaining_reactions": 0
+        },
+        "500": {
+          "null_draws": 20,
+          "null_full_max": 0,
+          "null_full_mean": 0,
+          "null_local_max": 0,
+          "null_local_mean": 0,
+          "observed": 0,
+          "sustaining_mean_cost": 0.0,
+          "sustaining_reactions": 0
+        },
+        "6000": {
+          "null_draws": 20,
+          "null_full_max": 0,
+          "null_full_mean": 0,
+          "null_local_max": 0,
+          "null_local_mean": 0,
+          "observed": 0,
+          "sustaining_mean_cost": 0.0,
+          "sustaining_reactions": 0
+        }
+      },
+      "fail": 9278,
+      "history_core": 0,
+      "mean_cost_all": 121.21468144044321,
+      "ok": 722,
+      "reactions": 10000,
+      "seed": 20260835,
+      "trajectory": [
+        {
+          "alive": 43,
+          "ok": 530,
+          "reactions": 1000,
+          "success_rate": 0.53
+        },
+        {
+          "alive": 47,
+          "ok": 594,
+          "reactions": 2000,
+          "success_rate": 0.297
+        },
+        {
+          "alive": 48,
+          "ok": 655,
+          "reactions": 4000,
+          "success_rate": 0.16375
+        },
+        {
+          "alive": 38,
+          "ok": 722,
+          "reactions": 10000,
+          "success_rate": 0.0722
+        }
+      ]
+    },
+    {
+      "alive": 44,
+      "curve": {
+        "1000": {
+          "null_draws": 20,
+          "null_full_max": 0,
+          "null_full_mean": 0,
+          "null_local_max": 0,
+          "null_local_mean": 0,
+          "observed": 0,
+          "sustaining_mean_cost": 0.0,
+          "sustaining_reactions": 0
+        },
+        "10000": {
+          "null_draws": 20,
+          "null_full_max": 0,
+          "null_full_mean": 0,
+          "null_local_max": 2,
+          "null_local_mean": 0.2,
+          "observed": 0,
+          "sustaining_mean_cost": 0.0,
+          "sustaining_reactions": 0
+        },
+        "2000": {
+          "null_draws": 20,
+          "null_full_max": 0,
+          "null_full_mean": 0,
+          "null_local_max": 0,
+          "null_local_mean": 0,
+          "observed": 0,
+          "sustaining_mean_cost": 0.0,
+          "sustaining_reactions": 0
+        },
+        "250": {
+          "null_draws": 20,
+          "null_full_max": 0,
+          "null_full_mean": 0,
+          "null_local_max": 0,
+          "null_local_mean": 0,
+          "observed": 0,
+          "sustaining_mean_cost": 0.0,
+          "sustaining_reactions": 0
+        },
+        "4000": {
+          "null_draws": 20,
+          "null_full_max": 0,
+          "null_full_mean": 0,
+          "null_local_max": 0,
+          "null_local_mean": 0,
+          "observed": 0,
+          "sustaining_mean_cost": 0.0,
+          "sustaining_reactions": 0
+        },
+        "500": {
+          "null_draws": 20,
+          "null_full_max": 0,
+          "null_full_mean": 0,
+          "null_local_max": 0,
+          "null_local_mean": 0,
+          "observed": 0,
+          "sustaining_mean_cost": 0.0,
+          "sustaining_reactions": 0
+        },
+        "6000": {
+          "null_draws": 20,
+          "null_full_max": 0,
+          "null_full_mean": 0,
+          "null_local_max": 0,
+          "null_local_mean": 0,
+          "observed": 0,
+          "sustaining_mean_cost": 0.0,
+          "sustaining_reactions": 0
+        }
+      },
+      "fail": 9121,
+      "history_core": 241,
+      "mean_cost_all": 120.96018202502844,
+      "ok": 879,
+      "reactions": 10000,
+      "seed": 20260836,
+      "trajectory": [
+        {
+          "alive": 44,
+          "ok": 578,
+          "reactions": 1000,
+          "success_rate": 0.578
+        },
+        {
+          "alive": 46,
+          "ok": 726,
+          "reactions": 2000,
+          "success_rate": 0.363
+        },
+        {
+          "alive": 50,
+          "ok": 810,
+          "reactions": 4000,
+          "success_rate": 0.2025
+        },
+        {
+          "alive": 44,
+          "ok": 879,
+          "reactions": 10000,
+          "success_rate": 0.0879
+        }
+      ]
+    }
+  ],
+  "frame": {
+    "budget": 200,
+    "null_draws": 20,
+    "reactions": 10000,
+    "seeds": [
+      20260825,
+      20260826,
+      20260827,
+      20260828,
+      20260829,
+      20260830,
+      20260831,
+      20260832,
+      20260833,
+      20260834,
+      20260835,
+      20260836
+    ],
+    "windows": [
+      250,
+      500,
+      1000,
+      2000,
+      4000,
+      6000,
+      10000
+    ]
+  },
+  "kind": "post hoc, not preregistered",
+  "provenance": {
+    "oracle_sha256": "413d1f9805cdbdf42f13d967a17be26eb959c692eeb067e7146203ed9cebe64d",
+    "platform": "CPython",
+    "python": "3.14"
+  },
+  "verdict": {
+    "cells": 84,
+    "clears": 0,
+    "h3": "UNADJUDICATED at scale"
+  }
+}

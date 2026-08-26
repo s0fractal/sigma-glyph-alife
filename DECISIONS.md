@@ -661,3 +661,54 @@ have passed and shipped the bug with the result.
 flipping the default would change every experiment already committed here and
 silently move seven receipts. An unattractive default that keeps the record
 honest beats a better one that rewrites it. New work should pass `True`.
+
+---
+
+## 2026-08-26 — re-checking the three unadjudicated verdicts
+
+**D71. "No power" here never meant "not enough machine", and the record now says
+so.** s0fractal asked whether the three UNADJUDICATED verdicts could be
+re-checked now that the work runs on an M4 Pro with 48 GB. They could not have
+been caused by hardware: peak resident memory of the heaviest run in this
+repository is **25 MB** and the full grid finishes in seconds. Power here is a
+property of the *design* — whether the frame could have shown an effect at all —
+and each of the three failed for a design reason:
+
+  * **EXP-002 H2** — the memo fired ONCE on the preregistered corpus, because a
+    memo is keyed by what agents ask for and those agents never asked for each
+    other's addresses. Nothing to compare.
+  * **EXP-005 H2** — the preregistered budget was chosen so that everyone settles,
+    and the manipulation cost 0.08% (D42). Already answered post hoc by that
+    experiment's own addendum: it binds between 25 and 62 ATP per agent.
+  * **EXP-008 H3** — no self-maintaining set survived the stronger null, so there
+    was nothing to price.
+
+**D72. More machine did buy one real thing: scale.** Only EXP-008's H3 was
+plausibly a *length* problem rather than a design one, so it was re-run at ten
+times the reactions and four times the seeds — 242 s of CPU in 23 s of wall clock
+across twelve workers, which is what the extra cores are actually for. The verdict
+does not move (**0 of 84 cells** clear the locality-preserving null; the observed
+set is zero nearly everywhere), and the negative is now ten times longer and four
+times wider.
+
+What the scale run found instead is better than the verdict it failed to change:
+**the chemistry prices itself out of its own budget.** Reaction success falls from
+54% to 16% while the per-reaction budget never changes — products accumulate
+structure, the next reaction has to reduce a bigger term, and 200 ATP stops
+affording it. Five of twelve seeds end below the eight-hash diversity floor
+EXP-007 preregistered, two of them at *two* surviving molecules; seven hold
+between 20 and 46. And one seed falls to six molecules while its success rate
+*rises* to 93.7% — a cheap cycle that found an attractor it can afford, which is
+what an organisation would look like here, and which the self-maintenance metric
+scores zero because those molecules are not producing each other.
+
+The successor question is sharper than the one it replaces: any long-run
+organisation in this chemistry has to be made of reactions that stay affordable,
+so the test is a budget that scales with the soup — not more seeds.
+
+**D73. EXP-002's H2 was adjudicated without taking a measurement.** Its own
+post-hoc `composite` arm fired the memo 41 times, and the committed receipt
+already held everything needed: occupancy 2.74% → 2.88%, tighter by 1.05×, by the
+mechanism H2 named — the ceiling falls because the memo spends less. Recorded as
+an addendum that reads the receipt rather than a re-run, and labelled post hoc,
+one arm, one seed.

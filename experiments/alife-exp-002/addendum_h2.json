@@ -1,0 +1,48 @@
+{
+  "addendum": "ALIFE-EXP-002 H2, adjudicated on the composite arm",
+  "kind": "post hoc, not preregistered; no measurement taken",
+  "rows": [
+    {
+      "arm": "off",
+      "ceiling": 2840,
+      "memo_hits": 0,
+      "nodes_total": 472,
+      "nodes_unique": 182,
+      "occupancy": 0.06408450704225352,
+      "population": "mixed"
+    },
+    {
+      "arm": "shared",
+      "ceiling": 2834,
+      "memo_hits": 1,
+      "nodes_total": 472,
+      "nodes_unique": 182,
+      "occupancy": 0.06422018348623854,
+      "population": "mixed"
+    },
+    {
+      "arm": "off",
+      "ceiling": 9137,
+      "memo_hits": 0,
+      "nodes_total": 1600,
+      "nodes_unique": 250,
+      "occupancy": 0.02736127831892306,
+      "population": "composite*"
+    },
+    {
+      "arm": "shared",
+      "ceiling": 8401,
+      "memo_hits": 41,
+      "nodes_total": 1764,
+      "nodes_unique": 242,
+      "occupancy": 0.028806094512558028,
+      "population": "composite*"
+    }
+  ],
+  "source": "experiments/alife-exp-002/results.json",
+  "verdict": {
+    "hits": 41,
+    "holds": true,
+    "relative": 1.0528051422449707
+  }
+}

@@ -23,7 +23,7 @@ were changed *after* the first runs, and both changes are named in
 | | preregistered claim | verdict |
 |---|---|---|
 | **H1** | memoization turns sharing into ATP | **FAILS** — 6 ATP of 2776 (0.22%), one hit |
-| **H2** | the proved ceiling gets tighter | **NOT ADJUDICATED** — nothing fired to compare |
+| **H2** | the proved ceiling gets tighter | **NOT ADJUDICATED** on the preregistered corpus — nothing fired to compare. **Holds on the `composite` arm** (post hoc): occupancy 2.74% → 2.88%, 41 hits. See [`addendum_h2.py`](addendum_h2.py) |
 | **H3** | when sharing pays, selection preserves it | **FAILS as stated** — 2 of 3 seeds, criterion was all three |
 
 And the pricing law, filed in advance as already decided and reproduced here as

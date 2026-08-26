@@ -98,6 +98,18 @@ else
   skip "ALIFE-EXP-003 replay was not diffed against the committed receipt (no git)"
 fi
 
+say "ALIFE-EXP-002 H2 addendum: adjudicated on the arm where the memo fired"
+python3 experiments/alife-exp-002/addendum_h2.py --record | tail -3
+if command -v git >/dev/null 2>&1 && git rev-parse --git-dir >/dev/null 2>&1; then
+  git diff --exit-code experiments/alife-exp-002/addendum_h2.json
+fi
+
+say "ALIFE-EXP-008 scale addendum: does self-maintenance appear at ten times the run?"
+python3 experiments/alife-exp-008/addendum_scale.py --record | tail -3
+if command -v git >/dev/null 2>&1 && git rev-parse --git-dir >/dev/null 2>&1; then
+  git diff --exit-code experiments/alife-exp-008/addendum_scale.json
+fi
+
 say "ALIFE-EXP-009 replay: is an unresolved reference a death or a wait?"
 python3 experiments/alife-exp-009/measure.py --record | tail -5
 if command -v git >/dev/null 2>&1 && git rev-parse --git-dir >/dev/null 2>&1; then
