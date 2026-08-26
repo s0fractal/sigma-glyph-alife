@@ -1,6 +1,17 @@
 #!/usr/bin/env bash
 # The complete validation matrix, one command. Run from the repository root:
-#   tools/test-all.sh
+#
+#   THE CANONICAL TERMINAL COMMAND — every claimed experiment actually replays:
+#     RUN_SLOW=1 DECISION_ARCHAEOLOGY=/path/to/decision-archaeology tools/test-all.sh
+#
+#   The bare `tools/test-all.sh` deliberately skips two surfaces — the
+#   ten-minute EXP-007/008 soup replays and the external need-packet validator —
+#   and prints NOT COMPLETE, exit 2, when it does. That is honest and it is NOT
+#   the terminal command: "test-all is green" is a false sentence unless the
+#   line above is what was run, or its two surfaces were covered by their own
+#   workflows on the same commit (EXP007_ELSEWHERE=1). Every OTHER experiment,
+#   ALIFE-EXP-010 included, replays in both profiles.
+#
 # Env: SIGMA_GLYPH        — the impl/ directory of a sigma-glyph checkout
 #      SIGMA_GLYPH_PROOFS — its proofs/ directory (for the premise guard)
 # Both are found automatically when sigma-glyph sits beside this repository.
@@ -42,6 +53,22 @@ python3 tests/alife_nulls.py | tee /dev/stderr | grep -q "ALIFE-NULLS: ALL PASS"
 
 say "Receipt guard: every null in every receipt says how many times it was drawn"
 python3 tools/receipt_guard.py | tee /dev/stderr | grep -q "RECEIPT-GUARD: ALL PASS"
+
+say "Receipt guard's own negative controls: deletion, undersampling, borrowed draws"
+# Codex's review of 2026-08-26 supplied the third one as a reproducer: the guard
+# accepted `{"null_a": {"draws": 1}, "unrelated": {"draws": 20}}` because it
+# searched arbitrary siblings for a big enough number. A locality rule that does
+# not enforce locality reads as enforcement, which is worse than no guard.
+python3 tools/receipt_guard.py --self-test \
+  | tee /dev/stderr | grep -q "RECEIPT-GUARD-SELFTEST: ALL PASS"
+
+say "Receipt identity: a changed RESULT is invisible to shape guards and caught by replay"
+# The other half of the same finding. A digest or shape guard cannot see a
+# flipped verdict or a moved estimand; only re-deriving the receipt can. This
+# mutates scored fields and demands that the shape guard stay blind and the
+# identity diff fire.
+python3 tests/receipt_identity_guard.py \
+  | tee /dev/stderr | grep -q "RECEIPT-IDENTITY-GUARD: ALL PASS"
 
 say "Guard regression: every gate puts its verdict in the EXIT STATUS"
 python3 tests/exit_status_guard.py | tee /dev/stderr | grep -q "EXIT-STATUS-GUARD: ALL PASS"
@@ -116,6 +143,21 @@ if command -v git >/dev/null 2>&1 && git rev-parse --git-dir >/dev/null 2>&1; th
   git diff --exit-code experiments/alife-exp-009/results.json
 else
   skip "ALIFE-EXP-009 replay was not diffed against the committed receipt (no git)"
+fi
+
+say "ALIFE-EXP-010 replay: matter-priced against energy-priced duplication"
+# IN BOTH PROFILES, not behind RUN_SLOW. This experiment sat in the repository
+# for eleven days with no replay behind it — the advertised matrix was green
+# while its headline could rot, which is sigma-glyph EXP-004's defect #5
+# recurring (Codex review 2026-08-26, [BLOCKER] #2). It costs about half a
+# minute; the ten-minute soups are the only replays that get to be optional, and
+# a cheap experiment hiding behind an expensive one's exemption is how coverage
+# holes are made.
+python3 experiments/alife-exp-010/measure.py --record | tail -8
+if command -v git >/dev/null 2>&1 && git rev-parse --git-dir >/dev/null 2>&1; then
+  git diff --exit-code experiments/alife-exp-010/results.json
+else
+  skip "ALIFE-EXP-010 replay was not diffed against the committed receipt (no git)"
 fi
 
 say "ALIFE-EXP-008: controls only (the replay is a ten-minute job)"

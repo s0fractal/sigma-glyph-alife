@@ -14,10 +14,14 @@ on:
     branches: [master]
     paths: ['experiments/alife-exp-007/**', '!experiments/alife-exp-007/**.md',
             'experiments/alife-exp-008/**', '!experiments/alife-exp-008/**.md',
+            'experiments/alife-exp-010/**', '!experiments/alife-exp-010/**.md',
+            'impl/sigma_alife.py',
             '.github/workflows/exp-007.yml']
   pull_request:
     paths: ['experiments/alife-exp-007/**', '!experiments/alife-exp-007/**.md',
             'experiments/alife-exp-008/**', '!experiments/alife-exp-008/**.md',
+            'experiments/alife-exp-010/**', '!experiments/alife-exp-010/**.md',
+            'impl/sigma_alife.py',
             '.github/workflows/exp-007.yml']
 
 env:
@@ -71,3 +75,35 @@ jobs:
         run: |
           python3 experiments/alife-exp-008/measure.py --record | tail -24
           git diff --exit-code experiments/alife-exp-008/results.json
+
+  # ALIFE-EXP-010 is ALSO replayed by `tools/test-all.sh` in the substrate
+  # workflow, on every push, because it costs half a minute rather than ten. This
+  # job is deliberate redundancy with a name: a coverage hole is easiest to open
+  # by granting the cheap thing the expensive thing's exemption, and a
+  # path-triggered job that says "exp-010" when it goes red is what Codex's
+  # review asked for after finding this experiment absent from the matrix
+  # entirely. `impl/sigma_alife.py` is in the trigger because the duplication
+  # gate the arms run through lives there.
+  exp-010:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
+        with: { python-version: '3.14' }
+      - name: Fetch the pinned Book I oracle
+        run: |
+          set -euo pipefail
+          git clone -q https://github.com/s0fractal/sigma-glyph /tmp/sigma-glyph
+          git -C /tmp/sigma-glyph checkout -q "$SIGMA_GLYPH_PIN"
+          sha256sum /tmp/sigma-glyph/impl/sigma_glyph.py
+      - name: Replay both arms; the committed receipt must be what they derive
+        env:
+          SIGMA_GLYPH: /tmp/sigma-glyph/impl
+        run: |
+          python3 experiments/alife-exp-010/measure.py --record | tail -40
+          git diff --exit-code experiments/alife-exp-010/results.json
+      - name: A changed scored field must be caught by something
+        run: |
+          python3 tools/receipt_guard.py --self-test
+          python3 tests/receipt_identity_guard.py
