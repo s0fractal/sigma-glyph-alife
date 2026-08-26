@@ -712,3 +712,155 @@ already held everything needed: occupancy 2.74% → 2.88%, tighter by 1.05×, by
 mechanism H2 named — the ceiling falls because the memo spends less. Recorded as
 an addendum that reads the receipt rather than a re-run, and labelled post hoc,
 one arm, one seed.
+
+---
+
+## 2026-08-26 — ALIFE-EXP-010, what the preregistration did not say
+
+Recorded **before** the measurement ran, per the ALIFE-EXP-005 arrangement. The
+preregistration (`experiments/ALIFE-EXP-010-…-preregistration.md`, committed
+2a3ff65) says of itself that if it is not enough, that is a defect in it. These
+are the places it was not enough, and what the harness did instead. D77 is the
+one the RESULT has to carry as a correction rather than a choice.
+
+**D74. An "individual" is a molecule-life, because EXP-007 has no other census.**
+The prereg is written in the vocabulary of a population — living molecules,
+death-causes, a census that reconciles — and the arm it pins as Arm E is
+EXP-007's soup, which is a list of 64 *hashes* plus 1000 throwaway reaction
+agents. Neither of those alone is a census. The harness unifies them: one
+**individual** is one molecule-life. The 64 founders are born alive at tick 0;
+each reaction is born as a root thunk, and a reaction that settles *becomes* the
+living molecule its product names. The soup is therefore a list of individuals
+rather than of hashes, with positions preserved exactly so that `rng.choice` and
+`rng.randrange` consume the same randomness EXP-007 consumed (C3 would not
+survive otherwise). C7's partition — alive, consumed, culled, starved, waiting,
+faulted, unresolved — is over individuals and is checked to be a partition on
+every tick of both arms.
+
+**D75. A consumption eats the earliest-born copy.** The soup can hold several
+individuals with the same hash; the prereg requires "at least one" and does not
+say which. Lowest birth index, for two reasons: it is deterministic without
+drawing on the RNG, which C4 needs, and eating the youngest would preferentially
+consume the molecule just made, which is a different chemistry from the one being
+priced.
+
+**D76. "Not the substrate itself" is read as "a different individual from the
+reacting agent".** A running reaction is not a member of the soup, so every soup
+molecule carrying the demanded hash is a different individual and qualifies.
+Note what this does *not* do: EXP-007's reactants are not consumed by their
+reaction, in either arm. K&M consume reactants; this substrate does not, and the
+prereg's own last bullet already says Arm M is K&M-inspired pricing inside this
+substrate rather than their reactor.
+
+**D77. The consumed individual's reservoir is zero here, so the transfer clause
+is inoperative — and this is the one instruction that could not be honoured as
+written.** EXP-007 endows a reaction, and returns its unspent remainder to the
+commons the instant it settles (`econ.collect`). A molecule sitting in the soup
+therefore holds no ATP at all, and "the consumed individual's remaining ATP
+transfers in full to the duplicating agent" moves 0 every time. Giving molecules
+a reservoir means not collecting — which moves `pool_left`, one of the frozen
+EXP-007 numbers C3 requires Arm E to reproduce *exactly* — and doing it in Arm M
+alone would be a second difference between the arms, which the prereg forbids in
+the same paragraph. The two constraints cannot both be met, so C3 wins and the
+transfer is implemented as a real code path that is measured and always moves
+zero. The consequence for the design's stated reasoning is that
+`transfer_preserves_bound` is cited for a redistribution that does not occur;
+conservation in Arm M is preserved for the more boring reason that nothing moves.
+The RESULT reports this as a correction, not as a detail.
+
+**D78. Which bound Arm M keeps, and why the engine's probe is not asked to
+assert it.** Book I's per-agent bound `size <= s0 + spent` is a corollary of
+`Δsize <= cost - 1`, a property of Book I's *price*. Matter-priced `R-S` charges
+the floor and grows the term by `size(z) - 1`, so it breaks that premise for any
+`z` larger than a leaf — deterministically, not occasionally. What survives is
+the **matter** statement, which is the one the arm is actually about: the body
+consumed leaves the census carrying at least as much material as the copy adds.
+Checked two ways in both arms, every event and every tick — (a) per consumption,
+`size(consumed) >= size(z)`, which holds because a soup molecule is a normal form
+or a founder and so is fully materialized while the `z` inside the agent may
+still be part thunk; (b) per tick, the census bound
+`Σ size(alive) + size(running) <= Σ s0 + Σ spent`. The Book I per-agent
+violations are *counted* and reported rather than suppressed: they are the
+expected consequence of the arm, and a receipt that showed zero because nobody
+looked would be the bookkeeping bug the prereg warns about, in reverse. The
+engine's `probe` asserts the Book I bound over a gated action exactly as it does
+over every other one — so Arm M must run with `probe=False`, which is the
+honest form of the statement, and Arm E keeps the probe on every action it
+takes.
+
+**D79. H3's "final window" is the last 100 reactions.** The prereg names a
+final-window success rate and never sizes the window. 100 is EXP-007's own trace
+granularity, the smallest window its frozen receipt can express, and it was fixed
+before any Arm M number existed. The last 200 and last 400 are reported beside it
+as a sensitivity and score nothing.
+
+**D80. A reaction's success is attributed to the reaction that started it.** A
+matter-blocked reaction that resumes three hundred reactions later and settles
+counts as a success in the window it was *born* in; one still parked at the end
+counts as not-successful. Attributing it to the window it finished in would put a
+window's numerator and its denominator on different populations.
+
+**D81. Blocked agents are woken by address, not by polling.** Parked agents are
+indexed by the hash they wait on and woken the moment a molecule with that hash
+enters the soup. This is equivalent to retrying everyone on every reaction — a
+retry that finds nothing spends nothing and changes nothing, which is exactly
+what C6 measures — and three orders of magnitude cheaper. Waking order is birth
+order and draws no randomness.
+
+**D82. A Jaccard over two empty survivor sets is undefined and does not help
+H1.** EXP-007's helper returns 1.0 for an empty union, which would be a claim.
+H1 asks for overlap < 0.5 in at least 2 of 3 seeds; a seed where neither arm has
+one non-genesis survivor has no overlap to report. It is reported as undefined
+and does not count toward the 2-of-3 in either direction. Fail-closed, the C2
+principle applied to a metric.
+
+**D83. C6's "uninterrupted evaluation" is the oracle's own normal form.** A
+rerun of Arm M without waiting is not available — a block is a fact about the
+census at one instant, not a switch — so the reference for a resumed agent's
+answer is `sigma_glyph.eval_hash` on the same root against the final store at a
+budget large enough to finish. That is stronger than the rerun the prereg
+imagines: it says the matter arm's answers are Book I's answers, which is the
+property EXP-009 established and the one that matters here.
+
+**D84. C0, a control the preregistration does not have.** The whole arm rests on
+one new mirror, `sigma_alife._next_redex`, agreeing with the oracle about which
+action is next. A mirror that was wrong would re-price something that is not an
+`R-S`, or miss `R-S` entirely, and every number in the receipt would be a bug
+wearing a hypothesis. C0 runs the corpus through both and requires every
+predicted `R-S` to be a real `R-S` fired by the oracle at the oracle's own price,
+and every non-`R-S` prediction to leave the oracle's action alone. Controls are
+additive: one the prereg did not think of is not a deviation from it.
+
+**D85. The organization statistic is scored against both nulls up front, not
+when it becomes tempting.** The prereg preregisters EXP-008's two nulls so that a
+post-hoc organization observation can be scored immediately — D50's defect being
+that it could not be. So the L1-core of each arm is computed and scored against
+`shuffle_products` and `shuffle_local` for *both* arms by the same code path, at
+20 draws, and the receipt carries the result whether or not the RESULT says
+anything about it.
+
+**D86. The engine gained one hook, `reduce_slice(..., duplication_gate=...)`,
+and one status, `BLOCKED`.** The alternative was a second driver inside the
+harness, which is what ALIFE-EXP-009 did for its one-bit arm and what would be
+wrong here: EXP-009's arm changed the *scheduler*, this one changes a *price*
+inside the reduction loop, and a copied loop would make "identical in every
+respect except the pricing of duplication" true only to the extent the copy
+stayed faithful. The hook is inert unless passed — `BLOCKED` is not in
+`RUNNABLE`, no existing caller supplies a gate, and the 29/29 gate, the
+differential suite, the conservation suite, the memo suite and the nulls suite
+are all green before and after. `BLOCKED` is kept distinct from `UNRESOLVED` on
+purpose: an unresolved agent waits on the STORE and a blocked one on the CENSUS,
+and merging them would make EXP-009's measurement unreadable.
+
+**D87. C0c, the second control the preregistration does not have: the hook has
+to be falsifiable.** D86 put a pricing hook inside the shared reduction loop, and
+"the arms differ in one price" is then a claim about that hook rather than about
+the design. So the hook takes a second gate that prices `R-S` at Book I's own
+`1 + size(z)` and always affords — the identity on the chemistry — and C0c
+requires Arm E driven *through* it to produce a receipt identical to Arm E on the
+oracle's untouched dispatch, on all three seeds. C3 then says the ungated Arm E
+is EXP-007, C0c says the gated path is the ungated path, and C0 says the mirror
+is the oracle's own dispatch; the three together are what let Arm M's numbers be
+about a price. It also supplies the only honest way to count how many
+duplications the *energy* arm performs, which is the denominator every Arm M
+statement is implicitly against.
