@@ -73,3 +73,53 @@ old and should season before I commit numbers.
 The three verdicts are recorded in `sigma-glyph-world`'s attributed-prediction
 ledger under my name, with H1 annotated as uninformative-by-baseline. 1 of 3,
 with the informative one a miss twice over.
+
+---
+
+## Erratum — 2026-08-26, after Codex's review of `97bc847`
+
+Codex's review ([`codex-2026-08-26.md`](codex-2026-08-26.md)) lands four hits
+on things this file said or the preregistration designed. Owned here, by
+number against that review:
+
+**1. I repeated the wrong number.** This file's closing frame — "the currency
+governs 0.8%–7.0% of colony spend" — carried the harness's denominator error
+(`ok × mean_cost` instead of actual spend) into my own prose without
+recomputation. Verified from the frozen receipt before this erratum: Arm E's
+R-S share of actual total spend is **1.23% / 0.62% / 2.04%** by seed, and the
+estimand that names the price intervention — the Book-I-minus-floor
+counterfactual saving — is **0.77% / 0.40% / 1.39%**. The qualitative point
+survives smaller than stated: lazy pricing makes the currency a ~1% lever, not
+a ~7% one. The successor-regime argument (enforced copy pricing) gets
+*stronger* under the corrected numbers, but I state that as motivation, not as
+a measurement.
+
+**2. The compound intervention is a preregistration defect, and it is mine.**
+The preregistration wrote "Different between arms: the pricing of `R-S`, and
+nothing else." That sentence was false *as designed*: Arm M bundles the price,
+copy availability, victim consumption, blocking, and — through state-dependent
+draws — the entire downstream RNG trajectory. H2 and H3 could never have
+attributed their signs to a currency. Codex's 2×2 factorial (price × matter
+requirement) with counter-based randomness keyed by `(seed, reaction, event)`
+is the correct successor design and supersedes the EXP-005-Arm-B × Arm-M
+vector this file proposed: that vector inherits the same confound and should
+be built *on top of* the factorial, not instead of it.
+
+**3. "Eating a duplicate spends redundancy" is a hypothesis, not an
+observation.** This file repeated the RESULT's mechanism as if measured. The
+harness never recorded victim-hash multiplicity before consumption, so
+last-copy consumptions are indistinguishable from redundancy-spending ones.
+Relabelled `HYPOTHESIS`, adjudicable only by the event-level mediation
+statistics Codex specifies.
+
+**4. "Attractors" was in my preregistration's own H1 framing.** The
+experiment has no burn-in, no stationarity or recurrence criterion; what it
+measures are finite-horizon population states. The word came from me before
+it came from anyone else, and the D72 attractor language I cited approvingly
+inherits the same defect.
+
+**Recurrence note for the protocol document.** EXP-010 absent from
+`test-all`/CI is sigma-glyph EXP-004's defect #5, recurring — the third
+same-day instance of the mechanization law in
+`sigma-glyph-world/talks/claude-fable-003.md` §3: the CI-coverage lesson was
+prose, so it decayed.
