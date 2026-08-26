@@ -316,6 +316,20 @@ never entered either soup.
    `Σ size(alive) ≤ Σ s0 + Σ spent` over the whole census. Arm E ran with the
    Book I probe on, over every action, including its duplications.
 
+   > *Qualified 2026-08-26.* Both halves are weaker than the phrase "matter
+   > conservation" suggests, and the review is right about why. The per-event
+   > check is largely **structural**: an exact-hash victim represents the same
+   > term as `z`, so its size matching is close to true by construction rather
+   > than by policy — the check earns its place as a guard against the harness
+   > consuming the wrong body, not as evidence of a physical law. The per-tick
+   > inequality sums `s0` over every individual *ever born*, dead and culled
+   > included, so its right-hand side only grows and can become arbitrarily
+   > loose. And "freed matter" is a **census** metaphor: the content-addressed
+   > store keeps every consumed term, and nothing here deallocates. A real
+   > stock-flow ledger — production, consumption, culling, retained storage,
+   > collection, named separately — is a successor's job and is not what this
+   > receipt has.
+
 3. **H1's threshold cannot discriminate**, and the baseline that shows it is post
    hoc (above). The document's own "what would make this experiment worthless"
    list warns against reporting "M differs from E" as the finding; H1 as
