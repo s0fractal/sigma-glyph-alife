@@ -256,9 +256,11 @@ same density scores as high or higher.
 ## Controls
 
 Twelve, all passing before any number was recorded. Four were not in the
-preregistration and are named as additions rather than folded in — C9 was added
-on 2026-08-26 in response to the review, and would have caught the arithmetic
-this receipt had to correct:
+preregistration and are named as additions rather than folded in. C9 was added
+on 2026-08-26 in response to the review. It would not by itself have caught a
+mistake made in prose — but the first receipt had no total-spend figure in it at
+all, which is why this document reached for a proxy, and C9 is what makes the
+right denominator exist and asserts that it closes:
 
 | | control | outcome |
 |---|---|---|
