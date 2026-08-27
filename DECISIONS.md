@@ -1311,3 +1311,120 @@ not a version bump." Re-recording eleven experiments against an oracle whose
 change nobody here has read is a measurement campaign and an adoption decision,
 neither of which belongs in a session about a factorial. It is filed as work,
 not performed.
+
+---
+
+## 2026-08-27 — ALIFE-EXP-012b, and what the run-length argument assumed
+
+Recorded before the measurement ran. The successor preregistration
+([`experiments/ALIFE-EXP-012b-the-currency-factorial-preregistration.md`](experiments/ALIFE-EXP-012b-the-currency-factorial-preregistration.md),
+`f4cd387`) names exactly two changes and forbids a third, so these entries are
+about how the two were implemented and about one thing they cannot fix.
+
+**D110. The pilot's machinery is REUSED, not copied — by rebinding its frame.**
+`experiments/alife-exp-012b/measure.py` imports
+`experiments/alife-exp-012/measure.py` under a distinct module name and then
+does one visible thing: `PILOT.C = C`, with an assert that it took. Every
+function in the pilot reads `C` as a module global at call time, so the `Soup`,
+the 2×2 `Gate`, the census, the `CounterRandom` wiring, the factorial arithmetic
+and the seed-spread gate are **the same objects the pilot ran**, on 012b's
+frame. The alternative — copying six hundred lines and letting a control catch
+the drift — is this repository's usual pattern (EXP-008 copied EXP-007's
+peeling) and is wrong here: "incorporated verbatim by reference" is a claim
+about the code, and a copy makes it a claim about a diff instead. The pilot's
+file is not edited: it is the calibration pilot and its committed bytes are what
+D107's diagnostic refers to.
+
+**D111. C-compat runs at EXP-007's 1000 reactions, and that is not a third
+change.** The control scores arm BF against ALIFE-EXP-007's *committed receipt*,
+which is a 1000-reaction measurement; running it at 6000 would compare a number
+to a different number and could only fail. The run length of a control that
+reproduces a frozen artifact is a property of that artifact. The measurement
+runs at 6000; `COMPAT_REACTIONS` is separate and named.
+
+**D112. Per-cell checkpoints, keyed by the frame they are cells of.** Twenty
+cells at ~10 s each, run twice by C-det, is a ten-minute command, and a session
+limit in the middle should not cost the cells that finished. Each cell is cached
+to `experiments/alife-exp-012b/checkpoints/<frame-key>-<arm>-<seed>.json`, where
+the frame key is a digest over the reactions, capacity, budget, slice, cells,
+seeds, corpus fingerprint **and the oracle digest**. Any change to any of those
+invalidates every checkpoint, because a checkpoint that survives a frame change
+is a stale number wearing a fresh receipt. The directory is gitignored: a
+checkpoint is scaffolding, and the receipt is the artifact.
+
+**D113. One diagnostic added that changes no number: where the eligible events
+are.** `Soup012b` records the reaction index of every non-genesis (consumption-
+eligible) R-S. It is instrumentation over events that happen anyway — the
+`consumed`, `blocked` and `rs_*` counts are bit-identical with it and without it,
+which C-det checks by running every cell twice. It is not the forbidden third
+change: it adds no arm, moves no price, and touches no outcome. It exists
+because the successor's central argument is a claim about the **distribution**
+of those events over run length, and nobody had written the indices down.
+
+**D114. The run-length argument assumed a rate, and the events are a
+saturating total.** The successor derives 6000 reactions from the pilot: "the
+worst M cell produced 22 eligible events per 1000 reactions; 6000 puts its
+expectation at ~132". Measured before 012b's controls were run, on the binding
+cell FM/20260825:
+
+| reactions | 1000 | 2000 | 4000 | 6000 | 12000 |
+|---|---:|---:|---:|---:|---:|
+| eligible non-genesis R-S | 45 | 45 | 45 | 45 | **45** |
+| consumed | 22 | 22 | 22 | 22 | **22** |
+| distinct non-genesis survivors | 27 | — | 19 | 21 | 18 |
+
+**Twelve times the run length buys zero additional eligible events.** Five of the
+ten M cells are flat between 1000 and 6000 (76→76, 112→112, 98→98, 136→137,
+45→45, 98→98); the five that grow, grow steeply (258→1018, 200→347, 233→662,
+258→1206). The supply is not a Poisson rate to be integrated over time. It is
+determined by the early phase, and then the soup **converges** — distinct
+non-genesis survivors fall to between 4 and 21 — and every remaining duplication
+targets a genesis atom, which the preregistered rule makes free.
+
+That is D72's phenomenon in a new place: this chemistry finds an attractor it can
+afford, and an attractor made of genesis atoms is one where the matter mechanism
+has nothing to bite on. The consequence for 012b is recorded in the control
+outcome and not worked around: no third change is available, and the floor
+either holds on the measured supply or it does not.
+
+**D115. The eligible events are bimodal, not scarce — and D113's indices are
+what show it.** C-fire(matter/supply) fails in 4 of 10 M cells at 6000
+reactions. The interesting part is not the count but *where the events are*:
+
+| cell | eligible | of them before reaction 1000 | LAST eligible at | verdict |
+|---|---:|---:|---:|---|
+| FM/20260825 | 45 | 45 | **435** | below |
+| BM/20260825 | 76 | 76 | **625** | below |
+| BM/20260827 | 98 | 98 | **706** | below |
+| FM/20260827 | 98 | 98 | **706** | below |
+| BM/20260826 | 112 | 112 | **723** | passes |
+| BM/20260828 | 137 | 136 | **1040** | passes |
+| FM/20260826 | 347 | 200 | 5997 | passes |
+| FM/20260828 | 662 | 233 | 5927 | passes |
+| BM/20260829 | 1018 | 258 | 5985 | passes |
+| FM/20260829 | 1206 | 258 | 5001 | passes |
+
+There is no middle. Six cells stop producing eligible events **before reaction
+1100** and then produce none for the remaining 80–93% of the run; four keep
+producing to reaction 5000–6000. Two of the six stopped cells clear the floor
+anyway, purely by where they happened to stop — BM/20260826 at 112 and
+BM/20260828 at 137 are *passing dead cells*, which is worth saying plainly
+because a floor that admits them is not measuring what it thinks.
+
+So the supply is not a rate with a small mean; it is a **race between the
+mechanism and convergence**. A cell either finds a self-sustaining cycle that
+keeps making non-genesis structure, or it collapses onto genesis atoms — where
+duplication is free by the preregistered rule and the matter mechanism has
+nothing left to bite on. Run length changes the first group's totals and cannot
+change the second's at all, which is why 12 000 reactions on FM/20260825 gives
+the same 45 as 1 000 (D114).
+
+**What this rules out.** Every remedy of the form "run it longer" is now
+measured, not argued: it does not work on the cells that fail. A successor has
+to change what the soup *makes* — an enforced-copy-pricing regime where `z` is
+materialized rather than an address, a founder corpus that keeps producing
+compound structure, or a capacity rule that resists collapse — or it has to
+admit cells on a criterion that survives convergence, e.g. eligible events
+before the cell's own convergence point rather than over a fixed horizon. Those
+are third changes, and 012b forbids them; they belong in the next
+preregistration and not in this harness.
