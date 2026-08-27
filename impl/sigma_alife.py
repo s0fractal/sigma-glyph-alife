@@ -49,6 +49,7 @@ import hashlib
 import importlib.util
 import math
 import os
+import random
 import sys
 from collections import Counter
 from pathlib import Path
@@ -840,6 +841,106 @@ def resilience(agents):
         return 0.0
     alive = sum(1 for a in agents if a.status in (LIVE, STARVED, NORMAL))
     return alive / len(agents)
+
+
+# ---------- Randomness that a counterfactual cannot shift ----------
+# ALIFE-EXP-010 compared two arms whose RNG streams diverged the moment their
+# histories did: one arm culled a molecule, drew one more number from a shared
+# `random.Random`, and every later draw in that arm was a different number than
+# its counterpart's. Codex's review named the consequence — a cross-arm
+# difference is then part manipulation and part re-seeded noise, and no design
+# can separate them afterwards.
+#
+# The fix is counter-based (a.k.a. keyed, or "splittable") randomness: a draw is
+# a pure function of a KEY rather than of a position in a stream. Key a draw by
+# `(seed, index, event)` and reaction 300's reactant choice is the same number
+# whatever happened at reaction 299 — in this arm or in any other.
+#
+# THIS IS NOT A `random.Random` DROP-IN, deliberately. A drop-in would expose
+# `.choice` and `.randrange` with no key, and every call site would silently go
+# back to being position-dependent; the keys are the whole mechanism, so they are
+# in the signature. `StreamRandom` below has the same signature and ignores the
+# key, which is how a harness replays a legacy stream-ordered run (ALIFE-EXP-012
+# C-compat) without a second copy of its loop.
+
+
+class CounterRandom:
+    """Uniform draws keyed by `(seed, index, event)`, independent of history.
+
+    `below(n, index, event)` is uniform on `[0, n)` by rejection on that key's
+    own hash stream — the same discipline `random._randbelow` uses, so the
+    result is unbiased rather than `% n`.
+
+    `word(index, event, counter)` exposes the raw 64-bit draw word. It is what a
+    decorrelation control compares: the word is a function of the key alone, so
+    two runs that differ in their history must still agree on it, and a harness
+    that has quietly reintroduced a shared stream will not.
+    """
+    __slots__ = ("seed", "label", "draws", "rejections")
+
+    def __init__(self, seed, label="alife"):
+        self.seed = seed
+        self.label = label
+        self.draws = 0
+        self.rejections = 0
+
+    def word(self, index, event, counter=0):
+        key = f"{self.label}:{self.seed}:{index}:{event}:{counter}".encode()
+        return int.from_bytes(hashlib.sha256(key).digest()[:8], "big")
+
+    def below(self, n, index, event):
+        if n <= 1:
+            if n < 1:
+                raise ValueError("below() needs n >= 1")
+            self.draws += 1
+            return 0
+        self.draws += 1
+        bits = (n - 1).bit_length()
+        shift = 64 - bits
+        for counter in range(128):
+            v = self.word(index, event, counter) >> shift
+            if v < n:
+                return v
+            self.rejections += 1
+        # 128 consecutive rejections has probability below 2^-128; treat it as
+        # what it is — an impossibility that must not silently become a modulo.
+        raise RuntimeError(f"CounterRandom: {n} rejected 128 draws at "
+                           f"({index}, {event})")
+
+
+class StreamRandom:
+    """`CounterRandom`'s signature over a positional `random.Random` stream.
+
+    The key arguments are accepted and IGNORED: this is what a stream-ordered
+    run does, and naming it is how a harness replays one on purpose rather than
+    by accident. It is also the negative control for a decorrelation test — the
+    property `CounterRandom` has is only worth asserting if something visibly
+    lacks it.
+    """
+    __slots__ = ("seed", "rng", "draws", "last")
+
+    def __init__(self, seed):
+        self.seed = seed
+        self.rng = random.Random(seed)
+        self.draws = 0
+        self.last = 0
+
+    def word(self, index, event, counter=0):
+        """The identifying value behind this generator's last draw — and for a
+        POSITIONAL generator that is a function of the position, which is the
+        whole difference being tested.
+
+        It must not advance the stream. The first version returned
+        `getrandbits(64)`, which drew a number every time a caller logged one,
+        so a run that logged its draws consumed twice the randomness of one that
+        did not — and ALIFE-EXP-012's C-compat, which replays EXP-007's draw
+        order, failed by 139 reactions until that was found."""
+        return (self.draws << 32) ^ self.last
+
+    def below(self, n, index, event):
+        self.draws += 1
+        self.last = self.rng.randrange(n)
+        return self.last
 
 
 # ---------- Economy ----------

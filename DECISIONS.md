@@ -1108,3 +1108,165 @@ an R3 written on it would have passed while feeding zero — the ALIFE-EXP-002
 defect inside a regression test. It searches seeds and budgets for a colony where
 the rebate actually feeds a starving agent more than its next action costs, over
 a corpus of `S x_i y_i z` sharing one `z`, and fails closed if none exists.
+
+---
+
+## 2026-08-27 — ALIFE-EXP-012, the factorial's missing choices
+
+Recorded before the measurement ran, per the ALIFE-EXP-005 arrangement. The
+preregistration
+([`experiments/ALIFE-EXP-012-the-currency-factorial-preregistration.md`](experiments/ALIFE-EXP-012-the-currency-factorial-preregistration.md),
+`28b139a`) delegates one piece of engineering explicitly — "the engine change
+this requires is the harness author's to design and record" — and leaves five
+things implicit.
+
+**D101. Counter-based randomness is a substrate facility, not a harness trick,
+and it is deliberately NOT a `random.Random` drop-in.** ALIFE-EXP-010 compared
+arms whose RNG streams diverged the moment their histories did: one arm culled a
+molecule, drew one more number from a shared stream, and every later draw in that
+arm was a different number from its counterpart's. Codex named the consequence —
+a cross-arm difference is then part manipulation and part re-seeded noise, and no
+analysis afterwards can separate them.
+
+`impl/sigma_alife.py` gains `CounterRandom`, whose `below(n, index, event)` is a
+pure function of `(seed, index, event)`: reaction 300's reactant choice is the
+same number whatever happened at reaction 299, in this arm or any other. It is a
+**pure addition** — nothing existing calls it, and 29/29, the differential,
+conservation, memo, nulls and refeed suites are green before and after.
+
+The tempting design was a `random.Random` work-alike with `.choice` and
+`.randrange`, so existing loops need no edit. That is exactly the wrong shape:
+the key IS the mechanism, and a signature that hides it lets any call site
+silently go back to being position-dependent. So the keys are in the signature
+and every call site has to say what it is drawing for.
+
+`StreamRandom` has the identical signature and **ignores** the keys, drawing from
+a positional `random.Random`. It has two jobs: replaying a legacy stream-ordered
+run without a second copy of the loop (C-compat), and being the negative control
+for C-RNG — a decorrelation property is only worth asserting if something
+visibly lacks it.
+
+**D102. The key vocabulary, and the one place a key needs a sub-index.** The
+chemistry draws three kinds of number: two reactant choices per reaction
+(`reactant_a`, `reactant_b`) and a cull victim on capacity overflow. Reactant
+keys are `(seed, i, "reactant_a"|"reactant_b")`.
+
+A cull is not once-per-reaction. A settled reaction can wake parked agents whose
+own products append and overflow the soup again, all within reaction `i`, so the
+cull key carries an occurrence index: `cull:0`, `cull:1`, … reset each reaction.
+That index depends on history *within* the reaction, which is unavoidable and is
+not the property under test: Codex's requirement is that an event in one arm not
+shift any **later** draw, and reaction `i+1`'s keys are untouched by how many
+culls reaction `i` needed. Stated here rather than discovered by a reader.
+
+**D103. C-RNG compares draw WORDS, not draw outcomes, and carries its own
+negative control.** Two arms legitimately have different soup lengths, so the
+same key can yield a different *index* while the randomness behind it is
+identical — comparing outcomes would fail a correct implementation. So the
+control compares the raw 64-bit word each key produces, which is a function of
+the key alone.
+
+The test: run a cell, run it again with one reaction (300 of 600) forced to
+starve where it settled, confirm the histories genuinely diverge, and require
+every shared key's word to be bit-identical **before and after** the
+perturbation. Counter mode: 827/827 before, 771/771 after. Then the same
+comparison under `StreamRandom`, which must FAIL: 25/652 after. It runs
+**first**, and the harness returns before touching any other control if either
+half fails — the preregistration says no cross-arm comparison is valid without
+it, so a receipt that recorded one anyway would be the thing rule 6 exists to
+prevent.
+
+**D104. C-compat is arm BF in stream mode against EXP-007's frozen receipt, and
+the "documented D98/D99 deltas" turn out to be zero — measured, not assumed.**
+The preregistration allows BF to differ from EXP-007 by the D98/D99 fix. It does
+not: EXP-007's chemistry drives `reduce_slice` directly, with no `phase_cull` and
+no rebate, so neither fix can reach it — and `tools/test-all.sh` replaying
+EXP-007 green after the fix already said so. C-compat turns that into a number by
+running BF with `StreamRandom` (EXP-007's draw order) and demanding all 13
+recorded fields match on the three shared seeds. Any divergence is a harness bug,
+which is what the preregistration asks for; the counter-keyed measurement then
+runs on a harness one control has pinned to a committed receipt.
+
+**D105. The gate arithmetic, and a sign convention stated so it cannot be read
+backwards.** Per outcome: five per-seed values per cell, a cell mean, and a cell
+spread (max − min). Effects are computed from the cell means —
+`price = mean(BF,BM) − mean(FF,FM)`, `matter = mean(BF,FF) − mean(BM,FM)`,
+`interaction = (BF − BM) − (FF − FM)` — and all three draw on all four cells, so
+each outcome has **one** gate: the largest of the four spreads. An effect is
+claimable iff its absolute value exceeds that gate.
+
+The convention is **Book-minus-floor** for price and **free-minus-consume** for
+matter. So X2's "sign is positive for M" means the matter effect is **negative**:
+M being more diverse makes `free − consume` negative. The harness names that
+inversion in code (`diversity_favours_m = value < 0`) because a factorial's
+signs are exactly the thing a reader mis-reads.
+
+**D106. What the four cells do to Book I's memory bound is measured in every
+cell and reported, not gated.** `size ≤ s0 + spent` follows from
+`Δsize ≤ cost − 1`, a property of Book I's *price*, so both floor arms abandon
+the premise by construction. FM can still keep the *matter* statement — the
+consumed body leaves the census carrying at least the material the copy adds —
+but **FF has neither**: it charges the floor and consumes nothing, so nothing
+leaves the census to offset a copy. FF is the cell of this factorial with no
+resource law at all. Per-action violations are counted in every cell (the first
+draft counted them only where a body paid, which read a spurious zero for FF and
+was fixed before any receipt), and the count is a result, not a control failure.
+
+**D107. C-fire(matter) FAILS, on the strict reading, and the strict reading is
+the right one.** The preregistration asks for "≥ 50 consumption events per seed"
+in BM and FM. Two readings are available: per cell (each of BM and FM, each
+seed) or per seed summed across both M arms. The looser one passes every cell —
+which is precisely why it is not chosen. The strict reading is what
+ALIFE-EXP-010's C2 said in almost the same words ("at least 50 `consumed` deaths
+per seed in Arm M"), this control cites that lesson by name, and a threshold
+re-read after seeing the data is not a threshold.
+
+Under the strict reading it fails in **3 of 10 M cells**: BM/20260827 = 46,
+FM/20260825 = 22, FM/20260827 = 46. So no receipt is written and no RESULT.md
+exists. Rule 6: a receipt beside a failure is worse than none.
+
+**It is not a harness bug, and the accounting proves it.** In every one of the
+ten M cells, `consumed + blocked` equals `R-S fired − R-S on genesis`, exactly:
+
+| cell | R-S | on genesis (free) | eligible | consumed | blocked |
+|---|---:|---:|---:|---:|---:|
+| BM/20260825 | 452 | 376 | 76 | 52 | 24 |
+| BM/20260827 | 417 | 319 | 98 | **46** | 52 |
+| FM/20260825 | 488 | 443 | 45 | **22** | 23 |
+| FM/20260827 | 419 | 321 | 98 | **46** | 52 |
+| FM/20260829 | 634 | 376 | 258 | 190 | 68 |
+
+Every eligible duplication is accounted as either a consumption or a wait. The
+mechanism is wired correctly and fires between 22 and 190 times per cell; what
+is small is the **eligible population**. Between 65% and 91% of duplications in
+this chemistry duplicate a genesis atom, which the preregistered rule makes free
+— the same laziness ALIFE-EXP-010 measured, where `size(z)` averaged 1.1–1.7 and
+duplication governed ~1% of spend. The floor of 50 was set against EXP-010's
+counts (194/101/62 on three seeds), and those came from a *correlated* stream;
+decorrelating the draws — the entire point of this experiment — moves the
+trajectories, and three of the new ones do not reach it.
+
+**There is no legitimate knob.** The preregistration pins the chemistry and
+parameters to EXP-007's verbatim (1000 reactions, 200 ATP), the five seeds, and
+the corpus. Lengthening the run, raising the budget or reseeding would all be
+choosing a frame after seeing that the committed one failed. The factorial's
+numbers exist and are reproducible from the committed harness; they are **not
+adjudicated**, X1/X2/X3 are **not scored**, and nothing is recorded.
+
+**What a successor needs.** Either a chemistry where non-genesis duplication is
+common — the enforced-copy-pricing regime EXP-010's response already names, where
+`z` is materialized rather than an address — or a preregistered floor set against
+the *eligible* population rather than the raw event count. The second is cheap
+and would have caught this at design time: "≥ 50 consumption events per seed" is
+a claim about a denominator nobody wrote down.
+
+**D108. A defect C-compat caught in this session's own engine addition.**
+`StreamRandom.word()` returned `getrandbits(64)`, so logging a draw *consumed* a
+draw: any run that recorded its randomness ran on a different stream from one
+that did not. C-compat found it immediately — arm BF settled 768 reactions where
+EXP-007's frozen receipt says 629, a 139-reaction gap that no policy in this
+experiment could explain. `word()` now returns a function of the stream position
+that advances nothing, and C-compat passes on all three shared seeds across all
+13 recorded fields. Named here because it was found by a preregistered control
+doing exactly its job, and because "the observer consumed the thing it observed"
+is a defect class worth having a name for in a repository full of instruments.
