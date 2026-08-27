@@ -1270,3 +1270,44 @@ that advances nothing, and C-compat passes on all three shared seeds across all
 13 recorded fields. Named here because it was found by a preregistered control
 doing exactly its job, and because "the observer consumed the thing it observed"
 is a defect class worth having a name for in a repository full of instruments.
+
+**D109. The sibling sigma-glyph checkout drifted past this repository's pin
+mid-session, and rule 11 caught it within one command.** `tools/test-all.sh`
+went red on ALIFE-EXP-001's replay with a one-line diff:
+
+```text
+-    "oracle_sha256": "413d1f9805cdbdf42f13d967a17be26eb959c692eeb067e7146203ed9cebe64d",
++    "oracle_sha256": "a4200cb62d3da6382e946acec60a49f9f6f486037c9769b4b5e0203fb6eda2cf",
+```
+
+Nothing in this repository changed. `../sigma-glyph` had advanced to `a0b9a1b`,
+past `d7eab26` ("impl: a verifier can refuse before the stranger's term costs it
+anything", 2026-08-27), which changed `impl/sigma_glyph.py`. **The repository's
+own pin did not move:** `SIGMA_GLYPH_PIN = d3f1b512` in
+`.github/workflows/ci.yml` still yields exactly `413d1f98…`, verified by
+extracting that commit's tree — so CI is unaffected and every committed receipt
+is still the receipt of the oracle it names.
+
+Three things were done and one deliberately was not.
+
+  * The whole matrix was re-run against the **pinned** oracle, extracted with
+    `git archive` into a scratch directory so the sibling repository's working
+    tree and worktree list were never touched. `TEST-ALL` green, zero FAIL
+    lines, working tree clean: every receipt in this repository, including the
+    two written this session, reproduces byte for byte on the oracle it records.
+  * ALIFE-EXP-012's controls were re-run on the pinned oracle and are
+    **identical** — C-fire fails there too, so D107's failure is a fact about the
+    frame and not an artifact of a drifted dependency.
+  * This entry, so the next operator who runs `test-all.sh` against a sibling
+    checkout at HEAD and sees a red matrix knows within one paragraph that the
+    guard is working rather than the repository broken. The fix is to pin the
+    checkout, not to re-record.
+
+**Not done: refreshing the pin.** `ci.yml` states the discipline for that in its
+own words — a refresh commit must cite the old and new commits, name which of
+the two consumed surfaces moved, and include the re-recorded receipts, "because
+the oracle's SHA-256 is IN that receipt, so a new oracle is a new measurement,
+not a version bump." Re-recording eleven experiments against an oracle whose
+change nobody here has read is a measurement campaign and an adoption decision,
+neither of which belongs in a session about a factorial. It is filed as work,
+not performed.
