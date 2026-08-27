@@ -256,6 +256,36 @@ commons economy run between the claim and the cull that acts on it. The
 before-measurement stays pinned to the old policy in code, so it keeps
 reproducing what it measured.
 
+The **currency factorial** took three preregistrations to become answerable, and
+the two that failed are kept as [calibration pilots](experiments/alife-exp-012/PILOT-FINDINGS.md)
+that score nothing, ever. ALIFE-EXP-012 crossed price (Book I vs the action
+floor) with matter (copy free vs an exact-hash body consumed) on decorrelated,
+counter-keyed randomness — and ended FAILED-CONTROLS, because its admission rule
+demanded 50 consumptions per cell and three cells could not supply them.
+ALIFE-EXP-012b tried the obvious remedy, six times the run length, and ended
+FAILED-CONTROLS again with the remedy **disproved**:
+
+> Eligible duplications do not accrue with time. On the binding cell the count is
+> **45 at 1000, 2000, 4000, 6000 and 12000 reactions** — twelve times the length
+> buys zero. Cells are bimodal with no middle: six stop producing before reaction
+> 1100 and produce nothing for the rest of the run; four produce to 5000+. A soup
+> either finds a cycle that keeps making structure or collapses onto the genesis
+> floor, where duplication is free and the matter rule has nothing to bite on.
+
+So collapse was promoted from an admission failure to the primary outcome, and
+[ALIFE-EXP-012c](experiments/alife-exp-012c/RESULT.md) asked whether the currency
+chooses the *phase*. Fourteen controls pass, including the same supply floor —
+scoped now to the cells where it can be met, where it passes 10 of 10:
+
+> **The corpus does not choose the phase alone.** Four of five seeds have arms
+> that disagree: hold the seed fixed, change only the duplication rule, and the
+> soup's fate changes. And **collapse timing is not currency-independent** — on
+> the one seed where all four arms died, they died at reactions 706, 706, 1833
+> and 1961, the Book-priced arms nearly three times earlier than the floor-priced
+> ones, on identical founders and identical keyed randomness. The conditional
+> factorial is `UNADJUDICATED`: no seed is concordantly producing, which is a
+> consequence of the first finding rather than a fact about the corpus.
+
 That is what the separate repository is for. `sigma-glyph` is a specification
 under threshold-warrant governance; this is a place where a founding hypothesis
 can be wrong in public on the first measurement, and its replacement wrong on the

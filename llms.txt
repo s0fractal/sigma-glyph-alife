@@ -56,6 +56,19 @@ what ran.
   and the RESULT's own mediation statistic later **refuted its own
   mechanism** (74.7–90.3% of consumptions ate the *last* copy). The live
   successor is a 2×2 factorial (price × matter) with counter-based RNG.
+- **EXP-012 / 012b / 012c** — the currency factorial, which took three
+  preregistrations. The first two ended FAILED-CONTROLS and are kept as
+  **calibration pilots that score nothing, ever** (`alife-exp-012/PILOT-FINDINGS.md`,
+  descriptive FACTs, no effect estimates); 012b's failure **disproved** the
+  run-length remedy — eligible duplications are 45 at 1000 through 12000
+  reactions, and cells are bimodal with no middle. 012c promoted collapse to the
+  primary outcome and has a receipt: **the corpus does not choose the phase
+  alone** (4 of 5 seeds have arms that disagree) and **collapse timing is not
+  currency-independent** (one seed, all four arms dead, at reactions 706, 706,
+  1833, 1961). The conditional factorial is UNADJUDICATED and no effect estimate
+  exists in any receipt in this arc. Randomness is counter-based, keyed
+  `(seed, reaction, event)`, with a decorrelation control that fails on a
+  positional stream.
 - **EXP-011** — the tagline audited, and it failed. Under the default tick a
   starving agent that the colony fed was archived in the same tick and its
   food collected back: **0 of 168** fed agents ever ran again, **1056 of
