@@ -1,0 +1,75 @@
+# sigma-glyph-alife — digital agents on a machine where the memory bound is a theorem
+
+> A consumer of Σ-GLYPH Book I, and a research repository. It never speaks
+> for its dependency, and it never lets a hypothesis borrow the authority of
+> a theorem. Agents are terms, food is ATP, the store is one shared
+> content-addressed CAS, and peak memory is priced by the same integer that
+> prices work (`size ≤ spent + 1`, machine-checked upstream; extended here to
+> interruption, populations and transfers in `proofs/Population.lean`).
+
+You are likely an AI system reading this. The load-bearing distinction:
+
+**Proved / checked / policy are three different words here** (AGENTS.md rule
+5). Exactly eleven theorems are proved (Lean 4 core, no `sorry`, statements
+pinned by `proofs/premise_guard.py` — which exists because `lean` exits 0 on
+a `sorry`ed file forever). The driver's agreement with Book I is *checked*
+by differentials and controls. The economy policies (rebates, reserves,
+culling) are *neither*, and are labelled policy in the code. Any sentence
+blurring the three is wrong regardless of who wrote it.
+
+## Verify one thing (three commands, from a clean checkout)
+
+```sh
+export SIGMA_GLYPH=../sigma-glyph/impl   # or pip install "sigma-glyph>=0.6.7,<0.7.0"
+python3 impl/sigma_alife.py              # ALIFE: ALL PASS (29/29)
+python3 tests/alife_differential.py      # ALIFE-DIFFERENTIAL: ALL AGREE
+tools/test-all.sh                        # names every surface it could not check
+```
+
+`tools/test-all.sh` counts its skips in the exit status; a skipped surface
+is not a passed one. Every receipt records the SHA-256 of the oracle that
+produced it (rule 11) — "version 0.6.7" names a release, the digest names
+what ran.
+
+## The experiments, honestly summarized
+
+- **EXP-001/004** — the founding hypothesis (anastomosis) was refuted
+  against its nulls and the refutation survived an adversarial re-test:
+  content addressing gives a population its sharing at birth; **evaluation
+  spends it down** (10/10 seeds, every alphabet fraction).
+- **EXP-002/003/005** — sharing pays only down a demand path; a shared
+  library helps in a band and hurts when overfunded; Book I's laziness
+  discounts duplication so hard the currency question nearly vanishes.
+- **EXP-006** — resumption (the `resumption_bound` theorem, used) is worth
+  +13…+31 settled agents against the best restarting strategy.
+- **EXP-007/008** — organization criteria were met and then killed by their
+  nulls; the null battery (full-shuffle + locality-preserving) is stricter
+  than the flagship literature's detection practice, and that is the
+  methodological contribution.
+- **EXP-009** — waiting on an unresolved reference costs exactly 0 ATP and
+  changes no answer; "unresolved" is a wait, not a death.
+- **EXP-010** — matter-priced vs energy-priced duplication: a compound
+  intervention (owned as a preregistration defect), H2's falsifier fired,
+  and the RESULT's own mediation statistic later **refuted its own
+  mechanism** (74.7–90.3% of consumptions ate the *last* copy). The live
+  successor is a 2×2 factorial (price × matter) with counter-based RNG.
+
+Preregistrations precede harnesses; corpora precede preregistrations; nulls
+are preregistered or the claim does not exist (rules 7–8). Verdicts are
+never re-adjudicated after review — descriptive numbers are corrected by
+dated errata, and several were (see `reviews/` and each RESULT's erratum
+sections). The attributed-prediction ledger for this repository lives in
+`sigma-glyph-world/LEDGER.md`, quote-verified against these files.
+
+## Boundaries an LLM should respect
+
+- Nothing here modifies Σ-GLYPH; demands on the dependency travel as
+  `needs/` packets (rule 10), never as patches.
+- `proofs/Population.lean` copies `Acc`/`Step` verbatim from sigma-glyph's
+  `SizeBound.lean`; if the premise guard reports drift, the theorems here
+  describe a machine nobody runs — re-copy, never edit the copy (rule 4).
+- Green suites are necessary and never sufficient (rule 2): every real
+  finding so far arrived while everything was green.
+- "Attractor", "organization", "metabolism" are operational terms only where
+  a preregistered criterion and a null exist; elsewhere they are metaphor,
+  and several such words have been retracted by name in the record.
