@@ -145,6 +145,16 @@ else
   skip "ALIFE-EXP-009 replay was not diffed against the committed receipt (no git)"
 fi
 
+say "ALIFE-EXP-011 replay: does food help? (the engine's default schedule)"
+# Runs in both profiles from the day it lands, for the reason EXP-010 had to be
+# retrofitted into them. It costs a second.
+python3 experiments/alife-exp-011/measure.py --record | tail -12
+if command -v git >/dev/null 2>&1 && git rev-parse --git-dir >/dev/null 2>&1; then
+  git diff --exit-code experiments/alife-exp-011/results.json
+else
+  skip "ALIFE-EXP-011 replay was not diffed against the committed receipt (no git)"
+fi
+
 say "ALIFE-EXP-010 replay: matter-priced against energy-priced duplication"
 # IN BOTH PROFILES, not behind RUN_SLOW. This experiment sat in the repository
 # for eleven days with no replay behind it — the advertised matrix was green

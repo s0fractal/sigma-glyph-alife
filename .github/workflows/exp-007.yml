@@ -15,12 +15,14 @@ on:
     paths: ['experiments/alife-exp-007/**', '!experiments/alife-exp-007/**.md',
             'experiments/alife-exp-008/**', '!experiments/alife-exp-008/**.md',
             'experiments/alife-exp-010/**', '!experiments/alife-exp-010/**.md',
+            'experiments/alife-exp-011/**', '!experiments/alife-exp-011/**.md',
             'impl/sigma_alife.py',
             '.github/workflows/exp-007.yml']
   pull_request:
     paths: ['experiments/alife-exp-007/**', '!experiments/alife-exp-007/**.md',
             'experiments/alife-exp-008/**', '!experiments/alife-exp-008/**.md',
             'experiments/alife-exp-010/**', '!experiments/alife-exp-010/**.md',
+            'experiments/alife-exp-011/**', '!experiments/alife-exp-011/**.md',
             'impl/sigma_alife.py',
             '.github/workflows/exp-007.yml']
 
@@ -103,6 +105,12 @@ jobs:
         run: |
           python3 experiments/alife-exp-010/measure.py --record | tail -40
           git diff --exit-code experiments/alife-exp-010/results.json
+      - name: Replay EXP-011's three arms on the schedule they measure
+        env:
+          SIGMA_GLYPH: /tmp/sigma-glyph/impl
+        run: |
+          python3 experiments/alife-exp-011/measure.py --record | tail -24
+          git diff --exit-code experiments/alife-exp-011/results.json
       - name: A changed scored field must be caught by something
         run: |
           python3 tools/receipt_guard.py --self-test

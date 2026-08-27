@@ -1,0 +1,1589 @@
+{
+  "controls": {
+    "C1 ATP conservation and the population memory bound held on every tick of every arm (0 failures; the engine's own asserts are on as well)": true,
+    "C2 the feeding is real: all 1050 forced grants left the agent's ATP strictly above its next-action price (0 insufficient, 0 truncated by the commons)": true,
+    "C3 every arm x seed run twice gives an identical receipt (0 divergences)": true,
+    "C4 the corpus is ALIFE-EXP-001's, fingerprint 53cc6da80f66d220": true,
+    "C5 status accounting is total: every fed agent ends as exactly one of survivor-that-fired, archived-same-tick, archived-later-without-firing, settled or waiting (0 unclassified, 0 reconciliation failures)": true
+  },
+  "corpus_fingerprint": "53cc6da80f66d220",
+  "experiment": "ALIFE-EXP-011",
+  "frame": {
+    "arm_labels": {
+      "a": "default schedule, natural sharing",
+      "b": "default schedule, forced grants",
+      "c": "forced grants, cull-free window"
+    },
+    "arms": [
+      "a",
+      "b",
+      "c"
+    ],
+    "atp_per_agent": 32,
+    "budget_selection": [
+      {
+        "budget": 8,
+        "ever_starved_fraction": 0.859375,
+        "per_seed": [
+          55,
+          55,
+          55
+        ]
+      },
+      {
+        "budget": 12,
+        "ever_starved_fraction": 0.859375,
+        "per_seed": [
+          55,
+          55,
+          55
+        ]
+      },
+      {
+        "budget": 16,
+        "ever_starved_fraction": 0.75,
+        "per_seed": [
+          48,
+          48,
+          48
+        ]
+      },
+      {
+        "budget": 24,
+        "ever_starved_fraction": 0.5625,
+        "per_seed": [
+          36,
+          36,
+          36
+        ]
+      },
+      {
+        "budget": 32,
+        "ever_starved_fraction": 0.46875,
+        "per_seed": [
+          30,
+          30,
+          30
+        ]
+      },
+      {
+        "budget": 48,
+        "ever_starved_fraction": 0.265625,
+        "per_seed": [
+          17,
+          17,
+          17
+        ]
+      },
+      {
+        "budget": 64,
+        "ever_starved_fraction": 0.15625,
+        "per_seed": [
+          10,
+          10,
+          10
+        ]
+      },
+      {
+        "budget": 96,
+        "ever_starved_fraction": 0.125,
+        "per_seed": [
+          8,
+          8,
+          8
+        ]
+      },
+      {
+        "budget": 128,
+        "ever_starved_fraction": 0.0625,
+        "per_seed": [
+          4,
+          4,
+          4
+        ]
+      },
+      {
+        "budget": 256,
+        "ever_starved_fraction": 0.0,
+        "per_seed": [
+          0,
+          0,
+          0
+        ]
+      }
+    ],
+    "budget_sweep": [
+      8,
+      12,
+      16,
+      24,
+      32,
+      48,
+      64,
+      96,
+      128,
+      256
+    ],
+    "commons_reserve": 200000,
+    "h1_expected": 0.0,
+    "h2_leak_threshold": 0.1,
+    "h3_expected": 1.0,
+    "rebate_rate_arm_a": 1.0,
+    "seeds": [
+      20260825,
+      20260826,
+      20260827
+    ],
+    "slice_atp": 32,
+    "target_starved_fraction": 0.5,
+    "ticks": 24,
+    "worked_example_seed": 20260825
+  },
+  "inherited_from": "ALIFE-EXP-001",
+  "provenance": {
+    "oracle_sha256": "413d1f9805cdbdf42f13d967a17be26eb959c692eeb067e7146203ed9cebe64d",
+    "platform": "CPython",
+    "python": "3.14",
+    "sigma_alife_version": "0.1.0",
+    "sigma_glyph_requirement": ">=0.6.7,<0.7.0"
+  },
+  "result": {
+    "runs": {
+      "a": {
+        "20260825": {
+          "answers_checked": 0,
+          "answers_matching": 0,
+          "archived": 30,
+          "arm": "a",
+          "arm_label": "default schedule, natural sharing",
+          "atp_endowment": 202048,
+          "atp_pool": 200028,
+          "bound_ok": true,
+          "bucket_ids": {
+            "archived_later_without_firing": [],
+            "archived_same_tick": [
+              "church-00",
+              "church-01",
+              "church-02",
+              "church-03",
+              "church-04",
+              "church-05",
+              "church-06",
+              "church-07",
+              "church-08",
+              "church-09",
+              "church-10",
+              "church-11",
+              "church-12",
+              "church-13",
+              "church-14",
+              "church-15",
+              "dup-00",
+              "dup-02",
+              "dup-05",
+              "dup-09",
+              "dup-11",
+              "dup-13",
+              "dup-14",
+              "random-00",
+              "random-01",
+              "random-04",
+              "random-06",
+              "random-08"
+            ],
+            "settled": [],
+            "survivor_fired": [],
+            "unclassified": [],
+            "waiting": []
+          },
+          "buckets": {
+            "archived_later_without_firing": 0,
+            "archived_same_tick": 28,
+            "settled": 0,
+            "survivor_fired": 0,
+            "unclassified": 0,
+            "waiting": 0
+          },
+          "budget": 32,
+          "conservation_ok": true,
+          "cull_free_ticks": 0,
+          "event_count": 56,
+          "events": null,
+          "fed_agents": 28,
+          "fed_agents_sufficiently": 26,
+          "fed_then_buried_agents": 28,
+          "fed_then_buried_atp": 243,
+          "fed_then_buried_collected": 268,
+          "feed_events": 28,
+          "feed_events_insufficient": 2,
+          "feed_events_sufficient": 26,
+          "grant_truncated": 0,
+          "granted_to_starving": 243,
+          "leak_share": 1.0,
+          "population": 64,
+          "seed": 20260825,
+          "settled_total": 34,
+          "survival_rate": 0.0,
+          "survival_rate_sufficient": 0.0,
+          "survivors_fired": 0,
+          "ticks": 24
+        },
+        "20260826": {
+          "answers_checked": 0,
+          "answers_matching": 0,
+          "archived": 30,
+          "arm": "a",
+          "arm_label": "default schedule, natural sharing",
+          "atp_endowment": 202048,
+          "atp_pool": 200028,
+          "bound_ok": true,
+          "bucket_ids": {
+            "archived_later_without_firing": [],
+            "archived_same_tick": [
+              "church-00",
+              "church-01",
+              "church-02",
+              "church-03",
+              "church-04",
+              "church-05",
+              "church-06",
+              "church-07",
+              "church-08",
+              "church-09",
+              "church-10",
+              "church-11",
+              "church-12",
+              "church-13",
+              "church-14",
+              "church-15",
+              "dup-00",
+              "dup-02",
+              "dup-05",
+              "dup-09",
+              "dup-11",
+              "dup-13",
+              "dup-14",
+              "random-00",
+              "random-01",
+              "random-04",
+              "random-06",
+              "random-08"
+            ],
+            "settled": [],
+            "survivor_fired": [],
+            "unclassified": [],
+            "waiting": []
+          },
+          "buckets": {
+            "archived_later_without_firing": 0,
+            "archived_same_tick": 28,
+            "settled": 0,
+            "survivor_fired": 0,
+            "unclassified": 0,
+            "waiting": 0
+          },
+          "budget": 32,
+          "conservation_ok": true,
+          "cull_free_ticks": 0,
+          "event_count": 56,
+          "events": null,
+          "fed_agents": 28,
+          "fed_agents_sufficiently": 26,
+          "fed_then_buried_agents": 28,
+          "fed_then_buried_atp": 243,
+          "fed_then_buried_collected": 268,
+          "feed_events": 28,
+          "feed_events_insufficient": 2,
+          "feed_events_sufficient": 26,
+          "grant_truncated": 0,
+          "granted_to_starving": 243,
+          "leak_share": 1.0,
+          "population": 64,
+          "seed": 20260826,
+          "settled_total": 34,
+          "survival_rate": 0.0,
+          "survival_rate_sufficient": 0.0,
+          "survivors_fired": 0,
+          "ticks": 24
+        },
+        "20260827": {
+          "answers_checked": 0,
+          "answers_matching": 0,
+          "archived": 30,
+          "arm": "a",
+          "arm_label": "default schedule, natural sharing",
+          "atp_endowment": 202048,
+          "atp_pool": 200028,
+          "bound_ok": true,
+          "bucket_ids": {
+            "archived_later_without_firing": [],
+            "archived_same_tick": [
+              "church-00",
+              "church-01",
+              "church-02",
+              "church-03",
+              "church-04",
+              "church-05",
+              "church-06",
+              "church-07",
+              "church-08",
+              "church-09",
+              "church-10",
+              "church-11",
+              "church-12",
+              "church-13",
+              "church-14",
+              "church-15",
+              "dup-00",
+              "dup-02",
+              "dup-05",
+              "dup-09",
+              "dup-11",
+              "dup-13",
+              "dup-14",
+              "random-00",
+              "random-01",
+              "random-04",
+              "random-06",
+              "random-08"
+            ],
+            "settled": [],
+            "survivor_fired": [],
+            "unclassified": [],
+            "waiting": []
+          },
+          "buckets": {
+            "archived_later_without_firing": 0,
+            "archived_same_tick": 28,
+            "settled": 0,
+            "survivor_fired": 0,
+            "unclassified": 0,
+            "waiting": 0
+          },
+          "budget": 32,
+          "conservation_ok": true,
+          "cull_free_ticks": 0,
+          "event_count": 56,
+          "events": null,
+          "fed_agents": 28,
+          "fed_agents_sufficiently": 26,
+          "fed_then_buried_agents": 28,
+          "fed_then_buried_atp": 243,
+          "fed_then_buried_collected": 268,
+          "feed_events": 28,
+          "feed_events_insufficient": 2,
+          "feed_events_sufficient": 26,
+          "grant_truncated": 0,
+          "granted_to_starving": 243,
+          "leak_share": 1.0,
+          "population": 64,
+          "seed": 20260827,
+          "settled_total": 34,
+          "survival_rate": 0.0,
+          "survival_rate_sufficient": 0.0,
+          "survivors_fired": 0,
+          "ticks": 24
+        }
+      },
+      "b": {
+        "20260825": {
+          "answers_checked": 0,
+          "answers_matching": 0,
+          "archived": 30,
+          "arm": "b",
+          "arm_label": "default schedule, forced grants",
+          "atp_endowment": 202048,
+          "atp_pool": 200028,
+          "bound_ok": true,
+          "bucket_ids": {
+            "archived_later_without_firing": [],
+            "archived_same_tick": [
+              "church-00",
+              "church-01",
+              "church-02",
+              "church-03",
+              "church-04",
+              "church-05",
+              "church-06",
+              "church-07",
+              "church-08",
+              "church-09",
+              "church-10",
+              "church-11",
+              "church-12",
+              "church-13",
+              "church-14",
+              "church-15",
+              "dup-00",
+              "dup-01",
+              "dup-02",
+              "dup-05",
+              "dup-06",
+              "dup-09",
+              "dup-11",
+              "dup-13",
+              "dup-14",
+              "random-00",
+              "random-01",
+              "random-04",
+              "random-06",
+              "random-08"
+            ],
+            "settled": [],
+            "survivor_fired": [],
+            "unclassified": [],
+            "waiting": []
+          },
+          "buckets": {
+            "archived_later_without_firing": 0,
+            "archived_same_tick": 30,
+            "settled": 0,
+            "survivor_fired": 0,
+            "unclassified": 0,
+            "waiting": 0
+          },
+          "budget": 32,
+          "conservation_ok": true,
+          "cull_free_ticks": 0,
+          "event_count": 60,
+          "events": null,
+          "fed_agents": 30,
+          "fed_agents_sufficiently": 30,
+          "fed_then_buried_agents": 30,
+          "fed_then_buried_atp": 109,
+          "fed_then_buried_collected": 137,
+          "feed_events": 30,
+          "feed_events_insufficient": 0,
+          "feed_events_sufficient": 30,
+          "grant_truncated": 0,
+          "granted_to_starving": 109,
+          "leak_share": 1.0,
+          "population": 64,
+          "seed": 20260825,
+          "settled_total": 34,
+          "survival_rate": 0.0,
+          "survival_rate_sufficient": 0.0,
+          "survivors_fired": 0,
+          "ticks": 24
+        },
+        "20260826": {
+          "answers_checked": 0,
+          "answers_matching": 0,
+          "archived": 30,
+          "arm": "b",
+          "arm_label": "default schedule, forced grants",
+          "atp_endowment": 202048,
+          "atp_pool": 200028,
+          "bound_ok": true,
+          "bucket_ids": {
+            "archived_later_without_firing": [],
+            "archived_same_tick": [
+              "church-00",
+              "church-01",
+              "church-02",
+              "church-03",
+              "church-04",
+              "church-05",
+              "church-06",
+              "church-07",
+              "church-08",
+              "church-09",
+              "church-10",
+              "church-11",
+              "church-12",
+              "church-13",
+              "church-14",
+              "church-15",
+              "dup-00",
+              "dup-01",
+              "dup-02",
+              "dup-05",
+              "dup-06",
+              "dup-09",
+              "dup-11",
+              "dup-13",
+              "dup-14",
+              "random-00",
+              "random-01",
+              "random-04",
+              "random-06",
+              "random-08"
+            ],
+            "settled": [],
+            "survivor_fired": [],
+            "unclassified": [],
+            "waiting": []
+          },
+          "buckets": {
+            "archived_later_without_firing": 0,
+            "archived_same_tick": 30,
+            "settled": 0,
+            "survivor_fired": 0,
+            "unclassified": 0,
+            "waiting": 0
+          },
+          "budget": 32,
+          "conservation_ok": true,
+          "cull_free_ticks": 0,
+          "event_count": 60,
+          "events": null,
+          "fed_agents": 30,
+          "fed_agents_sufficiently": 30,
+          "fed_then_buried_agents": 30,
+          "fed_then_buried_atp": 109,
+          "fed_then_buried_collected": 137,
+          "feed_events": 30,
+          "feed_events_insufficient": 0,
+          "feed_events_sufficient": 30,
+          "grant_truncated": 0,
+          "granted_to_starving": 109,
+          "leak_share": 1.0,
+          "population": 64,
+          "seed": 20260826,
+          "settled_total": 34,
+          "survival_rate": 0.0,
+          "survival_rate_sufficient": 0.0,
+          "survivors_fired": 0,
+          "ticks": 24
+        },
+        "20260827": {
+          "answers_checked": 0,
+          "answers_matching": 0,
+          "archived": 30,
+          "arm": "b",
+          "arm_label": "default schedule, forced grants",
+          "atp_endowment": 202048,
+          "atp_pool": 200028,
+          "bound_ok": true,
+          "bucket_ids": {
+            "archived_later_without_firing": [],
+            "archived_same_tick": [
+              "church-00",
+              "church-01",
+              "church-02",
+              "church-03",
+              "church-04",
+              "church-05",
+              "church-06",
+              "church-07",
+              "church-08",
+              "church-09",
+              "church-10",
+              "church-11",
+              "church-12",
+              "church-13",
+              "church-14",
+              "church-15",
+              "dup-00",
+              "dup-01",
+              "dup-02",
+              "dup-05",
+              "dup-06",
+              "dup-09",
+              "dup-11",
+              "dup-13",
+              "dup-14",
+              "random-00",
+              "random-01",
+              "random-04",
+              "random-06",
+              "random-08"
+            ],
+            "settled": [],
+            "survivor_fired": [],
+            "unclassified": [],
+            "waiting": []
+          },
+          "buckets": {
+            "archived_later_without_firing": 0,
+            "archived_same_tick": 30,
+            "settled": 0,
+            "survivor_fired": 0,
+            "unclassified": 0,
+            "waiting": 0
+          },
+          "budget": 32,
+          "conservation_ok": true,
+          "cull_free_ticks": 0,
+          "event_count": 60,
+          "events": null,
+          "fed_agents": 30,
+          "fed_agents_sufficiently": 30,
+          "fed_then_buried_agents": 30,
+          "fed_then_buried_atp": 109,
+          "fed_then_buried_collected": 137,
+          "feed_events": 30,
+          "feed_events_insufficient": 0,
+          "feed_events_sufficient": 30,
+          "grant_truncated": 0,
+          "granted_to_starving": 109,
+          "leak_share": 1.0,
+          "population": 64,
+          "seed": 20260827,
+          "settled_total": 34,
+          "survival_rate": 0.0,
+          "survival_rate_sufficient": 0.0,
+          "survivors_fired": 0,
+          "ticks": 24
+        }
+      },
+      "c": {
+        "20260825": {
+          "answers_checked": 22,
+          "answers_matching": 22,
+          "archived": 0,
+          "arm": "c",
+          "arm_label": "forced grants, cull-free window",
+          "atp_endowment": 202048,
+          "atp_pool": 198864,
+          "bound_ok": true,
+          "bucket_ids": {
+            "archived_later_without_firing": [],
+            "archived_same_tick": [],
+            "settled": [],
+            "survivor_fired": [
+              "church-00",
+              "church-01",
+              "church-02",
+              "church-03",
+              "church-04",
+              "church-05",
+              "church-06",
+              "church-07",
+              "church-08",
+              "church-09",
+              "church-10",
+              "church-11",
+              "church-12",
+              "church-13",
+              "church-14",
+              "church-15",
+              "dup-00",
+              "dup-01",
+              "dup-02",
+              "dup-05",
+              "dup-06",
+              "dup-09",
+              "dup-11",
+              "dup-13",
+              "dup-14",
+              "random-00",
+              "random-01",
+              "random-04",
+              "random-06",
+              "random-08"
+            ],
+            "unclassified": [],
+            "waiting": []
+          },
+          "buckets": {
+            "archived_later_without_firing": 0,
+            "archived_same_tick": 0,
+            "settled": 0,
+            "survivor_fired": 30,
+            "unclassified": 0,
+            "waiting": 0
+          },
+          "budget": 32,
+          "conservation_ok": true,
+          "cull_free_ticks": 24,
+          "event_count": 344,
+          "events": null,
+          "fed_agents": 30,
+          "fed_agents_sufficiently": 30,
+          "fed_then_buried_agents": 0,
+          "fed_then_buried_atp": 0,
+          "fed_then_buried_collected": 0,
+          "feed_events": 320,
+          "feed_events_insufficient": 0,
+          "feed_events_sufficient": 320,
+          "grant_truncated": 0,
+          "granted_to_starving": 1136,
+          "leak_share": 0.0,
+          "population": 64,
+          "seed": 20260825,
+          "settled_total": 56,
+          "survival_rate": 1.0,
+          "survival_rate_sufficient": 1.0,
+          "survivors_fired": 30,
+          "ticks": 24
+        },
+        "20260826": {
+          "answers_checked": 22,
+          "answers_matching": 22,
+          "archived": 0,
+          "arm": "c",
+          "arm_label": "forced grants, cull-free window",
+          "atp_endowment": 202048,
+          "atp_pool": 198864,
+          "bound_ok": true,
+          "bucket_ids": {
+            "archived_later_without_firing": [],
+            "archived_same_tick": [],
+            "settled": [],
+            "survivor_fired": [
+              "church-00",
+              "church-01",
+              "church-02",
+              "church-03",
+              "church-04",
+              "church-05",
+              "church-06",
+              "church-07",
+              "church-08",
+              "church-09",
+              "church-10",
+              "church-11",
+              "church-12",
+              "church-13",
+              "church-14",
+              "church-15",
+              "dup-00",
+              "dup-01",
+              "dup-02",
+              "dup-05",
+              "dup-06",
+              "dup-09",
+              "dup-11",
+              "dup-13",
+              "dup-14",
+              "random-00",
+              "random-01",
+              "random-04",
+              "random-06",
+              "random-08"
+            ],
+            "unclassified": [],
+            "waiting": []
+          },
+          "buckets": {
+            "archived_later_without_firing": 0,
+            "archived_same_tick": 0,
+            "settled": 0,
+            "survivor_fired": 30,
+            "unclassified": 0,
+            "waiting": 0
+          },
+          "budget": 32,
+          "conservation_ok": true,
+          "cull_free_ticks": 24,
+          "event_count": 344,
+          "events": null,
+          "fed_agents": 30,
+          "fed_agents_sufficiently": 30,
+          "fed_then_buried_agents": 0,
+          "fed_then_buried_atp": 0,
+          "fed_then_buried_collected": 0,
+          "feed_events": 320,
+          "feed_events_insufficient": 0,
+          "feed_events_sufficient": 320,
+          "grant_truncated": 0,
+          "granted_to_starving": 1136,
+          "leak_share": 0.0,
+          "population": 64,
+          "seed": 20260826,
+          "settled_total": 56,
+          "survival_rate": 1.0,
+          "survival_rate_sufficient": 1.0,
+          "survivors_fired": 30,
+          "ticks": 24
+        },
+        "20260827": {
+          "answers_checked": 22,
+          "answers_matching": 22,
+          "archived": 0,
+          "arm": "c",
+          "arm_label": "forced grants, cull-free window",
+          "atp_endowment": 202048,
+          "atp_pool": 198864,
+          "bound_ok": true,
+          "bucket_ids": {
+            "archived_later_without_firing": [],
+            "archived_same_tick": [],
+            "settled": [],
+            "survivor_fired": [
+              "church-00",
+              "church-01",
+              "church-02",
+              "church-03",
+              "church-04",
+              "church-05",
+              "church-06",
+              "church-07",
+              "church-08",
+              "church-09",
+              "church-10",
+              "church-11",
+              "church-12",
+              "church-13",
+              "church-14",
+              "church-15",
+              "dup-00",
+              "dup-01",
+              "dup-02",
+              "dup-05",
+              "dup-06",
+              "dup-09",
+              "dup-11",
+              "dup-13",
+              "dup-14",
+              "random-00",
+              "random-01",
+              "random-04",
+              "random-06",
+              "random-08"
+            ],
+            "unclassified": [],
+            "waiting": []
+          },
+          "buckets": {
+            "archived_later_without_firing": 0,
+            "archived_same_tick": 0,
+            "settled": 0,
+            "survivor_fired": 30,
+            "unclassified": 0,
+            "waiting": 0
+          },
+          "budget": 32,
+          "conservation_ok": true,
+          "cull_free_ticks": 24,
+          "event_count": 344,
+          "events": null,
+          "fed_agents": 30,
+          "fed_agents_sufficiently": 30,
+          "fed_then_buried_agents": 0,
+          "fed_then_buried_atp": 0,
+          "fed_then_buried_collected": 0,
+          "feed_events": 320,
+          "feed_events_insufficient": 0,
+          "feed_events_sufficient": 320,
+          "grant_truncated": 0,
+          "granted_to_starving": 1136,
+          "leak_share": 0.0,
+          "population": 64,
+          "seed": 20260827,
+          "settled_total": 56,
+          "survival_rate": 1.0,
+          "survival_rate_sufficient": 1.0,
+          "survivors_fired": 30,
+          "ticks": 24
+        }
+      }
+    },
+    "scores": {
+      "H1": {
+        "arms": [
+          "a",
+          "b"
+        ],
+        "claim": "a starving agent fed sufficiently in the same tick, under step(cull=True), fires >= 1 further action",
+        "fed_agents": 174,
+        "fed_sufficiently": 168,
+        "fired_after_feeding": 0,
+        "fired_after_sufficient_feeding": 0,
+        "per_arm": {
+          "a": {
+            "20260825": {
+              "fed": 28,
+              "fed_sufficiently": 26,
+              "fired": 0,
+              "rate_sufficient": 0.0
+            },
+            "20260826": {
+              "fed": 28,
+              "fed_sufficiently": 26,
+              "fired": 0,
+              "rate_sufficient": 0.0
+            },
+            "20260827": {
+              "fed": 28,
+              "fed_sufficiently": 26,
+              "fired": 0,
+              "rate_sufficient": 0.0
+            }
+          },
+          "b": {
+            "20260825": {
+              "fed": 30,
+              "fed_sufficiently": 30,
+              "fired": 0,
+              "rate_sufficient": 0.0
+            },
+            "20260826": {
+              "fed": 30,
+              "fed_sufficiently": 30,
+              "fired": 0,
+              "rate_sufficient": 0.0
+            },
+            "20260827": {
+              "fed": 30,
+              "fed_sufficiently": 30,
+              "fired": 0,
+              "rate_sufficient": 0.0
+            }
+          }
+        },
+        "preregistered_expectation": 0.0,
+        "survival_rate": 0.0,
+        "verdict": "FALSE"
+      },
+      "H2": {
+        "claim": "fed-then-buried ATP exceeds 10% of ATP granted to starving agents",
+        "fed_then_buried_atp": 1056,
+        "granted_to_starving": 1056,
+        "leak_share": 1.0,
+        "per_arm": {
+          "a": {
+            "20260825": {
+              "buried": 243,
+              "collected": 268,
+              "granted": 243,
+              "share": 1.0
+            },
+            "20260826": {
+              "buried": 243,
+              "collected": 268,
+              "granted": 243,
+              "share": 1.0
+            },
+            "20260827": {
+              "buried": 243,
+              "collected": 268,
+              "granted": 243,
+              "share": 1.0
+            }
+          },
+          "b": {
+            "20260825": {
+              "buried": 109,
+              "collected": 137,
+              "granted": 109,
+              "share": 1.0
+            },
+            "20260826": {
+              "buried": 109,
+              "collected": 137,
+              "granted": 109,
+              "share": 1.0
+            },
+            "20260827": {
+              "buried": 109,
+              "collected": 137,
+              "granted": 109,
+              "share": 1.0
+            }
+          }
+        },
+        "threshold": 0.1,
+        "verdict": "HOLDS"
+      },
+      "H3": {
+        "answers_checked": 66,
+        "answers_matching": 66,
+        "arm": "c",
+        "claim": "the same feeding with a cull-free window yields 100% survival",
+        "fed_agents": 90,
+        "fired_after_feeding": 90,
+        "per_seed": {
+          "20260825": {
+            "cull_free_ticks": 24,
+            "fed": 30,
+            "fired": 30,
+            "rate": 1.0
+          },
+          "20260826": {
+            "cull_free_ticks": 24,
+            "fed": 30,
+            "fired": 30,
+            "rate": 1.0
+          },
+          "20260827": {
+            "cull_free_ticks": 24,
+            "fed": 30,
+            "fired": 30,
+            "rate": 1.0
+          }
+        },
+        "preregistered_expectation": 1.0,
+        "survival_rate": 1.0,
+        "verdict": "HOLDS"
+      }
+    },
+    "worked_example": {
+      "arm": "b",
+      "events": [
+        {
+          "agent": "church-00",
+          "amount": 4,
+          "atp_after": 5,
+          "event": "fed",
+          "how": "forced",
+          "next_action_price": 3,
+          "phase": "share",
+          "sufficient": true,
+          "tick": 0
+        },
+        {
+          "agent": "church-01",
+          "amount": 4,
+          "atp_after": 5,
+          "event": "fed",
+          "how": "forced",
+          "next_action_price": 3,
+          "phase": "share",
+          "sufficient": true,
+          "tick": 0
+        },
+        {
+          "agent": "church-02",
+          "amount": 4,
+          "atp_after": 5,
+          "event": "fed",
+          "how": "forced",
+          "next_action_price": 3,
+          "phase": "share",
+          "sufficient": true,
+          "tick": 0
+        },
+        {
+          "agent": "church-03",
+          "amount": 4,
+          "atp_after": 5,
+          "event": "fed",
+          "how": "forced",
+          "next_action_price": 3,
+          "phase": "share",
+          "sufficient": true,
+          "tick": 0
+        },
+        {
+          "agent": "church-04",
+          "amount": 4,
+          "atp_after": 5,
+          "event": "fed",
+          "how": "forced",
+          "next_action_price": 3,
+          "phase": "share",
+          "sufficient": true,
+          "tick": 0
+        },
+        {
+          "agent": "church-05",
+          "amount": 4,
+          "atp_after": 5,
+          "event": "fed",
+          "how": "forced",
+          "next_action_price": 3,
+          "phase": "share",
+          "sufficient": true,
+          "tick": 0
+        },
+        {
+          "agent": "church-06",
+          "amount": 4,
+          "atp_after": 5,
+          "event": "fed",
+          "how": "forced",
+          "next_action_price": 3,
+          "phase": "share",
+          "sufficient": true,
+          "tick": 0
+        },
+        {
+          "agent": "church-07",
+          "amount": 4,
+          "atp_after": 5,
+          "event": "fed",
+          "how": "forced",
+          "next_action_price": 3,
+          "phase": "share",
+          "sufficient": true,
+          "tick": 0
+        },
+        {
+          "agent": "church-08",
+          "amount": 4,
+          "atp_after": 5,
+          "event": "fed",
+          "how": "forced",
+          "next_action_price": 3,
+          "phase": "share",
+          "sufficient": true,
+          "tick": 0
+        },
+        {
+          "agent": "church-09",
+          "amount": 4,
+          "atp_after": 5,
+          "event": "fed",
+          "how": "forced",
+          "next_action_price": 3,
+          "phase": "share",
+          "sufficient": true,
+          "tick": 0
+        },
+        {
+          "agent": "church-10",
+          "amount": 4,
+          "atp_after": 5,
+          "event": "fed",
+          "how": "forced",
+          "next_action_price": 3,
+          "phase": "share",
+          "sufficient": true,
+          "tick": 0
+        },
+        {
+          "agent": "church-11",
+          "amount": 4,
+          "atp_after": 5,
+          "event": "fed",
+          "how": "forced",
+          "next_action_price": 3,
+          "phase": "share",
+          "sufficient": true,
+          "tick": 0
+        },
+        {
+          "agent": "church-12",
+          "amount": 4,
+          "atp_after": 5,
+          "event": "fed",
+          "how": "forced",
+          "next_action_price": 3,
+          "phase": "share",
+          "sufficient": true,
+          "tick": 0
+        },
+        {
+          "agent": "church-13",
+          "amount": 4,
+          "atp_after": 5,
+          "event": "fed",
+          "how": "forced",
+          "next_action_price": 3,
+          "phase": "share",
+          "sufficient": true,
+          "tick": 0
+        },
+        {
+          "agent": "church-14",
+          "amount": 4,
+          "atp_after": 5,
+          "event": "fed",
+          "how": "forced",
+          "next_action_price": 3,
+          "phase": "share",
+          "sufficient": true,
+          "tick": 0
+        },
+        {
+          "agent": "church-15",
+          "amount": 4,
+          "atp_after": 5,
+          "event": "fed",
+          "how": "forced",
+          "next_action_price": 3,
+          "phase": "share",
+          "sufficient": true,
+          "tick": 0
+        },
+        {
+          "agent": "dup-00",
+          "amount": 2,
+          "atp_after": 2,
+          "event": "fed",
+          "how": "forced",
+          "next_action_price": 1,
+          "phase": "share",
+          "sufficient": true,
+          "tick": 0
+        },
+        {
+          "agent": "dup-01",
+          "amount": 4,
+          "atp_after": 6,
+          "event": "fed",
+          "how": "forced",
+          "next_action_price": 3,
+          "phase": "share",
+          "sufficient": true,
+          "tick": 0
+        },
+        {
+          "agent": "dup-02",
+          "amount": 2,
+          "atp_after": 2,
+          "event": "fed",
+          "how": "forced",
+          "next_action_price": 1,
+          "phase": "share",
+          "sufficient": true,
+          "tick": 0
+        },
+        {
+          "agent": "dup-05",
+          "amount": 2,
+          "atp_after": 2,
+          "event": "fed",
+          "how": "forced",
+          "next_action_price": 1,
+          "phase": "share",
+          "sufficient": true,
+          "tick": 0
+        },
+        {
+          "agent": "dup-06",
+          "amount": 4,
+          "atp_after": 5,
+          "event": "fed",
+          "how": "forced",
+          "next_action_price": 3,
+          "phase": "share",
+          "sufficient": true,
+          "tick": 0
+        },
+        {
+          "agent": "dup-09",
+          "amount": 4,
+          "atp_after": 6,
+          "event": "fed",
+          "how": "forced",
+          "next_action_price": 3,
+          "phase": "share",
+          "sufficient": true,
+          "tick": 0
+        },
+        {
+          "agent": "dup-11",
+          "amount": 4,
+          "atp_after": 6,
+          "event": "fed",
+          "how": "forced",
+          "next_action_price": 3,
+          "phase": "share",
+          "sufficient": true,
+          "tick": 0
+        },
+        {
+          "agent": "dup-13",
+          "amount": 3,
+          "atp_after": 3,
+          "event": "fed",
+          "how": "forced",
+          "next_action_price": 2,
+          "phase": "share",
+          "sufficient": true,
+          "tick": 0
+        },
+        {
+          "agent": "dup-14",
+          "amount": 4,
+          "atp_after": 5,
+          "event": "fed",
+          "how": "forced",
+          "next_action_price": 3,
+          "phase": "share",
+          "sufficient": true,
+          "tick": 0
+        },
+        {
+          "agent": "random-00",
+          "amount": 3,
+          "atp_after": 4,
+          "event": "fed",
+          "how": "forced",
+          "next_action_price": 2,
+          "phase": "share",
+          "sufficient": true,
+          "tick": 0
+        },
+        {
+          "agent": "random-01",
+          "amount": 3,
+          "atp_after": 3,
+          "event": "fed",
+          "how": "forced",
+          "next_action_price": 2,
+          "phase": "share",
+          "sufficient": true,
+          "tick": 0
+        },
+        {
+          "agent": "random-04",
+          "amount": 2,
+          "atp_after": 2,
+          "event": "fed",
+          "how": "forced",
+          "next_action_price": 1,
+          "phase": "share",
+          "sufficient": true,
+          "tick": 0
+        },
+        {
+          "agent": "random-06",
+          "amount": 4,
+          "atp_after": 6,
+          "event": "fed",
+          "how": "forced",
+          "next_action_price": 3,
+          "phase": "share",
+          "sufficient": true,
+          "tick": 0
+        },
+        {
+          "agent": "random-08",
+          "amount": 4,
+          "atp_after": 5,
+          "event": "fed",
+          "how": "forced",
+          "next_action_price": 3,
+          "phase": "share",
+          "sufficient": true,
+          "tick": 0
+        },
+        {
+          "agent": "church-00",
+          "atp_collected": 5,
+          "event": "fed then buried",
+          "granted_this_tick": 4,
+          "phase": "cull",
+          "tick": 0
+        },
+        {
+          "agent": "church-01",
+          "atp_collected": 5,
+          "event": "fed then buried",
+          "granted_this_tick": 4,
+          "phase": "cull",
+          "tick": 0
+        },
+        {
+          "agent": "church-02",
+          "atp_collected": 5,
+          "event": "fed then buried",
+          "granted_this_tick": 4,
+          "phase": "cull",
+          "tick": 0
+        },
+        {
+          "agent": "church-03",
+          "atp_collected": 5,
+          "event": "fed then buried",
+          "granted_this_tick": 4,
+          "phase": "cull",
+          "tick": 0
+        },
+        {
+          "agent": "church-04",
+          "atp_collected": 5,
+          "event": "fed then buried",
+          "granted_this_tick": 4,
+          "phase": "cull",
+          "tick": 0
+        },
+        {
+          "agent": "church-05",
+          "atp_collected": 5,
+          "event": "fed then buried",
+          "granted_this_tick": 4,
+          "phase": "cull",
+          "tick": 0
+        },
+        {
+          "agent": "church-06",
+          "atp_collected": 5,
+          "event": "fed then buried",
+          "granted_this_tick": 4,
+          "phase": "cull",
+          "tick": 0
+        },
+        {
+          "agent": "church-07",
+          "atp_collected": 5,
+          "event": "fed then buried",
+          "granted_this_tick": 4,
+          "phase": "cull",
+          "tick": 0
+        },
+        {
+          "agent": "church-08",
+          "atp_collected": 5,
+          "event": "fed then buried",
+          "granted_this_tick": 4,
+          "phase": "cull",
+          "tick": 0
+        },
+        {
+          "agent": "church-09",
+          "atp_collected": 5,
+          "event": "fed then buried",
+          "granted_this_tick": 4,
+          "phase": "cull",
+          "tick": 0
+        },
+        {
+          "agent": "church-10",
+          "atp_collected": 5,
+          "event": "fed then buried",
+          "granted_this_tick": 4,
+          "phase": "cull",
+          "tick": 0
+        },
+        {
+          "agent": "church-11",
+          "atp_collected": 5,
+          "event": "fed then buried",
+          "granted_this_tick": 4,
+          "phase": "cull",
+          "tick": 0
+        },
+        {
+          "agent": "church-12",
+          "atp_collected": 5,
+          "event": "fed then buried",
+          "granted_this_tick": 4,
+          "phase": "cull",
+          "tick": 0
+        },
+        {
+          "agent": "church-13",
+          "atp_collected": 5,
+          "event": "fed then buried",
+          "granted_this_tick": 4,
+          "phase": "cull",
+          "tick": 0
+        },
+        {
+          "agent": "church-14",
+          "atp_collected": 5,
+          "event": "fed then buried",
+          "granted_this_tick": 4,
+          "phase": "cull",
+          "tick": 0
+        },
+        {
+          "agent": "church-15",
+          "atp_collected": 5,
+          "event": "fed then buried",
+          "granted_this_tick": 4,
+          "phase": "cull",
+          "tick": 0
+        },
+        {
+          "agent": "dup-00",
+          "atp_collected": 2,
+          "event": "fed then buried",
+          "granted_this_tick": 2,
+          "phase": "cull",
+          "tick": 0
+        },
+        {
+          "agent": "dup-01",
+          "atp_collected": 6,
+          "event": "fed then buried",
+          "granted_this_tick": 4,
+          "phase": "cull",
+          "tick": 0
+        },
+        {
+          "agent": "dup-02",
+          "atp_collected": 2,
+          "event": "fed then buried",
+          "granted_this_tick": 2,
+          "phase": "cull",
+          "tick": 0
+        },
+        {
+          "agent": "dup-05",
+          "atp_collected": 2,
+          "event": "fed then buried",
+          "granted_this_tick": 2,
+          "phase": "cull",
+          "tick": 0
+        },
+        {
+          "agent": "dup-06",
+          "atp_collected": 5,
+          "event": "fed then buried",
+          "granted_this_tick": 4,
+          "phase": "cull",
+          "tick": 0
+        },
+        {
+          "agent": "dup-09",
+          "atp_collected": 6,
+          "event": "fed then buried",
+          "granted_this_tick": 4,
+          "phase": "cull",
+          "tick": 0
+        },
+        {
+          "agent": "dup-11",
+          "atp_collected": 6,
+          "event": "fed then buried",
+          "granted_this_tick": 4,
+          "phase": "cull",
+          "tick": 0
+        },
+        {
+          "agent": "dup-13",
+          "atp_collected": 3,
+          "event": "fed then buried",
+          "granted_this_tick": 3,
+          "phase": "cull",
+          "tick": 0
+        },
+        {
+          "agent": "dup-14",
+          "atp_collected": 5,
+          "event": "fed then buried",
+          "granted_this_tick": 4,
+          "phase": "cull",
+          "tick": 0
+        },
+        {
+          "agent": "random-00",
+          "atp_collected": 4,
+          "event": "fed then buried",
+          "granted_this_tick": 3,
+          "phase": "cull",
+          "tick": 0
+        },
+        {
+          "agent": "random-01",
+          "atp_collected": 3,
+          "event": "fed then buried",
+          "granted_this_tick": 3,
+          "phase": "cull",
+          "tick": 0
+        },
+        {
+          "agent": "random-04",
+          "atp_collected": 2,
+          "event": "fed then buried",
+          "granted_this_tick": 2,
+          "phase": "cull",
+          "tick": 0
+        },
+        {
+          "agent": "random-06",
+          "atp_collected": 6,
+          "event": "fed then buried",
+          "granted_this_tick": 4,
+          "phase": "cull",
+          "tick": 0
+        },
+        {
+          "agent": "random-08",
+          "atp_collected": 5,
+          "event": "fed then buried",
+          "granted_this_tick": 4,
+          "phase": "cull",
+          "tick": 0
+        }
+      ],
+      "seed": 20260825
+    }
+  }
+}
