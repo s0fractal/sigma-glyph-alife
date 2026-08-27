@@ -3,6 +3,13 @@
 **Digital agents that run out of food without dying, on a machine where the
 memory bound is a theorem instead of a timer.**
 
+> That tagline was conditional on a schedule nothing documented until
+> [ALIFE-EXP-011](experiments/alife-exp-011/RESULT.md) measured it: under the
+> default tick, a starving agent that the colony *fed* was archived in the same
+> tick and its food collected back — **0 of 168** fed agents ever ran again. Fixed
+> on 2026-08-27, with the measurement of the bug committed first and a regression
+> suite that watches the property go red on the old policy.
+
 An artificial-life substrate built on [Σ-GLYPH](https://github.com/s0fractal/sigma-glyph)
 Book I: a content-addressed combinator machine whose evaluation is deterministic,
 whose sharing is structural, and whose peak memory is priced by the same integer
@@ -226,6 +233,28 @@ in four turn out to remove the *last* living copy — and the experiment was
 absent from this repository's own test matrix. The verdicts did not move; the
 numbers and their names did, in a dated erratum, and EXP-010 now replays in both
 profiles of `tools/test-all.sh`.
+
+[ALIFE-EXP-011](experiments/alife-exp-011/RESULT.md) is the tagline audited.
+ChatGPT's review read `phase_share` / `phase_cull` and found that
+`RUNNABLE = (LIVE, STARVED)` makes a starving agent simultaneously eligible for
+food and eligible for burial, in that order, inside one tick. The experiment was
+preregistered and run **before** the fix, deliberately — a bug fixed before it is
+measured is an anecdote:
+
+> **Under the default schedule, the tagline held only for agents nobody tried to
+> feed.** 0 of 168 sufficiently-fed starving agents ever fired another action;
+> 1056 of 1056 ATP granted to starving agents was collected by the cull in the
+> same tick it was granted, against a hypothesis that called 10% a leak worth
+> reporting. Skip the cull for that one tick and the same agents resume at
+> **100%**, and **56 of 64** reach a normal form instead of 34. The cost is not
+> ATP — 1056 out of 202,048 is nothing — it is agents: 30 of 64, in tick 0,
+> every run.
+
+The fix re-tests the condition instead of trusting the status: `STARVED` means
+"the next action costs more than the reservoir holds", and two phases of a
+commons economy run between the claim and the cull that acts on it. The
+before-measurement stays pinned to the old policy in code, so it keeps
+reproducing what it measured.
 
 That is what the separate repository is for. `sigma-glyph` is a specification
 under threshold-warrant governance; this is a place where a founding hypothesis

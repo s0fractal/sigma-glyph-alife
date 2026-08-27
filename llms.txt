@@ -36,7 +36,10 @@ what ran.
 - **EXP-001/004** — the founding hypothesis (anastomosis) was refuted
   against its nulls and the refutation survived an adversarial re-test:
   content addressing gives a population its sharing at birth; **evaluation
-  spends it down** (10/10 seeds, every alphabet fraction).
+  spends it down** (10/10 seeds, every alphabet fraction). EXP-001's famous
+  "6.41% of the proved ceiling" was corrected by erratum: it instantiates a
+  **preflight** theorem with a **hindsight** budget. Preflight the figure is
+  ~0.095% and an operator overprovisions ~1000×, not 16×.
 - **EXP-002/003/005** — sharing pays only down a demand path; a shared
   library helps in a band and hurts when overfunded; Book I's laziness
   discounts duplication so hard the currency question nearly vanishes.
@@ -53,6 +56,15 @@ what ran.
   and the RESULT's own mediation statistic later **refuted its own
   mechanism** (74.7–90.3% of consumptions ate the *last* copy). The live
   successor is a 2×2 factorial (price × matter) with counter-based RNG.
+- **EXP-011** — the tagline audited, and it failed. Under the default tick a
+  starving agent that the colony fed was archived in the same tick and its
+  food collected back: **0 of 168** fed agents ever ran again, **1056 of
+  1056** granted ATP buried, against a hypothesis calling 10% a leak. The
+  bug was **measured before it was fixed** — a bug fixed first is an
+  anecdote — and the fix (`phase_cull` re-tests starvation rather than
+  trusting a status set two phases earlier) landed with a regression suite
+  whose every property is watched going red on the old policy. The receipt
+  stays pinned to the engine it measured.
 
 Preregistrations precede harnesses; corpora precede preregistrations; nulls
 are preregistered or the claim does not exist (rules 7–8). Verdicts are
