@@ -1506,3 +1506,77 @@ adjudication rule against the output, before any RESULT existed, and the
 direction of the verdict was not known until afterwards. Recording it anyway,
 because "I fixed the scoring and then it failed" is a sentence that has to be
 checkable from the commit order rather than trusted.
+
+---
+
+## 2026-08-27 — ALIFE-EXP-012d, the forecast's missing choices
+
+Recorded before the measurement ran. The preregistration
+([`experiments/ALIFE-EXP-012d-does-the-price-choose-the-phase-preregistration.md`](experiments/ALIFE-EXP-012d-does-the-price-choose-the-phase-preregistration.md),
+`9b045ce`) names two frame changes and forbids a third. These are the four
+places it underdetermined the harness.
+
+**D122. C-fresh's scope, and the one exemption, checked rather than asserted.**
+The rule is "no seed from EXP-010/011/012/012b/012c appears anywhere in the
+run", and the forbidden set is read from those experiments' committed frames
+rather than restated — `{20260825 … 20260829}` — so a seed added to one of them
+later cannot quietly stop being forbidden. The twelve measurement seeds are
+disjoint from it and the control runs **second**, immediately after C-oracle and
+before anything else: a reused seed turns every forecast into a fit and no later
+control can undo that.
+
+There is one place an old seed still appears, and it cannot be removed: **C-compat**
+reproduces ALIFE-EXP-007's *frozen receipt*, which exists only for EXP-007's
+three seeds. Running it on fresh seeds would compare a number to nothing. The
+exemption is named, scoped and checked — `C-fresh(exemption)` asserts that
+C-compat's seeds are disjoint from the measurement seeds, so no cell that any
+hypothesis scores can have come from them. Dropping C-compat instead would have
+been the forbidden third frame change, and would have removed the only control
+that ties this harness to a committed artifact.
+
+**D123. The null model, and how a p-value is computed from it.** Within each
+seed, the four arm labels are permuted, independently per seed. This holds each
+seed's multiset of phases and last-eligible indices **exactly** fixed and
+destroys only the association between an arm and its outcome — which is the
+association all four hypotheses are about. It is the right null precisely
+because the seeds differ wildly from one another: a null that pooled across
+seeds would be testing whether seeds differ, which nobody doubts.
+
+One pass of 1000 permutations produces the draws for all four statistics, so the
+hypotheses are scored against the same null realizations rather than four
+independent ones. The p-value is the conventional `(r + 1) / (n + 1)` estimator,
+which never returns zero and never claims more resolution than 1000 draws bought
+— the floor is 1/1001 ≈ 0.001.
+
+**XD1's p is one-sided, and that is a consequence of the forecast being
+directional.** The preregistration predicts `#producing(floor) − #producing(book)
+≥ 8` — a signed, directional claim filed before any of these twelve seeds ran —
+and asks for "the permutation p-value of that difference". One-sided is what
+that sentence means. The two-sided p is reported beside it in the receipt so a
+reader who disagrees can use it, and the RESULT says which one is scored.
+
+**D124. XD4's pairing rule.** A seed qualifies when at least one Book-priced and
+at least one floor-priced arm both COLLAPSE with a last-eligible index. Where a
+price level has two collapsed arms, its side is the **mean** of their indices —
+not all cross pairs, which would weight a seed by how many of its arms happened
+to die and make one seed count four times. The seed then counts once, toward
+"Book earlier" or "floor earlier".
+
+The scored statistic is the **signed** sign-test count (seeds where Book dies
+earlier minus seeds where floor does), which is symmetric around zero under the
+label permutation and so has a well-defined one-sided p. The ≥ 3-in-4 ratio
+clause is scored separately on the observed data, as written. Qualification is
+recomputed inside every permuted draw: relabelling moves which arms are
+"Book-priced", so a draw can have a different number of qualifying seeds, and
+pretending otherwise would compare the observed statistic to a null of a
+different shape.
+
+**D125. C-null: the null itself is a gate, so it gets a control.** ALIFE-EXP-008
+had a finished positive result reversed by going from one permutation to twenty,
+and ALIFE-EXP-007 shipped a receipt whose nulls were single draws. A null that
+silently destroyed more than it claims would make any statistic look
+significant, and one that silently destroyed less would make none look so.
+`C-null` checks both directions on fifty draws: every seed's multiset of phases
+survives each permutation exactly, and the labels genuinely move. A second
+clause checks that a draw is a function of its index alone, so the receipt is
+reproducible from the specified seeding rather than from process state.
