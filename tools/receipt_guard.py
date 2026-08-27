@@ -59,6 +59,16 @@ def own_draws(obj):
 def offenders(obj, path=""):
     """Yield (path, reason) for every named null with no sampling behind it.
 
+    A BOOLEAN IS NOT A NULL STATISTIC. A receipt's `controls` block maps each
+    control's own sentence to whether it passed, so a control *named* after the
+    null it checks — ALIFE-EXP-012d's `C-null`, which verifies that the
+    permutation preserves what it claims — is a key containing "null" whose value
+    is `True`. It is not a statistic and there is no draw count that could
+    describe it. Flagging it was this guard reading its own vocabulary in the
+    wrong grammar. Nothing is weakened: a null statistic is a number or a
+    structure, never a pass/fail flag, so no real offender can hide behind a
+    boolean.
+
     THE LOCALITY RULE, and the bug it is a fix for. The first version asked
     `has_draws(obj)` — does a draw count of at least MIN_DRAWS live anywhere
     inside the CONTAINING dictionary — which let one unrelated sibling license
@@ -80,7 +90,8 @@ def offenders(obj, path=""):
     if isinstance(obj, dict):
         named = [k for k in obj
                  if any(t in k.lower() for t in NULL_KEYS)
-                 and not k.lower().endswith("draws")]
+                 and not k.lower().endswith("draws")
+                 and not isinstance(obj[k], bool)]
         for k in named:
             inside = declared_draws(obj[k])
             if inside:
@@ -115,11 +126,16 @@ MUTATIONS = (
      {"null_a": {"draws": 1}, "unrelated": {"draws": MIN_DRAWS}}),
     ("nested undersampling: a big count at the top, a small one in a cell",
      {"nulls": {"draws": MIN_DRAWS, "cell": {"chance_max": 3, "draws": 2}}}),
+    ("a numeric named null still fails when only a boolean sits beside it",
+     {"null_statistic": 7, "some_control_passed": True}),
 )
 CLEAN = (
     ("a null with its own count", {"core_shuffled": 12, "null_draws": MIN_DRAWS}),
     ("a null whose cells carry the count",
      {"nulls": {"a": {"chance_max": 3, "draws": MIN_DRAWS}}}),
+    ("a control NAMED after a null, whose value is a pass/fail flag",
+     {"controls": {"C-null the permutation preserves the multiset": True,
+                   "C-null(seeding) a draw is a function of its index": True}}),
 )
 
 

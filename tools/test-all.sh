@@ -153,6 +153,20 @@ else
   skip "ALIFE-EXP-009 replay was not diffed against the committed receipt (no git)"
 fi
 
+say "ALIFE-EXP-012d replay: does the price choose the phase? (prospective)"
+# RUN_SLOW only: 48 cells at 6000 reactions, run twice by C-det, is a
+# nineteen-minute job. Its controls pass and it has a receipt, so it belongs in
+# the matrix; its two failed predecessors do not, because they have nothing to
+# replay.
+if [[ "${RUN_SLOW:-0}" = "1" ]]; then
+  python3 experiments/alife-exp-012d/measure.py --record | tail -14
+  if command -v git >/dev/null 2>&1 && git rev-parse --git-dir >/dev/null 2>&1; then
+    git diff --exit-code experiments/alife-exp-012d/results.json
+  fi
+else
+  skip "ALIFE-EXP-012d full replay (nineteen minutes) - set RUN_SLOW=1"
+fi
+
 say "ALIFE-EXP-012c replay: does the currency choose the phase?"
 # Wired in because its controls PASS. Its two predecessors (EXP-012 and 012b)
 # are calibration pilots that ended FAILED-CONTROLS and wrote no receipt; they
