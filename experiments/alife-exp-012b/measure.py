@@ -112,6 +112,10 @@ def frame_key():
         "atp": C.ATP_PER_REACTION, "slice": C.SLICE_ATP,
         "cells": C.CELL, "seeds": list(C.SEEDS),
         "fingerprint": C.fingerprint(), "oracle": oracle_digest(),
+        # Bumped when the shared machinery's OUTPUT SCHEMA changes, so a
+        # cached cell from an older harness cannot be compared against a fresh
+        # one. D112's rule, extended from the frame to the instrument.
+        "schema": 2,
     }, sort_keys=True)
     return hashlib.sha256(payload.encode()).hexdigest()[:16]
 

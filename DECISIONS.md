@@ -1580,3 +1580,37 @@ significant, and one that silently destroyed less would make none look so.
 survives each permutation exactly, and the labels genuinely move. A second
 clause checks that a draw is a function of its index alone, so the receipt is
 reproducible from the specified seeding rather than from process state.
+
+**D126. A soup can die, and until now that was a `ValueError` from inside the
+RNG.** ALIFE-EXP-012d's first run crashed on cell `BM/20260836`:
+`below() needs n >= 1`, thrown four frames down in `CounterRandom`, because
+`len(soup) == 0` and there was nothing to draw two reactants from. Reproduced
+and diagnosed before anything was changed: the census went to **zero at reaction
+1926** — 517 culled, 253 consumed, 1086 starved, 134 waiting, none alive — with
+the ledger, the census counts and the memory bound all still holding. Nothing was
+mis-booked. The population simply died: a matter arm ate its own census faster
+than settled reactions replaced it.
+
+The preregistered frame never says what happens then, and a real outcome of the
+chemistry was being presented as a crash. **Extinction is now an outcome:** the
+run stops at that reaction, `extinct_at` and `reactions_run` go into the receipt,
+and the cell is scored on what actually happened. The guard lives in the shared
+`Soup.run` (ALIFE-EXP-012's module) rather than in a subclass, because every
+experiment on this machinery can reach the state and a private fix would leave
+the next one to rediscover it.
+
+`window()` had to follow. Its window was "the last `w` reactions" of a run
+assumed to reach its horizon; for an extinct cell that window contains reactions
+that never happened, and counting them as failures would make a dead colony look
+like a maximally unsuccessful one. It is now the last `w` reactions **that ran**,
+which is identical arithmetic whenever `extinct_at is None`.
+
+**No measured value moved.** ALIFE-EXP-012c's receipt was re-recorded and
+compared field by field against its committed version: **100 keys added**
+(`extinct_at`, `reactions_run`, `window_ran`) and **0 values changed**. XC1, XC2
+and XC3 stand exactly as scored. Checkpoint frame keys gained a `schema` stamp so
+a cached cell from an older harness can never be compared against a fresh one —
+D112's rule extended from the frame to the instrument.
+
+This is not a third frame change to 012d. It is the harness learning to survive a
+state its frame already permitted, found by running it.

@@ -71,6 +71,10 @@ def frame_key():
         "cells": C.CELL, "seeds": list(C.SEEDS),
         "threshold": C.PHASE_THRESHOLD,
         "fingerprint": C.fingerprint(), "oracle": B.oracle_digest(),
+        # Bumped when the shared machinery's OUTPUT SCHEMA changes, so a
+        # cached cell from an older harness cannot be compared against a fresh
+        # one. D112's rule, extended from the frame to the instrument.
+        "schema": 2,
     }, sort_keys=True)
     return hashlib.sha256(payload.encode()).hexdigest()[:16]
 

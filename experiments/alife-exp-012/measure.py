@@ -202,6 +202,8 @@ class Soup:
         self.census_bound_ok = True
         self.census_counts_ok = True
         self.consumed_but_alive = 0
+        self.extinct_at = None          # the reaction at which the census hit
+                                        # zero, or None if it never did
         self.perturbed = False
 
     # -- randomness ----------------------------------------------------------
@@ -355,6 +357,20 @@ class Soup:
     def run(self, keep_edges=False):
         counts = None
         for i in range(self.reactions):
+            if not self.soup:
+                # EXTINCTION. A matter arm can eat its own census: consumption
+                # removes bodies, culling removes more, and settled reactions
+                # stop replacing them. The soup reaches zero and there is
+                # nothing left to draw two reactants from.
+                #
+                # The preregistered frame never says what happens here, and
+                # until 2026-08-27 the answer was a `ValueError` thrown from
+                # inside the RNG four frames down — a real outcome of the
+                # chemistry presented as a crash. It is an outcome: the run
+                # stops at this reaction and the receipt says where.
+                # DECISIONS.md D126.
+                self.extinct_at = i
+                break
             self.current_reaction = i
             self.cull_seq = 0
             a = self.soup[self.draw(len(self.soup), i, "reactant_a")].hash
@@ -393,6 +409,9 @@ class Soup:
         return {
             "arm": self.arm, "seed": self.seed, "rng_mode": self.rng_mode,
             "reactions": self.reactions,
+            "extinct_at": self.extinct_at,
+            "reactions_run": (self.extinct_at if self.extinct_at is not None
+                              else self.reactions),
             # --- the preregistered outcomes ---
             "settled": self.ok,
             "census": len(self.soup),
@@ -460,14 +479,22 @@ class Soup:
         settled/w — the preregistered statistic — and `waiting` is reported
         beside it rather than folded into failure (the EXP-010 censoring
         lesson): a parked reaction is unresolved AT THE HORIZON."""
-        lo = self.reactions - w
+        # The window is the last `w` reactions THAT RAN. Identical to
+        # `self.reactions - w` whenever the run reached its horizon, and the
+        # only honest reading when it went extinct first: reactions that never
+        # happened are not failures, and counting them as such would have made
+        # an extinct cell look like a maximally unsuccessful one (D126).
+        ran = self.extinct_at if self.extinct_at is not None else self.reactions
+        w_eff = min(w, ran)
+        lo = ran - w_eff
         settled = sum(1 for i in self.settled_at_birth if i >= lo)
         waiting = sum(1 for i in self.individuals
                       if not i.founder and i.born >= lo and i.state == "waiting")
         return {"settled": settled, "waiting": waiting,
-                "failed": w - settled - waiting,
-                "rate": settled / w,
-                "rate_upper": (settled + waiting) / w}
+                "failed": w_eff - settled - waiting,
+                "window_ran": w_eff,
+                "rate": (settled / w_eff) if w_eff else 0.0,
+                "rate_upper": ((settled + waiting) / w_eff) if w_eff else 0.0}
 
 
 def run_cell(arm, seed, **kw):
