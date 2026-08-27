@@ -953,3 +953,69 @@ coverage hole is made. Also:
     repository whose every gate was green. One `.resolve()`. It is why the
     canonical command was not terminal, and the canonical command is now
     documented at the top of `test-all.sh`.
+
+---
+
+## 2026-08-27 — ALIFE-EXP-011, what its preregistration left to the harness
+
+Recorded before the measurement was recorded, per the ALIFE-EXP-005 arrangement.
+The preregistration
+([`experiments/ALIFE-EXP-011-does-food-help-preregistration.md`](experiments/ALIFE-EXP-011-does-food-help-preregistration.md),
+`a1ef892`) delegates one number explicitly and leaves five things implicit.
+
+**D92. The budget is 32 ATP per agent, chosen from a dry run that read nothing
+but starvation counts.** The preregistration says "budgets chosen so that a
+preregistered fraction of agents starve mid-run" and permits the dry run to
+observe starvation counts only. Both halves were fixed in `corpus.py` before the
+dry run ran: a pinned sweep `(8, 12, 16, 24, 32, 48, 64, 96, 128, 256)` and the
+rule *take the budget whose ever-starved fraction is closest to 0.50, ties toward
+the smaller*. The sweep came back 85.9%, 85.9%, 75.0%, 56.2%, **46.9%**, 26.6%,
+15.6%, 12.5%, 6.2%, 0.0%, so 32 wins. The whole sweep is in the receipt, and
+`--dry-run` prints starvation counts and nothing else — no survival, no feeding,
+no ATP — so re-running it cannot leak a hypothesis.
+
+**D93. The commons needs a reserve, because ALIFE-EXP-001 left it empty.**
+EXP-001 builds `Economy(3000 × 64)` and endows every agent, so its pool is zero
+and `phase_share` cannot grant anything at all. An experiment about feeding needs
+something to feed from: the economy here is `Economy(budget × 64 + 200 000)`.
+The reserve is far above any plausible draw, and if it ever bound, C2 fails
+closed — a grant truncated by an empty commons is exactly an insufficient one,
+and the harness counts truncations separately for that reason.
+
+**D94. Arm (a) runs the engine's rebate at rate 1.0; arms (b) and (c) run it at
+zero.** Arm (a) is "the existing `phase_share` path where it fires naturally", so
+it must actually be switched on — a rate of 1.0 grants one ATP per shared node
+occurrence an agent holds, comfortably above a next action's price, so arm (a)
+cannot fail for want of generosity. Arms (b) and (c) turn the rebate off so their
+feeding is exactly the forced grant and H1 is adjudicated on that and nothing
+else. `transfers` is off in every arm: the preregistration's arms name
+`phase_share`, and leaving `phase_interact` on would add a second uncontrolled
+feeding path to a three-arm design.
+
+**D95. Arm (c)'s cull-free window is `phase_cull` returning without culling on a
+tick where feeding happened — which is `step(cull=False)` for exactly that
+tick.** The preregistration asks for feeding "applied in a tick where cull is
+skipped (`step(cull=False)`) before the agent's next `phase_reduce`", and the
+harness cannot know in advance which ticks those are, because the feeding happens
+inside `step`. So the decision is made inside the tick, by the arm's own policy
+object, and the engine's `step` is called identically in all three arms. A
+consequence, stated rather than discovered later: in arm (c) feeding happens on
+every tick, so the cull never runs at all — 24 cull-free ticks of 24. That is
+what the arm is, and it is why H3 is a control-by-contrast and not a finding.
+
+**D96. The three pinned seeds cannot differ in this frame, and the RESULT says
+so.** `Population` draws on its RNG in exactly two places: `phase_interact`'s
+pairing and `crossover`. Transfers are off and nothing reproduces, so every arm
+returns byte-identical numbers on all three seeds. They are pinned by the
+preregistration and are run and reported, but they are one sample presented three
+times, not three samples. Reporting them as agreement across seeds would be the
+kind of sentence this repository exists to not write.
+
+**D97. "Fires a further priced action" is `spent` strictly increasing after the
+agent's first feeding, and a next-action price is asked of the oracle without
+buying it.** `sg.step5(term, 10**9, store, dict(stats), limits)` returns the
+action and its exact cost and mutates nothing but the throwaway `stats` — the
+same counterfactual `reduce_slice` already asks itself when a slice ends. An
+agent with no next action at any budget (a normal form, an unresolved reference)
+is not fed in the forced arms and is not part of H1's population: H1 is about
+food, and there is nothing such an agent could buy.
