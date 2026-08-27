@@ -45,6 +45,14 @@ say "Memoization: the answer does not move, and the price is not a free choice"
 # have. M3 is a control that must FAIL: at a flat price the memory bound breaks.
 python3 tests/alife_memo.py | tee /dev/stderr | grep -q "ALIFE-MEMO: ALL PASS"
 
+say "Refeeding: a starving agent that is fed gets to run, and the cull still culls"
+# ALIFE-EXP-011 measured the absence of this property on the reviewed engine: 0
+# of 168 fed agents ever ran again. Every check here carries a negative control
+# that puts the engine back on the pre-2026-08-27 policy and demands the property
+# FAIL, because the randomized suite could not see this and neither could seven
+# receipts that all ran with cull=False.
+python3 tests/alife_refeed.py | tee /dev/stderr | grep -q "ALIFE-REFEED: ALL PASS"
+
 say "Chance models destroy exactly what they claim, and are sampled"
 # Two experiments in a row produced a positive result that a null destroyed, and
 # in both the null was drawn ONCE. The models live in impl/sigma_nulls.py now,

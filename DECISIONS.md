@@ -1019,3 +1019,92 @@ same counterfactual `reduce_slice` already asks itself when a slice ends. An
 agent with no next action at any budget (a normal form, an unresolved reference)
 is not fed in the forced arms and is not part of H1's population: H1 is about
 food, and there is nothing such an agent could buy.
+
+---
+
+## 2026-08-27 — fixing what ALIFE-EXP-011 measured
+
+The measurement is committed (`10b4bc3`); this is the fix, and per the
+preregistration the RESULT stays the *before* and the regression suite is the
+*after*, with neither edited to meet the other.
+
+**D98. `phase_cull` re-tests starvation instead of trusting a status set two
+phases earlier.** Of the three mechanisms the preregistration allowed —
+reviving grants, a cull exemption for fed-this-tick agents, a reordered
+schedule — none is quite right, and the fourth is:
+
+  * *reviving grants* puts a scheduler decision inside `Economy.grant`, which is
+    a ledger, and would revive an agent on one ATP whether or not one ATP buys
+    anything;
+  * *exempting fed-this-tick agents* is bookkeeping about how the ATP arrived,
+    and would miss any future phase that moves ATP by another route;
+  * *reordering* is strictly worse: cull-then-feed archives the starving agent
+    before anybody can reach it.
+
+`STARVED` means "the next action costs more than the reservoir holds". That is a
+claim about a reservoir, and two phases of a commons economy run between the
+`phase_reduce` that made the claim and the `phase_cull` that acts on it. So the
+cull asks the oracle whether the claim is still true — `step5` on a throwaway
+`stats`, the same counterfactual `reduce_slice` already asks itself when a slice
+ends — and returns the agent to `LIVE` when it is not. It is independent of how
+the ATP arrived, so the transfer path and the rebate path are both fixed, and so
+is any path added later. Only `BudgetExhausted` counts as still starving: a next
+action that is unresolved or that faults is not a budget question, and archiving
+on it would be ALIFE-EXP-009's mistake in a second place.
+
+The flag `recheck_affordability_before_cull` defaults to the fix. It exists for
+exactly one caller — ALIFE-EXP-011's harness, which is the before measurement and
+pins it to `False` in code, so its receipt keeps reproducing the schedule it
+measured rather than depending on a default. **No committed receipt moves:** every
+experiment in the repository runs `step(cull=False)` or drives `phase_reduce`
+directly, verified by grep before the change; only `tests/alife_conservation.py`
+culls, and it asserts properties rather than numbers.
+
+**D99. The rebate's "shared" is decided by distinct holders, and the occurrence
+statistic is kept as a named alternative rather than deleted.** `phase_share`'s
+docstring has promised "structure they hold in common with somebody else" since
+it was written, and the code asked `population_census`, which counts
+*occurrences* — so an agent holding one hash twice made that hash "shared" with
+nobody and collected a sharing rebate for repeating itself (ChatGPT's review).
+Given the choice of fixing the code or the docstring, the code: the docstring
+states the policy's intent, the intent is the defensible one, and enshrining an
+accident because it is what shipped is how a policy becomes a bug with tenure.
+
+What is *paid* stays occurrence-weighted over the agent's own term — an agent
+holding a genuinely shared address five times holds five nodes of common
+structure. Which addresses qualify is an inter-agent question; how much of one an
+agent holds is not, and only the first was wrong.
+
+`rebate_basis="occurrences"` restores the old statistic. It is not a legacy
+shim: self-repetition is a real and different pressure, the review says so, and
+ALIFE-EXP-011's arm (a) is a measurement of a colony that ran under it — pinned
+in that harness for the same reason as D98. **Receipt check:** `rebate_rate` is
+non-zero in exactly two places in the repository, `tests/alife_conservation.py`
+(randomized, no frozen numbers) and ALIFE-EXP-011 arm (a); every experiment
+constructs its population with the 0.0 default, EXP-001 included. The change
+moves EXP-011's arm (a) by 2 ATP a seed, which is why that harness pins it, and
+moves nothing else.
+
+**D100. The regression suite is its own file, and every property in it has a
+negative control.** `tests/alife_refeed.py` implements the review's script
+literally (R1), the same-tick version that actually isolates the bug (R2,
+transfer path; R3, rebate path), the check that the cull still culls (R4), and
+the rebate's inter-agent property (R5). R2, R3 and R5 each re-run on the
+pre-2026-08-27 policy and demand the property FAIL — a regression test nobody has
+watched go red is a regression test nobody has watched, and this whole bug
+existed under a green randomized suite.
+
+R1 needed one honest adjustment. The review's script says "transfer enough for
+the next action"; that buys exactly one action, after which the agent starves
+again on the *next* one and the cull is right to take it. Feeding an agent enough
+for one action and then archiving it for being unable to afford a second is not
+the bug — it is R4. So R1 transfers enough to reach a normal form, which is what
+the script means by "gets to run", and R2/R3 carry the discrimination. R1 passes
+on both policies and is labelled as not discriminating.
+
+The R3 fixture is searched rather than asserted: a colony of unrelated random
+terms shares nothing after reduction, so the rebate correctly grants nothing and
+an R3 written on it would have passed while feeding zero — the ALIFE-EXP-002
+defect inside a regression test. It searches seeds and budgets for a colony where
+the rebate actually feeds a starving agent more than its next action costs, over
+a corpus of `S x_i y_i z` sharing one `z`, and fails closed if none exists.

@@ -959,7 +959,9 @@ class Population:
 
     def __init__(self, store, agents, economy, rng, slice_atp=64,
                  rebate_rate=0.0, transfers=False, probe=False, memo=None,
-                 wait_on_unresolved=False):
+                 wait_on_unresolved=False,
+                 recheck_affordability_before_cull=True,
+                 rebate_basis="holders"):
         self.store = store
         self.agents = list(agents)
         self.economy = economy
@@ -980,6 +982,30 @@ class Population:
         # receipts, which is a worse thing than an unattractive default. New work
         # should pass True; `RUNNABLE` is left alone.
         self.wait_on_unresolved = wait_on_unresolved
+        # STARVED means "the next action costs more than the reservoir holds".
+        # That is a claim about a reservoir, and `phase_share`/`phase_interact`
+        # run BEFORE `phase_cull` and can refill it — so until 2026-08-27 a
+        # colony could feed a starving agent and bury it in the same tick, with
+        # the cull collecting the food back. ALIFE-EXP-011 measured what that
+        # cost: 0 of 168 fed agents ever ran again and 1056 of 1056 granted ATP
+        # was collected the same tick. `phase_cull` now re-tests the condition
+        # instead of trusting a status set one or two phases ago.
+        #
+        # The flag exists for one caller: ALIFE-EXP-011's harness, which is the
+        # BEFORE measurement of this fix and must keep reproducing the schedule
+        # it measured. Nothing else should pass False. See DECISIONS.md D98.
+        self.recheck_affordability_before_cull = recheck_affordability_before_cull
+        # Which statistic decides that an address is "shared" — see
+        # `phase_share`. "holders" is inter-agent commonality, which is what the
+        # rebate has always said it pays for; "occurrences" is the pre-2026-08-27
+        # statistic, which also pays an agent for repeating itself. The second is
+        # kept because it is a real (different) pressure and because
+        # ALIFE-EXP-011's receipt is a measurement of a colony that ran under it.
+        if rebate_basis not in ("holders", "occurrences"):
+            raise ValueError(f"rebate_basis must be 'holders' or 'occurrences', "
+                             f"not {rebate_basis!r}")
+        self.rebate_basis = rebate_basis
+        self.revived = 0
         self.tick = 0
         self.history = []
         self.archived = []
@@ -1022,19 +1048,44 @@ class Population:
     # -- phase 2
     def phase_share(self):
         """Rebate agents in proportion to the structure they hold in common with
-        somebody else, out of the commons pool. `rebate_rate = 0` disables it,
-        which is the default and what the ALIFE-EXP-001 baseline runs: a rebate
-        is a selection pressure, and switching it on while measuring what
-        structure does on its own would measure the pressure instead."""
+        **somebody else**, out of the commons pool. `rebate_rate = 0` disables
+        it, which is the default and what the ALIFE-EXP-001 baseline runs: a
+        rebate is a selection pressure, and switching it on while measuring what
+        structure does on its own would measure the pressure instead.
+
+        "In common with somebody else" is decided by DISTINCT HOLDERS — how many
+        agents hold an address, not how many times it occurs. Until 2026-08-27
+        this used `population_census`, which counts occurrences, so an agent
+        holding one hash twice made that hash "shared" with nobody and collected
+        a sharing rebate for repeating itself (ChatGPT's review of `006b9bb`).
+        The docstring has said "with somebody else" since the method was written;
+        the code now does. `rebate_basis="occurrences"` restores the old
+        statistic, which is a real pressure toward self-repetition rather than a
+        bug to be hidden — and is what ALIFE-EXP-011's colony ran under.
+
+        What is paid is still occurrence-weighted over the agent's own term: an
+        agent that holds a genuinely shared address five times is holding five
+        nodes' worth of common structure and is paid for five. Which addresses
+        qualify is an inter-agent question; how much of one an agent holds is
+        not, and only the first was wrong.
+        """
         if self.rebate_rate <= 0 or self.economy.pool <= 0:
             return 0
-        census = population_census(self.agents)
-        shared = {h for h, n in census.items() if n > 1}
+        own_census = {}
+        holders = Counter()
+        occurrences = Counter()
+        for a in self.agents:
+            _, own = node_census(a.term)
+            own_census[a.aid] = own
+            holders.update(own.keys())        # once per agent, not once per node
+            occurrences.update(own)
+        counts = holders if self.rebate_basis == "holders" else occurrences
+        shared = {h for h, n in counts.items() if n > 1}
         granted = 0
         for a in sorted(self.agents, key=lambda x: x.aid):
             if a.status not in RUNNABLE:
                 continue
-            _, own = node_census(a.term)
+            own = own_census[a.aid]
             overlap = sum(n for h, n in own.items() if h in shared)
             granted += self.economy.grant(a, int(self.rebate_rate * overlap))
         return granted
@@ -1062,19 +1113,55 @@ class Population:
     def phase_cull(self):
         """A starved agent is archived, not deleted: its term stays in the CAS
         and its lineage stays in `archived`, so a population's history remains
-        reconstructible from the store it ran on."""
+        reconstructible from the store it ran on.
+
+        A starved agent that has since been FED is not archived, because it is
+        not starving any more. The status was set in `phase_reduce`; two phases
+        of a commons economy run between there and here, and both of them can
+        put ATP in a reservoir without touching a status. So the condition is
+        re-tested rather than remembered — see `still_starving`.
+        """
         culled = 0
         for a in self.agents:
-            if a.status == STARVED:
-                # Residual dust — a reservoir too small to afford the agent's
-                # next action — returns to the commons rather than vanishing
-                # with the body. Deleting it would break conservation quietly,
-                # which is the failure mode the whole ledger exists to catch.
-                self.economy.collect(a, a.atp)
-                a.status = ARCHIVED
-                self.archived.append(a)
-                culled += 1
+            if a.status != STARVED:
+                continue
+            if self.recheck_affordability_before_cull and not self.still_starving(a):
+                a.status = LIVE
+                self.revived += 1
+                continue
+            # Residual dust — a reservoir too small to afford the agent's
+            # next action — returns to the commons rather than vanishing
+            # with the body. Deleting it would break conservation quietly,
+            # which is the failure mode the whole ledger exists to catch.
+            self.economy.collect(a, a.atp)
+            a.status = ARCHIVED
+            self.archived.append(a)
+            culled += 1
         return culled
+
+    def still_starving(self, agent):
+        """Can this agent's reservoir, as it stands NOW, buy its next action?
+
+        Asked of the oracle rather than inferred: `step5` on a throwaway `stats`
+        reads the store, returns a new term and mutates nothing else, so the
+        counterfactual is free — it is the same question `reduce_slice` asks
+        itself when a slice ends.
+
+        Only `BudgetExhausted` means starving. A next action that is unresolved
+        or that faults is not a budget question, and archiving on it would be the
+        ALIFE-EXP-009 mistake in a second place: the agent is returned to the
+        runnable set and `phase_reduce` reports what it actually is.
+        """
+        if agent.atp <= 0:
+            return True
+        try:
+            sg.step5(agent.term, agent.atp, self.store, dict(agent.stats),
+                     sg.DEFAULT_LIMITS)
+        except sg.BudgetExhausted:
+            return True
+        except (sg.Unresolved, sg.ResourceFault):
+            return False
+        return False
 
     def metrics(self):
         factor, total, unique = sharing_factor(self.agents)

@@ -192,6 +192,18 @@ def build_population(arm, budget, seed, entries, store):
         transfers=False,
         forced=arm in ("b", "c"),
         cull_free_when_fed=(arm == "c"),
+        # THE POINT OF THIS EXPERIMENT. `phase_cull` re-tests starvation as of
+        # 2026-08-27 — the fix this receipt is the BEFORE measurement of — so
+        # the flag is pinned here, explicitly and forever, to the schedule
+        # ALIFE-EXP-011 actually measured. The preregistration says the RESULT
+        # is the before and the regression suite is the after, and that neither
+        # is edited to meet the other; this line is what makes that true of the
+        # code and not only of the prose. DECISIONS.md D98.
+        recheck_affordability_before_cull=False,
+        # Same reason, second axis: the rebate's "shared" statistic moved from
+        # occurrences to distinct holders on 2026-08-27, which changes arm (a)'s
+        # grants by two ATP a seed. Pinned to what this receipt measured.
+        rebate_basis="occurrences",
     )
 
 
@@ -536,7 +548,9 @@ def main():
                   "h1_expected": C.H1_EXPECTED,
                   "h2_leak_threshold": C.H2_LEAK_THRESHOLD,
                   "h3_expected": C.H3_EXPECTED,
-                  "worked_example_seed": C.WORKED_EXAMPLE_SEED},
+                  "worked_example_seed": C.WORKED_EXAMPLE_SEED,
+                  "recheck_affordability_before_cull": False,
+                  "rebate_basis": "occurrences"},
         "provenance": {
             "sigma_alife_version": prov["sigma_alife_version"],
             "sigma_glyph_requirement": prov["sigma_glyph_requirement"],

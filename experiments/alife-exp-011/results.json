@@ -128,7 +128,9 @@
     "h1_expected": 0.0,
     "h2_leak_threshold": 0.1,
     "h3_expected": 1.0,
+    "rebate_basis": "occurrences",
     "rebate_rate_arm_a": 1.0,
+    "recheck_affordability_before_cull": false,
     "seeds": [
       20260825,
       20260826,
