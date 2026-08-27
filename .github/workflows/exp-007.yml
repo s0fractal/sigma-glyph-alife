@@ -16,6 +16,7 @@ on:
             'experiments/alife-exp-008/**', '!experiments/alife-exp-008/**.md',
             'experiments/alife-exp-010/**', '!experiments/alife-exp-010/**.md',
             'experiments/alife-exp-011/**', '!experiments/alife-exp-011/**.md',
+            'experiments/alife-exp-012c/**', '!experiments/alife-exp-012c/**.md',
             'impl/sigma_alife.py',
             '.github/workflows/exp-007.yml']
   pull_request:
@@ -23,6 +24,7 @@ on:
             'experiments/alife-exp-008/**', '!experiments/alife-exp-008/**.md',
             'experiments/alife-exp-010/**', '!experiments/alife-exp-010/**.md',
             'experiments/alife-exp-011/**', '!experiments/alife-exp-011/**.md',
+            'experiments/alife-exp-012c/**', '!experiments/alife-exp-012c/**.md',
             'impl/sigma_alife.py',
             '.github/workflows/exp-007.yml']
 
@@ -115,3 +117,27 @@ jobs:
         run: |
           python3 tools/receipt_guard.py --self-test
           python3 tests/receipt_identity_guard.py
+
+  # ALIFE-EXP-012c: twenty cells at 6000 reactions, about eight minutes. Its two
+  # predecessors are calibration pilots that ended FAILED-CONTROLS and wrote no
+  # receipt, so there is nothing of theirs to replay; this is the first cell of
+  # that arc with a receipt to hold to.
+  exp-012c:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
+        with: { python-version: '3.14' }
+      - name: Fetch the pinned Book I oracle
+        run: |
+          set -euo pipefail
+          git clone -q https://github.com/s0fractal/sigma-glyph /tmp/sigma-glyph
+          git -C /tmp/sigma-glyph checkout -q "$SIGMA_GLYPH_PIN"
+          sha256sum /tmp/sigma-glyph/impl/sigma_glyph.py
+      - name: Replay the phase factorial; the committed receipt must be what it derives
+        env:
+          SIGMA_GLYPH: /tmp/sigma-glyph/impl
+        run: |
+          python3 experiments/alife-exp-012c/measure.py --record | tail -40
+          git diff --exit-code experiments/alife-exp-012c/results.json

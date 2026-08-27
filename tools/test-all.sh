@@ -153,6 +153,23 @@ else
   skip "ALIFE-EXP-009 replay was not diffed against the committed receipt (no git)"
 fi
 
+say "ALIFE-EXP-012c replay: does the currency choose the phase?"
+# Wired in because its controls PASS. Its two predecessors (EXP-012 and 012b)
+# are calibration pilots that ended FAILED-CONTROLS and wrote no receipt; they
+# are deliberately NOT here, because a failing experiment does not belong in a
+# green matrix and there is nothing of theirs to replay.
+#
+# Under RUN_SLOW only: twenty cells at 6000 reactions is an eight-minute job,
+# the same exemption ALIFE-EXP-007 and 008 have and for the same reason.
+if [[ "${RUN_SLOW:-0}" = "1" ]]; then
+  python3 experiments/alife-exp-012c/measure.py --record | tail -12
+  if command -v git >/dev/null 2>&1 && git rev-parse --git-dir >/dev/null 2>&1; then
+    git diff --exit-code experiments/alife-exp-012c/results.json
+  fi
+else
+  skip "ALIFE-EXP-012c full replay (eight minutes) - set RUN_SLOW=1"
+fi
+
 say "ALIFE-EXP-011 replay: does food help? (the engine's default schedule)"
 # Runs in both profiles from the day it lands, for the reason EXP-010 had to be
 # retrofitted into them. It costs a second.

@@ -1428,3 +1428,81 @@ admit cells on a criterion that survives convergence, e.g. eligible events
 before the cell's own convergence point rather than over a fixed horizon. Those
 are third changes, and 012b forbids them; they belong in the next
 preregistration and not in this harness.
+
+---
+
+## 2026-08-27 — ALIFE-EXP-012c, the phase experiment's missing choices
+
+Recorded before the measurement ran. The preregistration
+([`experiments/ALIFE-EXP-012c-does-the-currency-choose-the-phase-preregistration.md`](experiments/ALIFE-EXP-012c-does-the-currency-choose-the-phase-preregistration.md),
+`73e1ca2`) names three changes and forbids a fourth.
+
+**D116. D110's pattern, at its second generation: one load chain, two rebinds.**
+`012c/measure.py` loads `012b/measure.py` (which loads `012/measure.py`), takes
+`P = B.PILOT` so both modules refer to the *same* pilot object, and rebinds
+`P.C = B.C = C` with an assert. The `Soup`, the 2×2 `Gate`, the census, the
+`CounterRandom` wiring, `control_rng`, `C3_FIELDS`, `l1_core`, `factorial` and
+`score` are the objects the pilots ran, on 012c's frame. Loading the two pilot
+modules separately would have created two distinct copies of the 012 module and
+silently split the machinery in half; taking `B.PILOT` is what avoids that, and
+the assert is what checks it.
+
+**D117. The eligible-event instrumentation moves from `consume_for` to
+`note_rs_bound`, because the phase has to be computable in all twenty cells.**
+012b recorded indices inside `consume_for`, which only the matter arms call, so
+the free arms had counts and no indices. The phase is defined on eligible
+events, and a duplication of a non-genesis term is eligible whether or not the
+arm makes it pay a body — XC1 is exactly the question of whether the four arms
+of a seed agree, so it cannot be asked of two of them. `note_rs_bound` is called
+once per R-S in every arm, before the free/consume branch, which makes it the one
+hook that sees them all.
+
+Instrumentation must not move a number. **C-eligible** is added for that: the
+recorded index log must match the independent `rs_fired − rs_genesis` counter in
+all twenty cells. Together with C-det (every cell twice) that is the guard. A
+control the preregistration did not name is not a fourth change; it constrains
+the harness, not the design.
+
+**D118. `factorial_over(cells, seeds)` is a re-expression, and a control holds
+it to the original.** XC2 needs the pilots' factorial arithmetic over the
+producing seeds with the gate recomputed on that subset; the committed
+`factorial()` reads all five seeds. Rather than trust the re-expression or
+monkey-patch `C.SEEDS` — which would make the two versions the same code by
+making the frame lie — **C-factorial** runs `factorial_over` over all five seeds
+and demands it equal the committed pilot's output exactly, field for field,
+modulo the one field the subset version adds (`n_seeds`). `score()` needed no
+adaptation: it reads a factorial dict and no seeds.
+
+**D119. A seed's phase, and how XC2 selects.** A cell is `PRODUCING` iff it has
+an eligible event after reaction 3000 (the pinned threshold), else `COLLAPSED`.
+A *seed* is `PRODUCING`/`COLLAPSED` when all four of its arms agree and
+`DISCORDANT` when they do not. XC1 is the claim that `DISCORDANT` never occurs;
+XC2 conditions on seeds that are **concordantly** `PRODUCING`, which is what
+"concordantly per XC1" requires and is well defined whether or not XC1 holds. If
+XC1 fails, XC2's base is the concordant producing seeds only and the RESULT says
+so — a discordant seed cannot be assigned to either side of a conditional
+factorial without choosing an arm to believe.
+
+**D120. XC3's usable cells.** A collapsed seed contributes only if at least two
+of its arms are `COLLAPSED` *and* have a last-eligible index — a cell with zero
+eligible events has no timing to compare, and treating its absent index as 0
+would manufacture a within-seed spread out of nothing. The comparison is the
+largest within-seed spread against the spread of the per-seed means, both over
+usable seeds, with `UNADJUDICATED (insufficient collapsed cells)` below two.
+
+**D121. A correction to XC3's base, made before the RESULT and named in it.**
+The first implementation restricted XC3 to seeds whose *own* phase is
+`COLLAPSED` — all four arms agreeing — and reported
+`UNADJUDICATED (insufficient collapsed cells)` off the single such seed. That is
+the wrong base. The adjudication rule says XC3 needs "≥ 2 collapsed seeds with
+**≥ 2 arms each**", and that qualifier is redundant under the concordant
+reading, since a concordantly collapsed seed always has four; the hypothesis
+itself is stated over "**COLLAPSED cells**", grouped by seed. The base is
+therefore seeds carrying at least two collapsed cells. Corrected, four seeds
+qualify instead of one and XC3 becomes adjudicable — and fails.
+
+The failure is not why the correction was made: it was made from re-reading the
+adjudication rule against the output, before any RESULT existed, and the
+direction of the verdict was not known until afterwards. Recording it anyway,
+because "I fixed the scoring and then it failed" is a sentence that has to be
+checkable from the commit order rather than trusted.
