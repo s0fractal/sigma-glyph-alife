@@ -286,6 +286,26 @@ scoped now to the cells where it can be met, where it passes 10 of 10:
 > factorial is `UNADJUDICATED`: no seed is concordantly producing, which is a
 > consequence of the first finding rather than a fact about the corpus.
 
+012c's RESULT reported per-arm producing counts (BF 0/5, BM 1/5, FF 3/5, FM 3/5)
+and refused to claim them — no gate, no null, five seeds already seen. So
+[ALIFE-EXP-012d](experiments/alife-exp-012d/RESULT.md) filed the price axis as a
+**forecast**, on twelve seeds nobody had run, with a permutation null attached to
+every hypothesis. Its author was already 0 of 3 on 012c. All four forecasts
+failed:
+
+> **The price does not choose the phase.** Floor arms produced in 5 of 24 cells,
+> Book arms in 6 — the predicted difference of +8 came back as **−1**
+> (p = 0.77, 1000 draws). And the observation the whole story rested on
+> inverted: **BF produced in 0 of 5 seeds in 012c and 5 of 12 here**, making it
+> the *highest* producer rather than the lowest. The death-timing signature came
+> back an exact coin flip, 6 of 12, p = 0.49.
+
+Discordance itself replicated — 6 of 12 seeds here, 4 of 5 in 012c — so something
+about the arm does reach the phase, and neither axis, scored as preregistered, is
+it. This is what refusing to claim a post-hoc pattern is for, and it is a warning
+about every other per-arm count in this repository that has not had the same
+treatment.
+
 That is what the separate repository is for. `sigma-glyph` is a specification
 under threshold-warrant governance; this is a place where a founding hypothesis
 can be wrong in public on the first measurement, and its replacement wrong on the

@@ -69,6 +69,15 @@ what ran.
   exists in any receipt in this arc. Randomness is counter-based, keyed
   `(seed, reaction, event)`, with a decorrelation control that fails on a
   positional stream.
+- **EXP-012d** — the prospective successor, and the arc's sharpest lesson. 012c's
+  per-arm counts suggested the price axis drives the phase; 012d filed that as a
+  forecast on twelve FRESH seeds (C-fresh, fail-closed) with a permutation null
+  on every hypothesis, and **all four failed**. The predicted +8 came back −1
+  (p = 0.77); BF went from 0/5 producing to 5/12, the highest rather than the
+  lowest; death timing came back 6/12, an exact coin flip. Discordance
+  replicated, so the arm reaches the phase and neither axis is it. A soup can
+  also die: two cells went extinct mid-run, which used to be a ValueError from
+  inside the RNG and is now an outcome (D126).
 - **EXP-011** — the tagline audited, and it failed. Under the default tick a
   starving agent that the colony fed was archived in the same tick and its
   food collected back: **0 of 168** fed agents ever ran again, **1056 of
