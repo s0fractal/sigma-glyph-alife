@@ -110,11 +110,17 @@ would lose. **It survived:** counting only `APPLY` nodes and excluding genesis
 entirely, structural sharing still falls in 10 of 10 seeds at every alphabet
 fraction, and pairwise structural overlap falls with it.
 
-And the bound got a number: the proved ceiling for that run is 2840 nodes, the
-population actually materialized 472, occupying **182 distinct addresses — 6.41%
-of the ceiling**. The theorem is honest and very loose, and the experiment can
-now say which half of the looseness comes from unspent budget and which from
-sharing.
+And the bound got a number — two numbers, since ChatGPT's review of 2026-08-27
+pointed out that the first one was a hindsight reading of a preflight theorem
+([erratum](experiments/alife-exp-001/RESULT.md#erratum--2026-08-27)).
+`Σ size ≤ N + budget` holds for any budget bounding the run's spend. Instantiated
+at what the run *turned out* to spend, the ceiling is 2840 nodes and the 182
+distinct addresses the population occupies are **6.41%** of it. Instantiated at
+what an operator actually has in advance — the 192 000 ATP endowment — it is
+**192 064**, and the same 182 addresses are **~0.095%**. So an operator sizing a
+machine from the theorem overprovisions by about a **thousandfold**, not the
+sixteenfold this page used to claim, and the experiment can say which part of
+the retrospective looseness is unspent budget and which is sharing.
 
 [ALIFE-EXP-002](experiments/alife-exp-002/RESULT.md) went one level down and its
 preregistered hypotheses failed too. What it found instead:

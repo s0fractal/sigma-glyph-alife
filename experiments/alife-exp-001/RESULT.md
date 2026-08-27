@@ -94,14 +94,26 @@ agents ending at nearly the same answer.
 ## H3 holds, and gives the bound a number
 
 `proofs/Population.lean` proves `Σ size ≤ N + budget` for agents born as root
-thunks. On the mixed run that ceiling is 2840. The population's actual Σ size is
-472, and it occupies **182 distinct addresses — 6.41% of the proved ceiling**.
+thunks. On the mixed run, instantiated at the budget the run turned out to
+spend, that ceiling is 2840. The population's actual Σ size is 472, and it
+occupies **182 distinct addresses — 6.41% of that ceiling**.
+
+> **Corrected 2026-08-27** — see the [erratum](#erratum--2026-08-27). The
+> ceiling above is **retrospective**: `budget` is instantiated at 2776, the ATP
+> the run is now known to have spent. An operator sizing a machine *before* the
+> run knows only the endowment, 192 000 ATP, and the same theorem then gives
+> **192 064**. Both are correct instances of one theorem; only the second is
+> available in advance. 6.41% is unchanged as a retrospective figure and is not
+> a preflight one.
 
 The bound is therefore honest and extremely loose, and the looseness has two
 independent sources that this experiment can now separate: reduction rarely
 spends all its budget on growth (472 of 2840), and what it does materialize
-overlaps (182 of 472). An operator sizing a machine from the theorem prepays
-about sixteen times the memory a run of this shape actually needs.
+overlaps (182 of 472). An operator sizing a machine from the theorem
+**preflight** — the only way an operator can size a machine — prepays about a
+**thousand** times the memory a run of this shape actually needs; the
+sixteenfold figure this paragraph used to give is what the theorem prepays once
+you already know what the run spent.
 
 ## What this does to the research programme
 
@@ -112,7 +124,9 @@ about sixteen times the memory a run of this shape actually needs.
   makes a population preserve it. That is `rebate_rate` — implemented, deliberately
   switched OFF here, and the subject of ALIFE-EXP-002.
 - **The metric survived.** Three nulls, one preregistered and two not, agree.
-- **The bound is worth reporting as a number, not an adjective.** 6.41%.
+- **The bound is worth reporting as a number, not an adjective.** 6.41%
+  retrospectively; ~0.095% preflight. Two numbers, one theorem — see the
+  [erratum](#erratum--2026-08-27).
 
 ## Limitations, named rather than left to a reader
 
@@ -131,3 +145,63 @@ about sixteen times the memory a run of this shape actually needs.
 5. The two post-hoc nulls were written after the preregistered one returned an
    answer. They are labelled in the receipt and in the table above, and the
    preregistered null's number is reported first and unmodified.
+
+---
+
+## Erratum — 2026-08-27
+
+ChatGPT's cross-repo review of `006b9bb`
+([`reviews/chatgpt-2026-08-27.md`](../../reviews/chatgpt-2026-08-27.md)) found
+that this receipt's headline percentage instantiates a **preflight** theorem
+with a **hindsight** budget. The finding was verified against this experiment's
+committed receipt before the review was recorded. **No measurement and no
+verdict changes**: H1, H2 and H3 stand exactly as scored, every number in the
+tables above is unmoved, and `results.json` is untouched. What changes is the
+reading of one denominator.
+
+`proofs/Population.lean` proves
+
+```text
+totalSize ≤ N + budget          provided  totalSpent ≤ budget
+```
+
+which is true of *any* `budget` bounding what the run spends. This receipt chose
+the tightest one available after the fact, and then described the result in the
+voice of somebody sizing a machine in advance. Those are two different
+quantities and they now get two names:
+
+| | `budget` | ceiling `N + budget` | 182 distinct addresses are | Σ size 472 is |
+|---|---:|---:|---:|---:|
+| **retrospective bound** — knowable only after the run | actual spent, 2 776 | **2 840** | **6.41%** | 16.6% |
+| **preflight bound** — what an operator has in advance | endowment, 192 000 | **192 064** | **~0.095%** | 0.246% |
+
+The endowment is not an estimate: `measure.py` builds `Economy(3000 × 64)` and
+endows every agent with 3000, so 192 000 ATP is what this colony was committed
+and 192 064 is the number the theorem hands an operator at preflight. The run
+spent 1.45% of it.
+
+**The corrected operational sentence.** This receipt said an operator "prepays
+about sixteen times the memory a run of this shape actually needs". Sixteen is
+`2840 / 182`, and it is what the theorem costs an operator who already knows the
+answer. Against the preflight ceiling the overprovision is `192064 / 182` ≈
+**1 055×** on distinct addresses and `192064 / 472` ≈ **407×** on Σ size —
+three orders of magnitude, not one. The same correction is applied to the
+sentence in `README.md`.
+
+**Why this is not a defect in the theorem.** It is a defect in this document's
+reading of it. `population_peak_size_thunks` is stated exactly as an operator
+needs it — over a budget fixed in advance — and ALIFE-EXP-004 already decomposed
+the retrospective looseness into its two factors. What no experiment here had
+separated is the *third* factor, which is the whole distance between what a
+colony is endowed and what it spends: on this run, a factor of 69. The successor
+question that follows is sharper than "is the bound loose" and is not asked
+anywhere in this repository yet:
+
+> Preflight, the ceiling is dominated by ATP a colony never spends. Is there a
+> tighter statement over *committed* budget — or does an operator simply have to
+> size for the endowment and accept a thousandfold margin?
+
+**Attribution.** The finding is ChatGPT's, from the review linked above; the
+verification and this erratum are the repository's. Nothing about this
+correction was found by a gate here, and the randomized suites could not have
+found it: it is a claim about which of two true instantiations a sentence meant.
