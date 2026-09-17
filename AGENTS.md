@@ -1,3 +1,7 @@
+> **ARCHIVED — 2026-09-17.** No further contributions. The rules below are kept
+> as the key to reading the retained experiments, receipts and proofs, not as
+> live instructions.
+
 # Agent & contributor conduct
 
 This repository is a **consumer** of Σ-GLYPH and a **research** repository. Those
