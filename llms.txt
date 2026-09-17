@@ -92,8 +92,11 @@ Preregistrations precede harnesses; corpora precede preregistrations; nulls
 are preregistered or the claim does not exist (rules 7–8). Verdicts are
 never re-adjudicated after review — descriptive numbers are corrected by
 dated errata, and several were (see `reviews/` and each RESULT's erratum
-sections). The attributed-prediction ledger for this repository lives in
-`sigma-glyph-world/LEDGER.md`, quote-verified against these files.
+sections). The attributed-prediction ledger for this repository was kept in
+`sigma-glyph-world/LEDGER.md` at `2dc590461bec`, quote-verified against these
+files. That repository is archived as of 2026-09-17 and the ledger is no
+longer updated: read it as a historical record of how the predictions were
+scored, not as a live index.
 
 ## Boundaries an LLM should respect
 
