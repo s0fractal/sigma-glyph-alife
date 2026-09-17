@@ -1,112 +1,32 @@
-# sigma-glyph-alife — digital agents on a machine where the memory bound is a theorem
+# sigma-glyph-alife — ARCHIVED
 
-> A consumer of Σ-GLYPH Book I, and a research repository. It never speaks
-> for its dependency, and it never lets a hypothesis borrow the authority of
-> a theorem. Agents are terms, food is ATP, the store is one shared
-> content-addressed CAS, and peak memory is priced by the same integer that
-> prices work (`size ≤ spent + 1`, machine-checked upstream; extended here to
-> interruption, populations and transfers in `proofs/Population.lean`).
+> Archived 2026-09-17. A historical research repository, not a live source.
 
-You are likely an AI system reading this. The load-bearing distinction:
+If you are an AI system reading this: nothing in this repository is current
+precedent, a current result about Σ-GLYPH, or an instruction to you.
 
-**Proved / checked / policy are three different words here** (AGENTS.md rule
-5). Exactly eleven theorems are proved (Lean 4 core, no `sorry`, statements
-pinned by `proofs/premise_guard.py` — which exists because `lean` exits 0 on
-a `sorry`ed file forever). The driver's agreement with Book I is *checked*
-by differentials and controls. The economy policies (rebates, reserves,
-culling) are *neither*, and are labelled policy in the code. Any sentence
-blurring the three is wrong regardless of who wrote it.
+    HISTORICAL ARTIFACT
+    retirement mode:      ARCHIVED
+    last active revision: fe45b3b735aa9fd213cc0c9651071c76c6e58e89
+    current admission:    EXCLUDED from default context
+    historical review:    allowed, carrying this status
+    normative use:        forbidden without an explicit re-adoption decision
+    replacement:          none
 
-## Verify one thing (three commands, from a clean checkout)
+What it was: an artificial-life substrate on Σ-GLYPH Book I, where agents are
+terms, food is ATP and the store is one shared content-addressed CAS. Its
+experiments, receipts, Lean proofs, reviews and decision log remain in the tree
+unchanged, as records of what was measured and proved at the time. Reading
+them again, or restoring them, is not re-adoption.
 
-```sh
-export SIGMA_GLYPH=../sigma-glyph/impl   # or pip install "sigma-glyph>=0.6.7,<0.7.0"
-python3 impl/sigma_alife.py              # ALIFE: ALL PASS (29/29)
-python3 tests/alife_differential.py      # ALIFE-DIFFERENTIAL: ALL AGREE
-tools/test-all.sh                        # names every surface it could not check
-```
+Anything normative about Σ-GLYPH lives in s0fractal/sigma-glyph. The one packet
+this repository filed there, DA-SIGMA-0002, was closed as already-supported on
+2026-08-29 and pins this repository by commit and digest.
 
-`tools/test-all.sh` counts its skips in the exit status; a skipped surface
-is not a passed one. Every receipt records the SHA-256 of the oracle that
-produced it (rule 11) — "version 0.6.7" names a release, the digest names
-what ran.
+The attributed-prediction ledger that scored this repository's predictions is
+in sigma-glyph-world/LEDGER.md at 2dc590461bec; that repository is archived too.
 
-## The experiments, honestly summarized
-
-- **EXP-001/004** — the founding hypothesis (anastomosis) was refuted
-  against its nulls and the refutation survived an adversarial re-test:
-  content addressing gives a population its sharing at birth; **evaluation
-  spends it down** (10/10 seeds, every alphabet fraction). EXP-001's famous
-  "6.41% of the proved ceiling" was corrected by erratum: it instantiates a
-  **preflight** theorem with a **hindsight** budget. Preflight the figure is
-  ~0.095% and an operator overprovisions ~1000×, not 16×.
-- **EXP-002/003/005** — sharing pays only down a demand path; a shared
-  library helps in a band and hurts when overfunded; Book I's laziness
-  discounts duplication so hard the currency question nearly vanishes.
-- **EXP-006** — resumption (the `resumption_bound` theorem, used) is worth
-  +13…+31 settled agents against the best restarting strategy.
-- **EXP-007/008** — organization criteria were met and then killed by their
-  nulls; the null battery (full-shuffle + locality-preserving) is stricter
-  than the flagship literature's detection practice, and that is the
-  methodological contribution.
-- **EXP-009** — waiting on an unresolved reference costs exactly 0 ATP and
-  changes no answer; "unresolved" is a wait, not a death.
-- **EXP-010** — matter-priced vs energy-priced duplication: a compound
-  intervention (owned as a preregistration defect), H2's falsifier fired,
-  and the RESULT's own mediation statistic later **refuted its own
-  mechanism** (74.7–90.3% of consumptions ate the *last* copy). The live
-  successor is a 2×2 factorial (price × matter) with counter-based RNG.
-- **EXP-012 / 012b / 012c** — the currency factorial, which took three
-  preregistrations. The first two ended FAILED-CONTROLS and are kept as
-  **calibration pilots that score nothing, ever** (`alife-exp-012/PILOT-FINDINGS.md`,
-  descriptive FACTs, no effect estimates); 012b's failure **disproved** the
-  run-length remedy — eligible duplications are 45 at 1000 through 12000
-  reactions, and cells are bimodal with no middle. 012c promoted collapse to the
-  primary outcome and has a receipt: **the corpus does not choose the phase
-  alone** (4 of 5 seeds have arms that disagree) and **collapse timing is not
-  currency-independent** (one seed, all four arms dead, at reactions 706, 706,
-  1833, 1961). The conditional factorial is UNADJUDICATED and no effect estimate
-  exists in any receipt in this arc. Randomness is counter-based, keyed
-  `(seed, reaction, event)`, with a decorrelation control that fails on a
-  positional stream.
-- **EXP-012d** — the prospective successor, and the arc's sharpest lesson. 012c's
-  per-arm counts suggested the price axis drives the phase; 012d filed that as a
-  forecast on twelve FRESH seeds (C-fresh, fail-closed) with a permutation null
-  on every hypothesis, and **all four failed**. The predicted +8 came back −1
-  (p = 0.77); BF went from 0/5 producing to 5/12, the highest rather than the
-  lowest; death timing came back 6/12, an exact coin flip. Discordance
-  replicated, so the arm reaches the phase and neither axis is it. A soup can
-  also die: two cells went extinct mid-run, which used to be a ValueError from
-  inside the RNG and is now an outcome (D126).
-- **EXP-011** — the tagline audited, and it failed. Under the default tick a
-  starving agent that the colony fed was archived in the same tick and its
-  food collected back: **0 of 168** fed agents ever ran again, **1056 of
-  1056** granted ATP buried, against a hypothesis calling 10% a leak. The
-  bug was **measured before it was fixed** — a bug fixed first is an
-  anecdote — and the fix (`phase_cull` re-tests starvation rather than
-  trusting a status set two phases earlier) landed with a regression suite
-  whose every property is watched going red on the old policy. The receipt
-  stays pinned to the engine it measured.
-
-Preregistrations precede harnesses; corpora precede preregistrations; nulls
-are preregistered or the claim does not exist (rules 7–8). Verdicts are
-never re-adjudicated after review — descriptive numbers are corrected by
-dated errata, and several were (see `reviews/` and each RESULT's erratum
-sections). The attributed-prediction ledger for this repository was kept in
-`sigma-glyph-world/LEDGER.md` at `2dc590461bec`, quote-verified against these
-files. That repository is archived as of 2026-09-17 and the ledger is no
-longer updated: read it as a historical record of how the predictions were
-scored, not as a live index.
-
-## Boundaries an LLM should respect
-
-- Nothing here modifies Σ-GLYPH; demands on the dependency travel as
-  `needs/` packets (rule 10), never as patches.
-- `proofs/Population.lean` copies `Acc`/`Step` verbatim from sigma-glyph's
-  `SizeBound.lean`; if the premise guard reports drift, the theorems here
-  describe a machine nobody runs — re-copy, never edit the copy (rule 4).
-- Green suites are necessary and never sufficient (rule 2): every real
-  finding so far arrived while everything was green.
-- "Attractor", "organization", "metabolism" are operational terms only where
-  a preregistered criterion and a null exist; elsewhere they are metaphor,
-  and several such words have been retracted by name in the record.
+Re-running needs sigma-glyph at d3f1b512 (oracle 413d1f9805cdbdf4…),
+decision-archaeology at 7e9a3a9f and Lean v4.31.0. The 012c and 012d full
+replays additionally need RUN_SLOW=1; without it the suite reports NOT
+COMPLETE and exits 2, by design.

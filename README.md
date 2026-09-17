@@ -1,3 +1,10 @@
+> **ARCHIVED — 2026-09-17.** Historical research repository, not a live source.
+> Default context: EXCLUDED. Historical reading is allowed with this status;
+> nothing here is current precedent or a current result about Σ-GLYPH, and
+> re-reading or restoring it is not re-adoption. No replacement. Last active
+> revision: `fe45b3b`. Normative Σ-GLYPH lives in
+> [`s0fractal/sigma-glyph`](https://github.com/s0fractal/sigma-glyph).
+
 # Σ-GLYPH ALife
 
 **Digital agents that run out of food without dying, on a machine where the
